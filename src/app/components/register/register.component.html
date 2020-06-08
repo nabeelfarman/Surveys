@@ -1,1 +1,71 @@
-<p>register works!</p>
+<br />
+<!--start heading row-->
+<div class="row">
+  <div class="offset-md-1 col-md-11">
+    <h1>Registration</h1>
+  </div>
+</div>
+<!--end heading row-->
+
+<!--start input 1st row-->
+<div class="row">
+  <div class="offset-md-1 col-md-5">
+    <mat-form-field class="fullwidth">
+      <input matInput [(ngModel)]="firstName" placeholder="First Name">
+    </mat-form-field>
+  </div>
+  <div class="col-md-5">
+    <mat-form-field class="fullwidth">
+      <input matInput [(ngModel)]="lastName" placeholder="Last Name">
+    </mat-form-field>
+  </div>
+</div>
+<!--end input 1st row-->
+
+<!--start input 2nd row-->
+<div class="row">
+  <div class="offset-md-1 col-md-5">
+    <mat-form-field class="fullwidth">
+      <input matInput [(ngModel)]="password" type="password" placeholder="Password">
+    </mat-form-field>
+  </div>
+  <div class="col-md-5">
+    <mat-form-field class="fullwidth">
+      <input matInput [(ngModel)]="cnfrmPassword" type="password" placeholder="Confirm Password">
+    </mat-form-field>
+  </div>
+</div>
+<!--end input 2nd row-->
+
+<!--start input 3rd row-->
+<div class="row">
+  <div class="offset-md-1 col-md-5">
+    <mat-form-field class="fullwidth">
+      <input matInput [(ngModel)]="email" placeholder="Email">
+    </mat-form-field>
+  </div>
+  <div class="col-md-5">
+    <mat-form-field class="fullwidth">
+      <mat-select disableOptionCentering placeholder="Register As" [(ngModel)]="type" required>
+        <mat-option *ngFor="let item of typeList" [value]="item.typeId">
+          {{ item.typeName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<!--end input 3rd row-->
+
+<!--start button row-->
+<div class="row">
+  <div class="offset-md-1 col-md-10">
+    <button mat-raised-button class="btnClass pl-5 pr-5" style="border-radius: 0;" (click)="save();">
+      SAVE
+    </button>
+    &nbsp;&nbsp;
+    <button mat-raised-button class="btnClass pl-5 pr-5" style="border-radius: 0;" (click)="clear();">
+      RESET
+    </button>
+  </div>
+</div>
+<!--end button row-->

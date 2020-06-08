@@ -1,0 +1,252 @@
+.iconContainer {
+  border: 0px solid red;
+  width: 24px;
+  height: 24px;
+  margin: 9px 10px 0 10px;
+}
+
+.tableIcon {
+  border: 0px solid red;
+  width: 24px;
+  height: 24px;
+  margin: -5px 8px 0 0;
+}
+
+.iconContainer .icon-hr-leaveRule {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/vacations-Rules.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.iconContainer .icon-hr-leaveType {
+  margin: 7px 5px 0 1%;
+}
+
+
+// .iconContainer .icon-hr-leaveRule {
+//     width: 100%;
+//     height: 100%;
+//     mask: url(./assets/images/vacations.svg) no-repeat center;
+//     background-color: #fff;
+// }
+
+.iconContainer .icon-hr-performanceStandard {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/PerformanceStandards.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.iconContainer .icon-hr-performanceEvaluation {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/PerformanceEvaluation.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.iconContainer .icon-hr-post {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Post.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.iconContainer .icon-hr-jobprofile {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/JobProfile.svg) no-repeat center;
+  background-color: #fff;
+}
+
+
+.iconContainer .icon-hr-skillstandard {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/skills.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.iconContainer .icon-hr-test {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/exam.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.iconContainer .icon-hr-recruitmentapproval {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Recruitment-Approval.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.iconContainer .icon-hr-employeeprofile {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Employe-Profile.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.iconContainer .icon-hr-training {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Training.svg) no-repeat center;
+  background-color: #fff;
+}
+
+.tableIcon .icon-u-deactiveUser {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/DeactivateUser.svg) no-repeat center;
+  background-color: #BD8686;
+}
+
+.tableIcon .icon-u-activeUser {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/ActivateUser.svg) no-repeat center;
+  background-color: #66CC66;
+}
+
+.tableIcon .icon-u-reset {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/ResetPswrd.svg) no-repeat center;
+  background-color: #CC9966;
+}
+
+.tableIcon .icon-h-organo {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/organogram.svg) no-repeat center;
+  background-color: #68bd56;
+}
+
+.tableIcon .icon-u-edit {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Edit.svg) no-repeat center;
+  background-color: #4181C3;
+}
+
+.tableIcon .icon-emp-edit {
+  width: 75%;
+  height: 75%;
+  mask: url(./assets/images/Edit.svg) no-repeat center;
+  background-color: #4181C3;
+}
+
+.tableIcon .icon-u-edit-disable {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Edit.svg) no-repeat center;
+  background-color: #ddd;
+}
+
+.tableIcon .icon-u-delete {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Delete.svg) no-repeat center;
+  background-color: #CC3333;
+}
+
+.tableIcon .icon-u-save {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/save.svg) no-repeat center;
+  background-color: #7cb756;
+}
+
+.tableIcon .icon-u-save-edit {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/save.svg) no-repeat center;
+  background-color: #e54d25;
+}
+
+.tableIcon .icon-u-save-disable {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/save.svg) no-repeat center;
+  background-color: #aeaeae;
+}
+
+.tableIcon .icon-u-view {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/View.svg) no-repeat center;
+  background-color: #e54d25;
+}
+
+.tableIcon .icon-emp-delete {
+  width: 75%;
+  height: 75%;
+  mask: url(./assets/images/Delete.svg) no-repeat center;
+  background-color: #CC3333;
+}
+
+
+
+
+
+/************************** User Profile Icon **************************/
+.icon-u-userprofile {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/UserProfile.svg) no-repeat center;
+  background-color: #B0C9FF;
+}
+
+
+
+
+
+
+
+
+
+
+
+/************************** User Role **************************/
+.iconContainer .icon-u-userprole {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/UserRole.svg) no-repeat center;
+  background-color: #B0C9FF;
+}
+
+.iconContainer .icon-h-hrletter {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/HR-letters.svg) no-repeat center;
+  background-color: #B0C9FF;
+}
+
+.iconContainer .icon-hr-posting {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/posting.svg) no-repeat center;
+  background-color: #B0C9FF;
+}
+
+.iconContainer .icon-hr-employee {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Employee.svg) no-repeat center;
+  background-color: #B0C9FF;
+}
+
+.iconContainer .icon-hr-leaves {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/leaves.svg) no-repeat center;
+  background-color: #B0C9FF;
+}
+
+.iconContainer .icon-c-currency {
+  width: 100%;
+  height: 100%;
+  mask: url(./assets/images/Add.svg) no-repeat center;
+  background-color: #B0C9FF;
+}

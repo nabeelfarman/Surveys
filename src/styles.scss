@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+body,
+mat-drawer-container {
+  // background-color: #ebecef !important;
+  //background-image: linear-gradient(135deg,#fff, #ccc);
+  //background: radial-gradient(ellipse at center,  #eec450 1%,#eaa200 100%); /* W3C */
+
+  // background-image: linear-gradient( to right #f3f3f3 , #fff);
+  background-image: url("../src/assets/images/Backgound-grey.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: top left !important;
+  overflow: auto !important;
+}
+
+/* 100% width*/
+.fullwidth {
+  width: 100% !important;
+}
+
+.btnClass {
+  background-color: #5f84d5;
+  color: #fff
+}
+
+.btnClass:hover {
+  background-color: #22388e;
+  color: #fff
+}
