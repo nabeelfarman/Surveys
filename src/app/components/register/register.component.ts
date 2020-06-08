@@ -5,6 +5,7 @@ import {
   HttpHeaders,
   HttpErrorResponse,
 } from "@angular/common/http";
+import { AppComponent } from "src/app/app.component";
 
 @Component({
   selector: "app-register",
@@ -12,26 +13,43 @@ import {
   styleUrls: ["./register.component.scss"],
 })
 export class RegisterComponent implements OnInit {
+  serverUrl = "http://localhost:5000/";
+
   firstName = "";
   lastName = "";
   password = "";
   cnfrmPassword = "";
   email = "";
   type = "";
-  typeList = [
-    {
-      typeId: "1",
-      typeName: "Guru",
-    },
-    {
-      typeId: "2",
-      typeName: "Consultant",
-    },
-  ];
+  typeList = [];
 
-  constructor(public toastr: ToastrManager, private http: HttpClient) {}
+  constructor(
+    public toastr: ToastrManager,
+    private http: HttpClient,
+    private app: AppComponent
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getIndividualType();
+  }
+
+  //******************** To get departments
+  getIndividualType() {
+    // var Token = localStorage.getItem(this.tokenKey);
+    var reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      // Authorization: "Bearer " + Token,
+    });
+
+    this.app.showSpinner();
+
+    this.http
+      .get(this.serverUrl + "api/getIndividualType", { headers: reqHeader })
+      .subscribe((data: any) => {
+        this.typeList = data;
+        this.app.hideSpinner();
+      });
+  }
 
   save() {
     if (this.firstName == "") {
@@ -79,9 +97,38 @@ export class RegisterComponent implements OnInit {
       });
       return false;
     } else {
-      this.toastr.successToastr("All OK", "Success", {
-        toastTimeout: 2500,
-      });
+      var saveData = {
+        indvdlID: 0,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        password: this.password,
+        email: this.email,
+        typeCd: this.type,
+      };
+      this.app.showSpinner();
+      //var token = localStorage.getItem(this.tokenKey);
+      // var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token });
+      var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
+      this.http
+        .post(this.serverUrl + "api/saveIndividual", saveData, {
+          headers: reqHeader,
+        })
+        .subscribe((data: any) => {
+          if (data.msg == "Mail sent to your current email address!") {
+            this.toastr.successToastr(data.msg, "Success!", {
+              toastTimeout: 2500,
+            });
+            this.app.hideSpinner();
+            this.clear();
+            this.getIndividualType();
+            return false;
+          } else {
+            this.toastr.errorToastr(data.msg, "Error !", {
+              toastTimeout: 5000,
+            });
+            return false;
+          }
+        });
     }
   }
 

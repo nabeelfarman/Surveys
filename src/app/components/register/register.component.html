@@ -47,8 +47,8 @@
   <div class="col-md-5">
     <mat-form-field class="fullwidth">
       <mat-select disableOptionCentering placeholder="Register As" [(ngModel)]="type" required>
-        <mat-option *ngFor="let item of typeList" [value]="item.typeId">
-          {{ item.typeName }}
+        <mat-option *ngFor="let item of typeList" [value]="item.indvdlTypeCd">
+          {{ item.indvdlTypeName }}
         </mat-option>
       </mat-select>
     </mat-form-field>
