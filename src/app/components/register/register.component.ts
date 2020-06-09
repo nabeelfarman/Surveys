@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   password = "";
   cnfrmPassword = "";
   email = "";
-  type = "";
+  ddlRole = "";
   typeList = [];
 
   constructor(
@@ -91,8 +91,8 @@ export class RegisterComponent implements OnInit {
         toastTimeout: 2500,
       });
       return false;
-    } else if (this.type == "") {
-      this.toastr.errorToastr("Invalid Select Registration Type", "Error", {
+    } else if (this.ddlRole == "") {
+      this.toastr.errorToastr("Select Registration Type", "Error", {
         toastTimeout: 2500,
       });
       return false;
@@ -103,7 +103,7 @@ export class RegisterComponent implements OnInit {
         lastName: this.lastName,
         password: this.password,
         email: this.email,
-        typeCd: this.type,
+        typeCd: this.ddlRole,
       };
       this.app.showSpinner();
       //var token = localStorage.getItem(this.tokenKey);
@@ -114,7 +114,7 @@ export class RegisterComponent implements OnInit {
           headers: reqHeader,
         })
         .subscribe((data: any) => {
-          if (data.msg == "Mail sent to your current email address!") {
+          if (data.msg == "Record Saved Successfully!") {
             this.toastr.successToastr(data.msg, "Success!", {
               toastTimeout: 2500,
             });
@@ -126,6 +126,7 @@ export class RegisterComponent implements OnInit {
             this.toastr.errorToastr(data.msg, "Error !", {
               toastTimeout: 5000,
             });
+            this.app.hideSpinner();
             return false;
           }
         });
@@ -138,7 +139,7 @@ export class RegisterComponent implements OnInit {
     this.password = "";
     this.cnfrmPassword = "";
     this.email = "";
-    this.type = "";
+    this.ddlRole = "";
   }
 
   public validateEmail(Email) {

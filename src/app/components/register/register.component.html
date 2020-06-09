@@ -1,71 +1,74 @@
-<br />
-<!--start heading row-->
-<div class="row">
-  <div class="offset-md-1 col-md-11">
-    <h1>Registration</h1>
-  </div>
-</div>
-<!--end heading row-->
+<div class="limiter">
+  <div class="container-login100">
+    <div class="login100-more" style="
+        background-image: url('../../../assets/theme_component/images/bg-01.jpg');
+      ">
+      <img class="orgLogo" src="../../../assets/images/Logo.jpg" />
 
-<!--start input 1st row-->
-<div class="row">
-  <div class="offset-md-1 col-md-5">
-    <mat-form-field class="fullwidth">
-      <input matInput [(ngModel)]="firstName" placeholder="First Name">
-    </mat-form-field>
-  </div>
-  <div class="col-md-5">
-    <mat-form-field class="fullwidth">
-      <input matInput [(ngModel)]="lastName" placeholder="Last Name">
-    </mat-form-field>
-  </div>
-</div>
-<!--end input 1st row-->
+      <div class="copyRightContainer">&copy; Survey Deck</div>
 
-<!--start input 2nd row-->
-<div class="row">
-  <div class="offset-md-1 col-md-5">
-    <mat-form-field class="fullwidth">
-      <input matInput [(ngModel)]="password" type="password" placeholder="Password">
-    </mat-form-field>
-  </div>
-  <div class="col-md-5">
-    <mat-form-field class="fullwidth">
-      <input matInput [(ngModel)]="cnfrmPassword" type="password" placeholder="Confirm Password">
-    </mat-form-field>
-  </div>
-</div>
-<!--end input 2nd row-->
+      <div class="pageTitleContainer">Sign Up</div>
+    </div>
 
-<!--start input 3rd row-->
-<div class="row">
-  <div class="offset-md-1 col-md-5">
-    <mat-form-field class="fullwidth">
-      <input matInput [(ngModel)]="email" placeholder="Email">
-    </mat-form-field>
-  </div>
-  <div class="col-md-5">
-    <mat-form-field class="fullwidth">
-      <mat-select disableOptionCentering placeholder="Register As" [(ngModel)]="type" required>
-        <mat-option *ngFor="let item of typeList" [value]="item.indvdlTypeCd">
-          {{ item.indvdlTypeName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-</div>
-<!--end input 3rd row-->
+    <div class="wrap-login100 p-l-50 p-r-50 p-t-85 p-b-50">
+      <form class="login100-form validate-form">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="wrap-input100 validate-input">
+              <span class="label-input100">First Name</span>
+              <input class="input100" type="text" name="firstName" placeholder="John" [(ngModel)]="firstName" />
+              <span class="focus-input100"></span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="wrap-input100 validate-input">
+              <span class="label-input100">Last Name</span>
+              <input class="input100" type="text" name="lastName" placeholder="Smith" [(ngModel)]="lastName" />
+              <span class="focus-input100"></span>
+            </div>
+          </div>
+        </div>
+        <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+          <span class="label-input100">Email</span>
+          <input class="input100" type="text" name="email" placeholder="Email addess..." [(ngModel)]="email" />
+          <span class="focus-input100"></span>
+        </div>
 
-<!--start button row-->
-<div class="row">
-  <div class="offset-md-1 col-md-10">
-    <button mat-raised-button class="btnClass pl-5 pr-5" style="border-radius: 0;" (click)="save();">
-      SAVE
-    </button>
-    &nbsp;&nbsp;
-    <button mat-raised-button class="btnClass pl-5 pr-5" style="border-radius: 0;" (click)="clear();">
-      RESET
-    </button>
+        <div class="wrap-input100 validate-input" data-validate="Password is required">
+          <span class="label-input100">Password</span>
+          <input class="input100" type="password" name="pass" placeholder="*************" [(ngModel)]="password" />
+          <span class="focus-input100"></span>
+        </div>
+
+        <div class="wrap-input100 validate-input" data-validate="Password is required">
+          <span class="label-input100">Confirm Password</span>
+          <input class="input100" type="password" name="cnfrmPassword" placeholder="*************"
+            [(ngModel)]="cnfrmPassword" />
+          <span class="focus-input100"></span>
+        </div>
+
+        <div class="wrap-input100 validate-input">
+          <span class="label-input100">Role</span>
+          <mat-select placeholder="Role" name="ddlRole" [(ngModel)]="ddlRole">
+            <mat-option *ngFor="let item of typeList" [value]="item.indvdlTypeCd">
+              {{ item.indvdlTypeName }}
+            </mat-option>
+          </mat-select>
+        </div>
+
+        <div class="container-login100-form-btn">
+          <div class="wrap-login100-form-btn">
+            <div class="login100-form-bgbtn"></div>
+            <button type="submit" class="login100-form-btn" (click)="save()">
+              Sign Up
+            </button>
+          </div>
+          <a href="" class="dis-block txt3 hov1 p-r-30 p-t-10 p-b-10 p-l-30">
+            Sign In
+            <i class="fa fa-long-arrow-right m-l-5"></i>
+          </a>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
-<!--end button row-->
