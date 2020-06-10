@@ -532,8 +532,8 @@ iframe {
   line-height: 1.4;
   text-align: left;
 
-  visibility: hidden;
-  opacity: 0;
+  visibility: visible;
+  opacity: 1;
 
   -webkit-transition: opacity 0.4s;
   -o-transition: opacity 0.4s;

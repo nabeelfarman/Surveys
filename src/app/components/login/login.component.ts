@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
       this.app.jClickValidate('userName');
       return false;
     } else if (this.userPassword == "") {
-      alert('ak');
       //this.toastr.errorToastr("Please Enter Password", "Error", { toastTimeout: 2500, });
       this.app.jClickValidate("userPassword");
       return false;
