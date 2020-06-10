@@ -3,6 +3,9 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { Router } from "@angular/router";
 import { CookieService } from 'ngx-cookie-service';
 import { UserIdleService } from "angular-user-idle";
+import { element } from 'protractor';
+
+declare var $: any;
 
 @Component({
   selector: "app-root",
@@ -78,5 +81,36 @@ export class AppComponent implements OnInit {
   restart() {
     this.userIdle.resetTimer();
   }
+
+
+
+
+
+
+  //Jquery Validation 
+  jClickValidate(ElementId){
+
+    var reqEle = "#" + ElementId;
+    $(reqEle).parent().addClass('alert-validate');
+    
+  }
+
+  jFocusValidate(ElementId){
+
+    var reqEle = "#" + ElementId;
+    var val = $(reqEle).val().trim();
+
+    if(val == ""){
+      $(reqEle).parent().removeClass('true-validate');
+      $(reqEle).parent().addClass('alert-validate');
+    }
+    else{
+      $(reqEle).parent().removeClass('alert-validate');
+      $(reqEle).parent().addClass('true-validate');
+    }
+    //true-validate                 class
+
+  }
+  
 
 }

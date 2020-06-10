@@ -1,13 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrManager } from "ng6-toastr-notifications";
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse,
-} from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { AppComponent } from "src/app/app.component";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
+
+declare var $: any;
 
 @Component({
   selector: "app-login",
@@ -32,15 +30,16 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    if (this.userName.trim() == "") {
-      this.toastr.errorToastr("Please Enter Email", "Error", {
-        toastTimeout: 2500,
-      });
+
+
+    if (this.userName == "") {
+      //this.toastr.errorToastr("Please Enter Email", "Error", { toastTimeout: 2500, });
+      this.app.jClickValidate('userName');
       return false;
     } else if (this.userPassword == "") {
-      this.toastr.errorToastr("Please Enter Password", "Error", {
-        toastTimeout: 2500,
-      });
+      alert('ak');
+      //this.toastr.errorToastr("Please Enter Password", "Error", { toastTimeout: 2500, });
+      this.app.jClickValidate("userPassword");
       return false;
     } else {
       var reqData = {
@@ -82,6 +81,15 @@ export class LoginComponent implements OnInit {
         });
     }
   }
+
+
+
+  FocusValidate(ElementId){
+
+    this.app.jFocusValidate(ElementId);
+
+  }
+
 
   clear() {
     this.userName = "";

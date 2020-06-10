@@ -10,20 +10,20 @@
     </div>
 
     <div class="wrap-login100 p-l-50 p-r-50 p-t-85 p-b-50">
-      <form class="login100-form validate-form">
+      <div class="login100-form validate-form">
         <span class="login100-form-title1 p-b-45">
           Welcome to the Survey Deck!
         </span>
 
         <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
           <span class="label-input100">Email</span>
-          <input class="input100" type="text" name="email" placeholder="Email addess..." [(ngModel)]="userName">
+          <input class="input100" type="text" placeholder="Email addess..." [(ngModel)]="userName" id="userName" (focusout)="FocusValidate('userName')">
           <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 validate-input" data-validate="Password is required">
           <span class="label-input100">Password</span>
-          <input class="input100" type="password" name="pass" placeholder="*************" [(ngModel)]="userPassword">
+          <input class="input100" type="password" placeholder="*************" [(ngModel)]="userPassword" id="userPassword" (focusout)="FocusValidate('userPassword')">
           <span class="focus-input100"></span>
         </div>
 
@@ -40,7 +40,7 @@
             </button>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
