@@ -13,7 +13,8 @@ import { AppComponent } from "src/app/app.component";
   styleUrls: ["./register.component.scss"],
 })
 export class RegisterComponent implements OnInit {
-  serverUrl = "http://localhost:5000/";
+  // serverUrl = "http://localhost:5000/";
+  serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
 
   firstName = "";
   lastName = "";
