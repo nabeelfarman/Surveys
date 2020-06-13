@@ -17,13 +17,15 @@
 
         <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
           <span class="label-input100">Email</span>
-          <input class="input100" type="text" placeholder="Email addess..." [(ngModel)]="userName" id="userName" (focusout)="FocusValidate('userName')">
+          <input class="input100" type="text" placeholder="Email address..." [(ngModel)]="userName" id="userName"
+            (focusout)="FocusValidate('userName')">
           <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 validate-input" data-validate="Password is required">
           <span class="label-input100">Password</span>
-          <input class="input100" type="password" placeholder="*************" [(ngModel)]="userPassword" id="userPassword" (focusout)="FocusValidate('userPassword')">
+          <input class="input100" type="password" placeholder="*************" [(ngModel)]="userPassword"
+            id="userPassword" (focusout)="FocusValidate('userPassword')">
           <span class="focus-input100"></span>
         </div>
 

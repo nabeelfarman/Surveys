@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { ToastrManager } from "ng6-toastr-notifications";
 import {
   HttpClient,
@@ -16,6 +17,7 @@ export class RegisterComponent implements OnInit {
   // serverUrl = "http://localhost:5000/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
 
+  // this.toastr.errorToastr("Please Enter Email", "Error", { toastTimeout: 2500, });
   firstName = "";
   lastName = "";
   password = "";
@@ -26,6 +28,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     public toastr: ToastrManager,
+    private router: Router,
     private http: HttpClient,
     private app: AppComponent
   ) {}
@@ -54,24 +57,31 @@ export class RegisterComponent implements OnInit {
 
   save() {
     if (this.firstName == "") {
-      this.toastr.errorToastr("Please Enter First Name", "Error", {
-        toastTimeout: 2500,
-      });
+      this.app.jClickValidate("firstName");
       return false;
     } else if (this.lastName == "") {
-      this.toastr.errorToastr("Please Enter Last Name", "Error", {
-        toastTimeout: 2500,
-      });
+      this.app.jClickValidate("lastName");
+      return false;
+    } else if (this.email == "") {
+      this.app.jClickValidate("email");
+      return false;
+    } else if (this.validateEmail(this.email) == false) {
+      this.app.jClickValidate("email");
       return false;
     } else if (this.password == "") {
-      this.toastr.errorToastr("Please Enter Password", "Error", {
-        toastTimeout: 2500,
-      });
+      this.app.jClickValidate("password");
+      return false;
+    } else if (this.password.length < 8) {
+      this.toastr.errorToastr(
+        "Password must be at least 8 characters",
+        "Error",
+        {
+          toastTimeout: 2500,
+        }
+      );
       return false;
     } else if (this.cnfrmPassword == "") {
-      this.toastr.errorToastr("Please Enter Confirm Password", "Error", {
-        toastTimeout: 2500,
-      });
+      this.app.jClickValidate("cnfrmPassword");
       return false;
     } else if (this.password != this.cnfrmPassword) {
       this.toastr.errorToastr(
@@ -82,20 +92,8 @@ export class RegisterComponent implements OnInit {
         }
       );
       return false;
-    } else if (this.email == "") {
-      this.toastr.errorToastr("Please Enter Email", "Error", {
-        toastTimeout: 2500,
-      });
-      return false;
-    } else if (this.validateEmail(this.email) == false) {
-      this.toastr.errorToastr("Invalid email address", "Error", {
-        toastTimeout: 2500,
-      });
-      return false;
     } else if (this.ddlRole == "") {
-      this.toastr.errorToastr("Select Registration Type", "Error", {
-        toastTimeout: 2500,
-      });
+      this.app.jClickValidate("ddlRole");
       return false;
     } else {
       var saveData = {
@@ -120,6 +118,8 @@ export class RegisterComponent implements OnInit {
               toastTimeout: 2500,
             });
             this.app.hideSpinner();
+            this.router.navigate([""]);
+            this.ddlRole = "";
             this.clear();
             this.getIndividualType();
             return false;
@@ -151,5 +151,9 @@ export class RegisterComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  FocusValidate(ElementId) {
+    this.app.jFocusValidate(ElementId);
   }
 }
