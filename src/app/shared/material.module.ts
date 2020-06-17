@@ -45,7 +45,7 @@ import { MatTabsModule } from "@angular/material/tabs";
     MatButtonToggleModule,
     MatRadioModule,
     MatBottomSheetModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   exports: [
     MatInputModule,
@@ -68,9 +68,9 @@ import { MatTabsModule } from "@angular/material/tabs";
     MatButtonToggleModule,
     MatRadioModule,
     MatBottomSheetModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   declarations: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MaterialModule {}
