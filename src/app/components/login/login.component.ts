@@ -27,7 +27,15 @@ export class LoginComponent implements OnInit {
     private cookie: CookieService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    if(this.cookie.get('un') != ""){
+      this.router.navigate(["importsurveyresult"]);
+      $('#menuId').show();
+    } 
+
+
+  }
 
   onSubmit() {
 
@@ -66,7 +74,8 @@ export class LoginComponent implements OnInit {
             //this.cookie.set('un', data.rows[0].userName);
 
             this.app.hideSpinner();
-            this.router.navigate(["dashboard"]);
+            this.router.navigate(["importsurveyresult"]);
+            $('#menuId').show();
             this.app.startWatching();
             this.app.subscribeIdle();
             return false;
