@@ -7,10 +7,10 @@ mat-drawer-container {
   //background: radial-gradient(ellipse at center,  #eec450 1%,#eaa200 100%); /* W3C */
 
   // background-image: linear-gradient( to right #f3f3f3 , #fff);
-  background-image: url("../src/assets/images/Backgound-grey.jpg") !important;
-  background-repeat: no-repeat !important;
-  background-size: cover !important;
-  background-position: top left !important;
+  //background-image: url("../src/assets/images/Backgound-grey.jpg") !important;
+  // background-repeat: no-repeat !important;
+  // background-size: cover !important;
+  // background-position: top left !important;
   overflow: auto !important;
 }
 
@@ -27,4 +27,24 @@ mat-drawer-container {
 .btnClass:hover {
   background-color: #22388e;
   color: #fff
+}
+
+
+
+.navbar-nav .nav-item .nav-link{
+  font-size: 16px !important;
+  color: #fff;
+}
+
+
+.iconContainer{
+
+  border: 0px solid red;
+  display: inline;
+  padding: 2px 7px 2px 7px;
+  background-color: #E5E5E5;
+  border-radius: 200px;
+  margin-right: 10px;
+  color: #808080;
+
 }

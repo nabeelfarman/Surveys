@@ -20,10 +20,12 @@ import { UserIdleModule } from "angular-user-idle";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { RegisterComponent } from "./components/register/register.component";
+
 import { LoginComponent } from "./components/login/login.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { TempFormComponent } from "./components/temp-form/temp-form.component";
 import { ResponseGraphicalViewComponent } from "./components/response-graphical-view/response-graphical-view.component";
+import { ImportSurveyResultComponent } from "./components/import-survey-result/import-survey-result.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { ResponseGraphicalViewComponent } from "./components/response-graphical-
     LoginComponent,
     DashboardComponent,
     TempFormComponent,
+    ImportSurveyResultComponent,
     ResponseGraphicalViewComponent,
   ],
   imports: [
