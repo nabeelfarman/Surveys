@@ -158,8 +158,8 @@ export class ImportSurveyResultComponent implements OnInit {
             if (data.msg == "success") {
                 this.app.hideSpinner();
                 this.toastr.successToastr("Record Save Successfully!", "Success!", {toastTimeout: 2500});
-                this.toastr.errorToastr(data.msgT, "Error!", { toastTimeout: 5000 });
-                this.toastr.errorToastr(data.msgA, "Error!", { toastTimeout: 5000 });
+                // this.toastr.errorToastr(data.msgT, "Error!", { toastTimeout: 5000 });
+                // this.toastr.errorToastr(data.msgA, "Error!", { toastTimeout: 5000 });
                 this.clear();
                 return false;
             } else {

@@ -31,8 +31,10 @@ export class AppComponent implements OnInit {
 
     if(this.cookie.get('un') == ""){
       this.router.navigate([""]);
+      $('#menuId').hide();
     } else{
-      this.router.navigate(["importsurveyresult"]);
+      //this.router.navigate(["importsurveyresult"]);
+      //$('#menuId').show();
     }
 
   }
@@ -57,6 +59,7 @@ export class AppComponent implements OnInit {
     document.cookie = "ui=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     this.router.navigate([""]);
+    $('#menuId').hide();
     
   }
 

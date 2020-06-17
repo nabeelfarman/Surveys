@@ -9,13 +9,13 @@
     <!--Row #1-->
     <div class="row">
 
-        <div class="col-md-6 text-left">
+        <div class="col-md-4 text-left">
 
             <input type="file" class="form-control shadow-none w-100" [(ngModel)]="filePicker" (change)="onFileSelected($event)"  accept=".xlsx"/>
 
         </div>
 
-        <div class="col-md-6 text-left">
+        <div class="col-md-8 text-left">
             <button type="button" class="btn btn-primary" (click)="save()">GENERATE REPORT</button>
         </div>
 
@@ -28,11 +28,43 @@
             </span>
         </div>
     </div>
+    <br/>
+    <div class="row">
+        <div class="col-md-2">
+            <select class="form-control">
+                <option>All Properties</option>
+            </select>
+              
+        </div>
+        <div class="col-md-2">
+            <select class="form-control">
+                <option>Today</option>
+                <option>Last Week</option>
+                <option>Last Month</option>
+            </select>
+              
+        </div>
+
+        <div class="col-md-5">
+        </div>
+
+
+        <div class="col-md-3">
+            
+            <div class="form-group has-search">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" class="form-control" placeholder="Search">
+            </div>
+        </div>
+    </div>
+
+
+
     <!--table-->
     <div>
         
         <br/>
-        <table class="table table-hover">
+        <table class="table">
             <thead>
                 <tr>
                     <th>#</th>
@@ -64,7 +96,7 @@
                     <td class="text-left">Abc</td>
                     <td class="text-left">Abc</td>
                     <td class="text-left">Abc</td>
-                    <td class="text-left">
+                    <td class="text-center">
                         <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
                         <div class="iconContainer"><span class="fa fa-pencil"></span></div>
                         <div class="iconContainer"><span class="fa fa-trash"></span></div>
@@ -79,7 +111,7 @@
                     <td class="text-left">Abc</td>
                     <td class="text-left">Abc</td>
                     <td class="text-left">Abc</td>
-                    <td class="text-left">
+                    <td class="text-center">
                         <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
                         <div class="iconContainer"><span class="fa fa-pencil"></span></div>
                         <div class="iconContainer"><span class="fa fa-trash"></span></div>
@@ -94,7 +126,7 @@
                     <td class="text-left">Abc</td>
                     <td class="text-left">Abc</td>
                     <td class="text-left">Abc</td>
-                    <td class="text-left">
+                    <td class="text-center">
                         <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
                         <div class="iconContainer"><span class="fa fa-pencil"></span></div>
                         <div class="iconContainer"><span class="fa fa-trash"></span></div>
