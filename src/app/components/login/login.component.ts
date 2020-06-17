@@ -90,8 +90,10 @@ export class LoginComponent implements OnInit {
   }
 
 
+
   clear() {
     this.userName = "";
     this.userPassword = "";
   }
+  
 }

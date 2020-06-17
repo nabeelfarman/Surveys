@@ -1,0 +1,108 @@
+<br/>
+<div class="container-fluid shadow">
+
+    <span class="login100-form-title1 p-b-5 p-t-5" style="color: #252525;">
+        Welcome to the Survey Deck!
+    </span>
+    <hr/>
+    
+    <!--Row #1-->
+    <div class="row">
+
+        <div class="col-md-6 text-left">
+
+            <input type="file" class="form-control shadow-none w-100" [(ngModel)]="filePicker" (change)="onFileSelected($event)"  accept=".xlsx"/>
+
+        </div>
+
+        <div class="col-md-6 text-left">
+            <button type="button" class="btn btn-primary" (click)="save()">GENERATE REPORT</button>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 text-left">
+            <span class="login100-form-title1 p-b-5 p-t-40" style="color: #252525;">
+                Data Table
+            </span>
+        </div>
+    </div>
+    <!--table-->
+    <div>
+        
+        <br/>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="text-left">Response ID</th>
+                    <th class="text-left">First Name</th>
+                    <th class="text-left">Last Name</th>
+                    <th class="text-left">Email Address</th>
+                    <th class="text-left">IP Address</th>
+                    <th class="text-left">Custom Answer 1</th>
+                    <th class="text-left"></th>
+                </tr>
+            </thead>
+            <tbody><!-- | slice:0:1000 -->
+                <!-- <tr *ngFor="let item of summaryData; let i=index">   
+                    <td>{{i+1}}</td>
+                    <td class="text-left">{{item.ResponseId}}</td>
+                    <td class="text-left">{{item.FirstName}}</td>
+                    <td class="text-left">{{item.LastName}}</td>
+                    <td class="text-left">{{item.EmailAddress}}</td>
+                    <td class="text-left">{{item.IPAddress}}</td>
+                    <td class="text-left">{{item.CustomAnswer1}}</td>
+                    <td class="text-left">{{item.CustomAnswer2}}</td>
+                </tr> -->
+                <tr>  
+                    <td>1</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">
+                        <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
+                        <div class="iconContainer"><span class="fa fa-pencil"></span></div>
+                        <div class="iconContainer"><span class="fa fa-trash"></span></div>
+                        <div class="iconContainer"><span class="fa fa-ellipsis-h"></span></div>
+                    </td>
+                </tr>
+                <tr>  
+                    <td>2</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">
+                        <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
+                        <div class="iconContainer"><span class="fa fa-pencil"></span></div>
+                        <div class="iconContainer"><span class="fa fa-trash"></span></div>
+                        <div class="iconContainer"><span class="fa fa-ellipsis-h"></span></div>
+                    </td>
+                </tr>
+                <tr>  
+                    <td>3</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">Abc</td>
+                    <td class="text-left">
+                        <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
+                        <div class="iconContainer"><span class="fa fa-pencil"></span></div>
+                        <div class="iconContainer"><span class="fa fa-trash"></span></div>
+                        <div class="iconContainer"><span class="fa fa-ellipsis-h"></span></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>

@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     if(this.cookie.get('un') == ""){
       this.router.navigate([""]);
     } else{
-      this.router.navigate(["dashboard"]);
+      this.router.navigate(["importsurveyresult"]);
     }
 
   }
