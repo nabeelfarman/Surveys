@@ -484,7 +484,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
             inverted: true,
           },
           title: {
-            text: "Column Range Chart",
+            text: "Survey Graphical View",
           },
           xAxis: {
             categories: this.category,
@@ -582,7 +582,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
         inverted: true,
       },
       title: {
-        text: "Common Range Chart",
+        text: "Survey Graphical View",
       },
       xAxis: {
         categories: this.category,

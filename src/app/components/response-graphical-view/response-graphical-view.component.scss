@@ -1,0 +1,12 @@
+::ng-deep .ui-tree-container {
+  content: "\F067" !important;
+  // color: blue;
+}
+
+::ng-deep .ui-tree-toggler.fa-caret-right::before {
+  content: "\F067" !important;
+}
+
+::ng-deep .ui-tree-toggler.fa-caret-down::before {
+  content: "\F068" !important;
+}
