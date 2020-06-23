@@ -117,4 +117,25 @@ export class AppComponent implements OnInit {
   }
   
 
+
+  showUserNameMenu(){
+    $("#userNoti").removeClass('show-dropdown');
+    $("#userSetting").removeClass('show-dropdown');
+    $("#userName").toggleClass('show-dropdown');
+  }
+
+  showUserSettingMenu(){
+    $("#userName").removeClass('show-dropdown');
+    $("#userNoti").removeClass('show-dropdown');
+    $("#userSetting").toggleClass('show-dropdown');
+  }
+
+  showUserNotiMenu(){
+    $("#userName").removeClass('show-dropdown');
+    $("#userSetting").removeClass('show-dropdown');
+    $("#userNoti").toggleClass('show-dropdown');
+  }
+    
+  
+
 }

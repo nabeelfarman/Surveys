@@ -21,6 +21,7 @@ export class ImportSurveyResultComponent implements OnInit {
     summaryData = [];
     detailData = [];
 
+    surveyDate = ''; 
     filePicker = '';
     arrayBuffer:any;
     dataFile: File;
@@ -39,6 +40,7 @@ export class ImportSurveyResultComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.surveyDate = new Date().toISOString().split('T')[0];
     }
 
 
