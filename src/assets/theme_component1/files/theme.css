@@ -40,6 +40,27 @@ Notes:	decreasing heading by 0.4em with every subsequent heading level
 /*                   GENERIC                           */
 /*-----------------------------------------------------*/
 /* ----- Normalize ----- */
+
+@font-face {
+    font-family: Poppins-Regular;
+    src: url('../../../assets/fonts/poppins/Poppins-Regular.ttf');
+  }
+  
+  @font-face {
+    font-family: Poppins-Medium;
+    src: url('../../../assets/fonts/poppins/Poppins-Medium.ttf');
+  }
+  
+  @font-face {
+    font-family: Poppins-Bold;
+    src: url('../../../assets/fonts/poppins/Poppins-Bold.ttf');
+  }
+  
+  @font-face {
+    font-family: Poppins-SemiBold;
+    src: url('../../../assets/fonts/poppins/Poppins-SemiBold.ttf');
+  }
+  
 * {
     margin: 0;
     padding: 0;
@@ -186,16 +207,19 @@ strong {
 }
 
 .title-4 {
-    font-weight: 500;
-    font-size: 30px;
+    text-transform: capitalize;
+    font-size: 24px;
+    font-weight: 600;
     color: #393939;
+    font-family: Poppins-Medium;
 }
 
 .title-5 {
     text-transform: capitalize;
-    font-size: 22px;
-    font-weight: 500;
+    font-size: 28px;
+    font-weight: 600;
     color: #393939;
+    font-family: Poppins-Medium;
 }
 
 .title-6 {
@@ -210,6 +234,13 @@ strong {
     color: #333;
     text-transform: capitalize;
     margin-bottom: 10px;
+}
+
+.title-o{
+    font-size: 13px;
+    font-weight: 700;
+    color: #AEAFAF;
+    font-family: Poppins-Regular;
 }
 
 /* ----- Links ----- */
@@ -319,6 +350,7 @@ section {
 
 .page-content--bgf7 {
     background: #f7f7f7;
+    padding: 50px 28px 15px 28px !important;
 }
 
 .page-content--bge5 {
@@ -1643,6 +1675,7 @@ section {
 }
 
 .header-mobile {
+    border: 0px solid red;
     position: absolute;
     top: 0;
     left: 0;
@@ -1650,7 +1683,7 @@ section {
 }
 
 .header-mobile .header-mobile__bar {
-    padding: 15px 0;
+    padding: 0;
 }
 
 .header-mobile .header-mobile-inner {
@@ -1791,7 +1824,7 @@ section {
 }
 
 .header-mobile-2 {
-    background: #393939;
+    background: #1133A0;
     position: static;
 }
 
@@ -1816,8 +1849,9 @@ section {
 }
 
 .sub-header-mobile-2 {
+    border-bottom: 1px solid #DBDBDB;
     background: #fff;
-    padding: 15px;
+    padding: 5px;
 }
 
 .sub-header-mobile-2 .header__tool {
@@ -1826,6 +1860,7 @@ section {
     -moz-box-pack: end;
     -ms-flex-pack: end;
     justify-content: flex-end;
+    background-color: #fff;
 }
 
 .sub-header-mobile-2 .header__tool .header-button-item {
@@ -2604,6 +2639,7 @@ section {
 @media (max-width: 1315px) and (min-width: 992px) {
     .header-desktop3 .section__content {
         padding: 0 15px;
+        padding: 0;
     }
 }
 
@@ -4490,10 +4526,11 @@ section {
     color: #555;
     text-transform: uppercase;
     border: none;
-    font-weight: 600;
+    font-weight: 700;
     vertical-align: top;
     padding: 15px 40px;
     padding-right: 10px;
+    font-family: Poppins-Regular;
 }
 
 .table-data2.table thead th:first-child {

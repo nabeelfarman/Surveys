@@ -20,7 +20,9 @@ export class ImportSurveyResultComponent implements OnInit {
     tempData = [];
     summaryData = [];
     detailData = [];
+    surveyData = [];
 
+    txtSearchSurvey = '';
     surveyDate = ''; 
     filePicker = '';
     arrayBuffer:any;
@@ -41,8 +43,21 @@ export class ImportSurveyResultComponent implements OnInit {
 
     ngOnInit(): void {
         this.surveyDate = new Date().toISOString().split('T')[0];
+        this.getSurveys();
     }
 
+    //function for get surveys data
+    getSurveys() {
+
+        this.app.showSpinner();
+        var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
+
+        this.http.get(this.serverUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
+            this.surveyData = data;
+            this.app.hideSpinner();
+        });
+
+    }
 
 
     incomingfile(event) {
@@ -120,11 +135,13 @@ export class ImportSurveyResultComponent implements OnInit {
 
     //Function for save document
     save() {
+
         if (this.filePicker == undefined) {
-        this.toastr.errorToastr("Please select document", "Error", {
-            toastTimeout: 2500
-        });
-        return false;
+            this.toastr.errorToastr("Please select document", "Error", { toastTimeout: 2500 });
+            return false;
+        } else if (this.surveyDate == undefined || this.surveyDate == '') {
+            this.toastr.errorToastr("Please enter survey date", "Error", { toastTimeout: 2500 });
+            return false;
         } else {
         var filePath = null;
         if (this.file != undefined) {
@@ -145,6 +162,7 @@ export class ImportSurveyResultComponent implements OnInit {
             DocID: 0,
             DocExtension: fileNameExt,
             excelfile: this.file,
+            surveyDate: this.surveyDate,
             DocURL: filePath,
             //ConnectedUser: this.app.empId,
             DelFlag: 0
@@ -157,16 +175,22 @@ export class ImportSurveyResultComponent implements OnInit {
         var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
         this.http.post(this.serverUrl + "uploadFile", saveData, {headers: reqHeader}).subscribe((data: any) => {
-            if (data.msg == "success") {
+            if (data.msgT == "Team Success" && data.msgA == 'Answer Success') {
                 this.app.hideSpinner();
                 this.toastr.successToastr("Record Save Successfully!", "Success!", {toastTimeout: 2500});
-                this.toastr.errorToastr(data.msgT, "Error!", { toastTimeout: 5000 });
-                this.toastr.errorToastr(data.msgA, "Error!", { toastTimeout: 5000 });
+                //this.toastr.errorToastr(data.msgT, "Error!", { toastTimeout: 5000 });
+                //this.toastr.errorToastr(data.msgA, "Error!", { toastTimeout: 5000 });
+                this.getSurveys();
                 this.clear();
                 return false;
             } else {
                 this.app.hideSpinner();
-                this.toastr.errorToastr(data.msg, "Error!", { toastTimeout: 5000 });
+                if (data.msg == "success") {
+                    this.toastr.errorToastr(data.msgT, "Error!", { toastTimeout: 5000 });
+                    this.toastr.errorToastr(data.msgA, "Error!", { toastTimeout: 5000 });
+                }else{
+                    this.toastr.errorToastr(data.msg, "Error!", { toastTimeout: 5000 });
+                }
                 return false;
             }
             });
@@ -182,6 +206,8 @@ export class ImportSurveyResultComponent implements OnInit {
 
         this.filePicker = '';
         this.filePicker = undefined;
+        this.surveyDate = '';
+        this.txtSearchSurvey = '';
 
         this.file = undefined;
         this.selectedFile = null;
