@@ -1,10 +1,26 @@
-<br/>
-<div class="container-fluid shadow">
 
-    <span class="login100-form-title1 p-b-5 p-t-5" style="color: #252525;">
-        Welcome to the Survey Deck!
-    </span>
-    <hr/>
+<div class="container-fluid page-content--bgf7">
+
+    <span class="title-o">You are here: Home / Generate Survey Report</span><br/><br/><br/>
+
+    
+    <div class="row">
+        
+        <div class="col-md-8 text-left">
+            <span class="title-5 m-t-30">
+                Generate Survey Report
+            </span>
+        </div>
+
+        <div class="col-md-4 text-right">
+            <button type="button" class="btn btn-default border rounded-0">
+                <b><span class="fa fa-chart-bar"></span>&nbsp;
+                Charts</b>
+            </button>
+        </div>
+
+    </div>
+    <hr/><br/>
     
     <!--Row #1-->
     <div class="row">
@@ -12,129 +28,172 @@
         <div class="col-md-4 text-left">
 
             <input type="file" class="form-control shadow-none w-100" [(ngModel)]="filePicker" (change)="onFileSelected($event)"  accept=".xlsx"/>
+            <!-- <div class="custom-file border">
+                <input type="file" class="form-control custom-file-input w-100 border" [(ngModel)]="filePicker" (change)="onFileSelected($event)"  accept=".xlsx"/>
+            </div> -->
+        </div>
+
+        <div class="col-md-2 text-left">
+
+            <input type="date" class="form-control shadow-none w-100" [(ngModel)]="surveyDate"/>
 
         </div>
 
-        <div class="col-md-8 text-left">
+        <div class="col-md-2 text-right">
             <button type="button" class="btn btn-primary" (click)="save()">GENERATE REPORT</button>
         </div>
 
     </div>
 
+    <br/><br/><br/>
+    
+    <h3 class="title-4 m-b-25">Report List</h3><br/>
+
     <div class="row">
-        <div class="col-md-6 text-left">
-            <span class="login100-form-title1 p-b-5 p-t-40" style="color: #252525;">
-                Data Table
-            </span>
-        </div>
-    </div>
-    <br/>
-    <div class="row">
+
         <div class="col-md-2">
             <select class="form-control">
                 <option>All Properties</option>
             </select>
-              
         </div>
+
         <div class="col-md-2">
             <select class="form-control">
                 <option>Today</option>
                 <option>Last Week</option>
                 <option>Last Month</option>
             </select>
-              
         </div>
 
-        <div class="col-md-5">
-        </div>
-
-
-        <div class="col-md-3">
-            
+        <div class="col-md-4">
             <div class="form-group has-search">
                 <span class="fa fa-search form-control-feedback"></span>
-                <input type="text" class="form-control" placeholder="Search">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="txtSearchSurvey">
             </div>
+        </div>
+
+        <div class="col-md-2">  
+        </div>
+
+        <div class="col-md-1">
+            <button type="button" class="btn btn-primary">
+                <span class="fa fa-download"></span>&nbsp;
+                DOWNLOAD ALL
+            </button>
         </div>
     </div>
 
-
-
     <!--table-->
-    <div>
-        
-        <br/>
-        <table class="table">
+    <div class="table-responsive table-responsive-data2">
+        <table class="table table-data2">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th class="text-left">Response ID</th>
-                    <th class="text-left">First Name</th>
-                    <th class="text-left">Last Name</th>
-                    <th class="text-left">Email Address</th>
-                    <th class="text-left">IP Address</th>
-                    <th class="text-left">Custom Answer 1</th>
-                    <th class="text-left"></th>
+                    <!-- <th>
+                        <label class="au-checkbox">
+                            <input type="checkbox">
+                            <span class="au-checkmark"></span>
+                        </label>
+                    </th> -->
+                    <th>Organization Name</th>
+                    <th>Team Name</th>
+                    <th>Survey Date</th>
+                    <th>No. of Respondents</th>
+                    <th></th>
                 </tr>
             </thead>
-            <tbody><!-- | slice:0:1000 -->
-                <!-- <tr *ngFor="let item of summaryData; let i=index">   
-                    <td>{{i+1}}</td>
-                    <td class="text-left">{{item.ResponseId}}</td>
-                    <td class="text-left">{{item.FirstName}}</td>
-                    <td class="text-left">{{item.LastName}}</td>
-                    <td class="text-left">{{item.EmailAddress}}</td>
-                    <td class="text-left">{{item.IPAddress}}</td>
-                    <td class="text-left">{{item.CustomAnswer1}}</td>
-                    <td class="text-left">{{item.CustomAnswer2}}</td>
-                </tr> -->
-                <tr>  
-                    <td>1</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-center">
-                        <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
-                        <div class="iconContainer"><span class="fa fa-pencil"></span></div>
-                        <div class="iconContainer"><span class="fa fa-trash"></span></div>
-                        <div class="iconContainer"><span class="fa fa-ellipsis-h"></span></div>
+
+            <tbody *ngFor="let item of surveyData | search:'client_Name,team_Name,survey_Date,noOfRespondents':txtSearchSurvey; let i=index">
+                <tr class="tr-shadow">
+                    <td>{{item.client_Name}}</td>
+                    <td class="desc">{{item.team_Name}}</td>
+                    <td>{{item.survey_Date | date}}</td>
+                    <td>{{item.noOfRespondents}}</td>
+                    <td>
+                        <div class="table-data-feature">
+                            <button class="item" data-toggle="tooltip" data-placement="top" title="Download" data-original-title="Download">
+                                <i class="zmdi zmdi-download"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
-                <tr>  
-                    <td>2</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-center">
-                        <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
-                        <div class="iconContainer"><span class="fa fa-pencil"></span></div>
-                        <div class="iconContainer"><span class="fa fa-trash"></span></div>
-                        <div class="iconContainer"><span class="fa fa-ellipsis-h"></span></div>
-                    </td>
-                </tr>
-                <tr>  
-                    <td>3</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-left">Abc</td>
-                    <td class="text-center">
-                        <div class="iconContainer"><span class="fa fa-arrow-right"></span></div>
-                        <div class="iconContainer"><span class="fa fa-pencil"></span></div>
-                        <div class="iconContainer"><span class="fa fa-trash"></span></div>
-                        <div class="iconContainer"><span class="fa fa-ellipsis-h"></span></div>
-                    </td>
-                </tr>
+                <tr class="spacer"></tr>
+                
             </tbody>
+
+            <!-- <tbody>
+                <tr class="spacer"></tr>
+                <tr class="tr-shadow">
+                <td>
+                <label class="au-checkbox">
+                <input type="checkbox">
+                <span class="au-checkmark"></span>
+                </label>
+                </td>
+                <td>Lori Lynch</td>
+                <td>
+                <span class="block-email">lyn@example.com</span>
+                </td>
+                <td class="desc">iPhone X 256Gb Black</td>
+                <td>2018-09-25 19:03</td>
+                <td>
+                <span class="status--denied">Denied</span>
+                </td>
+                <td>$1199.00</td>
+                <td>
+                <div class="table-data-feature">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
+                <i class="zmdi zmdi-mail-send"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                <i class="zmdi zmdi-edit"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+                <i class="zmdi zmdi-delete"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
+                <i class="zmdi zmdi-more"></i>
+                </button>
+                </div>
+                </td>
+                </tr>
+                <tr class="spacer"></tr>
+                <tr class="tr-shadow">
+                <td>
+                <label class="au-checkbox">
+                <input type="checkbox">
+                <span class="au-checkmark"></span>
+                </label>
+                </td>
+                <td>Lori Lynch</td>
+                <td>
+                <span class="block-email">doe@example.com</span>
+                </td>
+                <td class="desc">Camera C430W 4k</td>
+                <td>2018-09-24 19:10</td>
+                <td>
+                <span class="status--process">Processed</span>
+                </td>
+                <td>$699.00</td>
+                <td>
+                <div class="table-data-feature">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
+                <i class="zmdi zmdi-mail-send"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                <i class="zmdi zmdi-edit"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+                <i class="zmdi zmdi-delete"></i>
+                </button>
+                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
+                <i class="zmdi zmdi-more"></i>
+                </button>
+                </div>
+                </td>
+                </tr> 
+            </tbody>-->
         </table>
     </div>
+
     
 </div>

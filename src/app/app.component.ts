@@ -117,4 +117,49 @@ export class AppComponent implements OnInit {
   }
   
 
+
+  showUserNameMenu(){
+    $("#userNotiMenu").removeClass('show-dropdown');
+    $("#userSettingMenu").removeClass('show-dropdown');
+    $("#userNameMenu").toggleClass('show-dropdown');
+  }
+
+  showUserSettingMenu(){
+    $("#userNameMenu").removeClass('show-dropdown');
+    $("#userNotiMenu").removeClass('show-dropdown');
+    $("#userSettingMenu").toggleClass('show-dropdown');
+  }
+
+  showUserNotiMenu(){
+    $("#userNameMenu").removeClass('show-dropdown');
+    $("#userSettingMenu").removeClass('show-dropdown');
+    $("#userNotiMenu").toggleClass('show-dropdown');
+  }
+  
+
+  showMobMenu(){
+    $('.navbar-mobile').slideToggle('500');
+    $("#userMobNotiMenu").removeClass('show-dropdown');
+    $("#userMobSettingMenu").removeClass('show-dropdown');
+    $("#userMobNameMenu").removeClass('show-dropdown');
+  }
+  
+  showMobUserNameMenu(){
+    $("#userMobNotiMenu").removeClass('show-dropdown');
+    $("#userMobSettingMenu").removeClass('show-dropdown');
+    $("#userMobNameMenu").toggleClass('show-dropdown');
+  }
+
+  showMobUserSettingMenu(){
+    $("#userMobNameMenu").removeClass('show-dropdown');
+    $("#userMobNotiMenu").removeClass('show-dropdown');
+    $("#userMobSettingMenu").toggleClass('show-dropdown');
+  }
+
+  showMobUserNotiMenu(){
+    $("#userMobNameMenu").removeClass('show-dropdown');
+    $("#userMobSettingMenu").removeClass('show-dropdown');
+    $("#userMobNotiMenu").toggleClass('show-dropdown');
+  }
+
 }
