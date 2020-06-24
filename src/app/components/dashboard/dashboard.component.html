@@ -2,4 +2,14 @@
 
 <a href="#" (click)="logout()">Logout</a>
 <br />
+<div class="row">
+  <div class="col-md-12">
+    <button mat-raised-button class="btnClass" style="border-radius: 0;" (click)="genWord()">
+      Generate Word
+    </button>
+  </div>
+</div>
+<br />
+<div style="height: 400px; width: auto;" [chart]="Line_chart"></div>
+<br />
 <a routerLink="/responseGraph">Response Graph</a>

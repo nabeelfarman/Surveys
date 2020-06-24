@@ -1,26 +1,33 @@
 <br />
-<div class="container-fluid shadow">
-
-  You are here: Home / Graph View
-  <br /><br />
+<div class="container-fluid shadow mb-4">
+  You are here: Home / Graphical View
+  <br />
   <span class="login100-form-title1 p-b-5 p-t-5" style="color: #252525;">
     Welcome to the Survey Deck!
   </span>
   <hr />
+  <div class="row mb-2">
+    <div class="offset-md-11 col-md-1">
+      <button mat-raised-button class="btnClass" style="border-radius: 0;" (click)="collapseAll()">
+        Expand
+      </button>
+    </div>
+  </div>
+
   <div class="row">
-    <div class="col-md-3 p-2">
+    <div class="col-md-3 p-2 border-right">
       <p-tree class="fullwidth" [style]="{
-        'min-height': '25em',
-        'max-height': '25em',
-        'border':'1px solid #eeeeee',
-        overflow: 'auto'
-      }" [value]="menuTree" [(selection)]="selectedMenu" selectionMode="single"
+          'min-height': '25em',
+          'max-height': '25em',
+          'font-size':'16px',
+          'font-family': 'Helvetica',
+          overflow: 'auto'
+        }" [value]="menuTree" [(selection)]="selectedMenu" selectionMode="single"
         (onNodeSelect)="nodeSelect(selectedMenu)">
       </p-tree>
     </div>
-    <div class="col-md-8 p-2">
-      <div class="bgWhite pr-2" style="border: 1px solid #eeeeee;height: 400px; width: auto;" [chart]="Line_chart">
-      </div>
+    <div class="offset-md-1 col-md-8 p-2">
+      <div style="height: 400px; width: auto;" [chart]="Line_chart"></div>
     </div>
   </div>
 </div>

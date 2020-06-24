@@ -1,28 +1,33 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="menuId"
   style="background-color: #1133A0 !important; padding: 0 !important;">
   <!-- Brand/logo -->
-  <a class="navbar-brand" href="#" style="background-color: #0043EA;">
+  <a class="navbar-brand" href="" style="background-color: #0043EA;" (click)="Logout()">
     <img src="../assets/images/Logo.jpg" width="300px;" />
   </a>
 
   <!-- Links -->
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a class="nav-link" href="#"><span class="fa fa-tachometer"></span>&nbsp;&nbsp; Dashboard</a>
+      <a class="nav-link" routerLink="/responseGraph"><span class="fa fa-tachometer"></span>&nbsp;&nbsp; ChartView</a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link" routerLink="/responseGraph"><span class="fa fa-shopping-basket"></span>&nbsp;&nbsp;
         eCommerce</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#"><span class="fa fa-trophy"></span>&nbsp;&nbsp; Features</a>
-    </li>
+    </li> -->
     <li class="nav-item">
-      <a class="nav-link" href="#"><span class="fa fa-file"></span>&nbsp;&nbsp; Pages</a>
+      <a class="nav-link" routerLink="/importsurveyresult"><span class="fa fa-file"></span>&nbsp;&nbsp; Import
+        Result</a>
     </li>
-    <li class="nav-item">
+
+    <!-- <li class="nav-item" style="text-align: right !important;">
+      <a class="nav-link" (click)="Logout()"><span class="fa fa-sign-out"></span>&nbsp;&nbsp; Logout</a>
+    </li> -->
+    <!-- <li class="nav-item">
       <a class="nav-link" href="#"><span class="fa fa-desktop"></span>&nbsp;&nbsp; UI Elements</a>
-    </li>
+    </li> -->
   </ul>
 
 </nav>
