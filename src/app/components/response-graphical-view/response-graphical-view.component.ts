@@ -14,7 +14,8 @@ import { transformAll } from "@angular/compiler/src/render3/r3_ast";
   styleUrls: ["./response-graphical-view.component.scss"],
 })
 export class ResponseGraphicalViewComponent implements OnInit {
-  serverUrl = "http://localhost:5000/";
+  // serverUrl = "http://localhost:5000/";
+  serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
 
   childFound = false;
   Line_chart: Chart;
@@ -185,6 +186,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
             this.questionList[i].min,
             this.questionList[i].max,
           ]);
+          this.avg.push([this.questionList[i].avg, this.questionList[i].avg]);
         }
       }
     }
@@ -202,7 +204,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
           this.tempList[i].treeLevel == 3 ||
           this.tempList[i].parent_category_code == 305
         ) {
-          this.toastr.errorToastr("No Further Collapse", "Error", {
+          this.toastr.errorToastr("No Further Expand", "Error", {
             toastTimeout: 2500,
           });
           return;
@@ -235,7 +237,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
 
       this.getColumnRangeChart(this.category, this.treeData, this.avg);
     } else {
-      this.toastr.errorToastr("No Further Collapse", "Error", {
+      this.toastr.errorToastr("No Further Expand", "Error", {
         toastTimeout: 2500,
       });
       return;
@@ -247,12 +249,22 @@ export class ResponseGraphicalViewComponent implements OnInit {
       chart: {
         type: "columnrange",
         inverted: true,
+        backgroundColor: "transparent",
         style: {
           fontFamily: "Helvetica",
         },
+        // options3d: {
+        //   enabled: true,
+        //   alpha: 25,
+        //   beta: 25,
+        //   depth: 50,
+        // },
+      },
+      exporting: {
+        enabled: true,
       },
       title: {
-        text: this.categoryName + " Graphical View",
+        text: this.categoryName,
         style: { fontSize: "25px", color: "black" },
       },
       xAxis: {
@@ -283,13 +295,14 @@ export class ResponseGraphicalViewComponent implements OnInit {
       },
       plotOptions: {
         columnrange: {
-          borderRadius: 4,
+          borderRadius: 10,
           shadow: true,
+          depth: 40,
           dataLabels: {
             enabled: true,
             shape: "triangle",
+            verticalAlign: "bottom",
             align: "center",
-            borderRadius: 5,
             style: {
               fontSize: "15px",
             },
@@ -297,7 +310,11 @@ export class ResponseGraphicalViewComponent implements OnInit {
             borderWidth: 1,
             borderColor: "#AAA",
             formatter: function () {
-              return this.y;
+              for (var i = 0; i < avg.length; i++) {
+                if (this.y == avg[i][0]) {
+                  return this.y;
+                }
+              }
             },
           },
         },
@@ -310,13 +327,6 @@ export class ResponseGraphicalViewComponent implements OnInit {
         enabled: false,
       },
       series: [
-        {
-          name: "Average",
-          pointWidth: 30,
-          color: "#A6A5A5",
-          type: "columnrange",
-          data: avg,
-        },
         {
           name: "Categories",
           pointWidth: 30,
@@ -340,6 +350,13 @@ export class ResponseGraphicalViewComponent implements OnInit {
           },
           type: "columnrange",
           data: data,
+        },
+        {
+          name: "Average",
+          pointWidth: 0,
+          color: "#A6A5A5",
+          type: "columnrange",
+          data: avg,
         },
       ],
     });

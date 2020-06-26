@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ChartModule, HIGHCHARTS_MODULES } from "angular-highcharts";
 import * as more from "highcharts/highcharts-more.src";
 import * as exporting from "highcharts/modules/exporting.src";
+import * as highcharts from "highcharts/highcharts-3d";
 import { NgxSpinnerModule } from "ngx-spinner";
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -60,7 +61,10 @@ import { ImportSurveyResultComponent } from "./components/import-survey-result/i
   ],
   providers: [
     CookieService,
-    { provide: HIGHCHARTS_MODULES, useFactory: () => [more, exporting] },
+    {
+      provide: HIGHCHARTS_MODULES,
+      useFactory: () => [more, exporting, highcharts],
+    },
   ],
   bootstrap: [AppComponent],
 })
