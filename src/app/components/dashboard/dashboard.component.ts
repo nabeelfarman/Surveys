@@ -9,8 +9,10 @@ import {
 import { AppComponent } from "src/app/app.component";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
+import { delay } from "rxjs/operators";
 
 declare var $: any;
+var imageUrl;
 
 @Component({
   selector: "app-dashboard",
@@ -28,344 +30,8 @@ export class DashboardComponent implements OnInit {
   categoryName = "";
   questionList = [];
   tempList = [];
-  // tempList = [
-  //   {
-  //     category_code: 1,
-  //     parent_category_code: 0,
-  //     category_Name: "Wholeness",
-  //     survey_ID: 1,
-  //     treePath: "Wholeness",
-  //     avg: 3.2,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 1,
-  //     min: 3.1,
-  //     max: 3.5,
-  //   },
-  //   {
-  //     category_code: 2,
-  //     parent_category_code: 0,
-  //     category_Name: "Purposeful Action",
-  //     survey_ID: 1,
-  //     treePath: "Purposeful Action",
-  //     avg: 3.1,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 1,
-  //     min: 3.01,
-  //     max: 3.2,
-  //   },
-  //   {
-  //     category_code: 3,
-  //     parent_category_code: 0,
-  //     category_Name: "Possibility",
-  //     survey_ID: 1,
-  //     treePath: "Possibility",
-  //     avg: 3.37,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 1,
-  //     min: 3.2,
-  //     max: 3.7,
-  //   },
-  //   {
-  //     category_code: 4,
-  //     parent_category_code: 0,
-  //     category_Name: "Transparency",
-  //     survey_ID: 1,
-  //     treePath: "Transparency",
-  //     avg: 3.1,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 1,
-  //     min: 3,
-  //     max: 3.5,
-  //   },
-  //   {
-  //     category_code: 5,
-  //     parent_category_code: 1,
-  //     category_Name: "Acceptance",
-  //     survey_ID: 1,
-  //     treePath: "Wholeness -> Acceptance",
-  //     avg: 3.4,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 3.2,
-  //     max: 3.8,
-  //   },
-  //   {
-  //     category_code: 6,
-  //     parent_category_code: 1,
-  //     category_Name: "Purpose",
-  //     survey_ID: 1,
-  //     treePath: "Wholeness -> Purpose",
-  //     avg: 3.1,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 2.8,
-  //     max: 3.4,
-  //   },
-  //   {
-  //     category_code: 7,
-  //     parent_category_code: 1,
-  //     category_Name: "Understanding",
-  //     survey_ID: 1,
-  //     treePath: "Wholeness -> Understanding",
-  //     avg: 2.9,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 2.4,
-  //     max: 3.4,
-  //   },
-  //   {
-  //     category_code: 8,
-  //     parent_category_code: 1,
-  //     category_Name: "Caring",
-  //     survey_ID: 1,
-  //     treePath: "Wholeness -> Caring",
-  //     avg: 2.7,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 2.1,
-  //     max: 3.4,
-  //   },
-  //   {
-  //     category_code: 9,
-  //     parent_category_code: 2,
-  //     category_Name: "Stakeholders",
-  //     survey_ID: 1,
-  //     treePath: "Purposeful Action -> Stakeholders",
-  //     avg: 3.1,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 2.4,
-  //     max: 3.2,
-  //   },
-  //   {
-  //     category_code: 10,
-  //     parent_category_code: 2,
-  //     category_Name: "Tools",
-  //     survey_ID: 1,
-  //     treePath: "Purposeful Action -> Tools",
-  //     avg: 3.2,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 2.8,
-  //     max: 3.34,
-  //   },
-  //   {
-  //     category_code: 11,
-  //     parent_category_code: 2,
-  //     category_Name: "Anticipate",
-  //     survey_ID: 1,
-  //     treePath: "Purposeful Action -> Anticipate",
-  //     avg: 3.01,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 2.9,
-  //     max: 3.5,
-  //   },
-  //   {
-  //     category_code: 12,
-  //     parent_category_code: 2,
-  //     category_Name: "Remove",
-  //     survey_ID: 1,
-  //     treePath: "Purposeful Action -> Remove",
-  //     avg: 3.2,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 2.4,
-  //     max: 3.45,
-  //   },
-  //   {
-  //     category_code: 13,
-  //     parent_category_code: 3,
-  //     category_Name: "Optimism",
-  //     survey_ID: 1,
-  //     treePath: "Possibility -> Optimism",
-  //     avg: 3.1,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 2.56,
-  //     max: 3.34,
-  //   },
-  //   {
-  //     category_code: 14,
-  //     parent_category_code: 3,
-  //     category_Name: "Failure",
-  //     survey_ID: 1,
-  //     treePath: "Possibility -> Failure",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 15,
-  //     parent_category_code: 3,
-  //     category_Name: "Experimentation",
-  //     survey_ID: 1,
-  //     treePath: "Possibility -> Experimentation",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 16,
-  //     parent_category_code: 3,
-  //     category_Name: "Curiosity",
-  //     survey_ID: 1,
-  //     treePath: "Possibility -> Curiosity",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 17,
-  //     parent_category_code: 4,
-  //     category_Name: "Individual",
-  //     survey_ID: 1,
-  //     treePath: "Transparency -> Individual",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 18,
-  //     parent_category_code: 4,
-  //     category_Name: "Team",
-  //     survey_ID: 1,
-  //     treePath: "Transparency -> Team",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 19,
-  //     parent_category_code: 4,
-  //     category_Name: "Visibility",
-  //     survey_ID: 1,
-  //     treePath: "Transparency -> Visibility",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 20,
-  //     parent_category_code: 4,
-  //     category_Name: "Context",
-  //     survey_ID: 1,
-  //     treePath: "Transparency -> Context",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 21,
-  //     parent_category_code: 0,
-  //     category_Name: "Team Outcomes",
-  //     survey_ID: 1,
-  //     treePath: "Team Outcomes",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 1,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 22,
-  //     parent_category_code: 21,
-  //     category_Name: "Psychological Safety",
-  //     survey_ID: 1,
-  //     treePath: "Team Outcomes -> Psychological Safety",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 23,
-  //     parent_category_code: 21,
-  //     category_Name: "Team Identity",
-  //     survey_ID: 1,
-  //     treePath: "Team Outcomes -> Team Identity",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 24,
-  //     parent_category_code: 21,
-  //     category_Name: "Exploring Differences",
-  //     survey_ID: 1,
-  //     treePath: "Team Outcomes -> Exploring Differences",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 25,
-  //     parent_category_code: 21,
-  //     category_Name: "Innovation",
-  //     survey_ID: 1,
-  //     treePath: "Team Outcomes -> Innovation",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 26,
-  //     parent_category_code: 21,
-  //     category_Name: "Results",
-  //     survey_ID: 1,
-  //     treePath: "Team Outcomes -> Results",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 2,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 27,
-  //     parent_category_code: 0,
-  //     category_Name: "Highest",
-  //     survey_ID: 1,
-  //     treePath: "Highest",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 1,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  //   {
-  //     category_code: 28,
-  //     parent_category_code: 0,
-  //     category_Name: "Lowest",
-  //     survey_ID: 1,
-  //     treePath: "Lowest",
-  //     avg: 0,
-  //     amountIncludingChildren: 0,
-  //     treeLevel: 1,
-  //     min: 0,
-  //     max: 0,
-  //   },
-  // ];
+  tempQuesList = [];
+  chartList = [];
 
   category = [];
   avg = [];
@@ -380,176 +46,476 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.getChartData();
+    this.getChart();
+    this.getChartQuestion();
   }
 
   logout() {
     this.app.Logout();
   }
 
-  // getChartData() {
-  //   var reqHeader = new HttpHeaders({
-  //     "Content-Type": "application/json",
-  //     // Authorization: "Bearer " + Token,
-  //   });
-  //   this.app.showSpinner();
-  //   this.http
-  //     .get("http://localhost:5000/api/getQuestionsTreeAvg?surveyID=10", {
-  //       headers: reqHeader,
-  //     })
-  //     .subscribe((data: any) => {
-  //       this.tempList = data;
-  //       // var data = this.tempList;
-
-  //       this.category = [];
-  //       this.categoryName = "";
-  //       this.avg = [];
-  //       this.treeData = [];
-  //       this.categoryName = data[0].category_Name;
-  //       for (var i = 0; i < data.length; i++) {
-  //         if (data[i].parent_category_code == data[0].category_code) {
-  //           this.category.push(data[i].category_Name);
-  //           this.avg.push([this.tempList[i].avg, this.tempList[i].avg]);
-  //           this.treeData.push([data[i].min, data[i].max]);
-  //         }
-  //       }
-  //       this.getColumnRangeChart(this.category, this.treeData, this.avg);
-  //       this.app.hideSpinner();
-  //     });
-  // }
-
-  // getColumnRangeChart(category, data, avg) {
-  //   let chart = new Chart({
-  //     chart: {
-  //       type: "columnrange",
-  //       inverted: true,
-  //       style: {
-  //         fontFamily: "Helvetica",
-  //       },
-  //     },
-  //     title: {
-  //       text: this.categoryName + " Graphical View",
-  //       style: { fontSize: "25px", color: "black" },
-  //     },
-  //     xAxis: {
-  //       categories: category,
-  //       labels: {
-  //         style: {
-  //           fontSize: "15px",
-  //           color: "black",
-  //         },
-  //       },
-  //     },
-  //     yAxis: {
-  //       gridLineColor: "#A6A5A5",
-  //       tickPositioner: function () {
-  //         return [0, 1, 2, 3, 4, 5, 6];
-  //       },
-  //       labels: {
-  //         style: {
-  //           fontSize: "15px",
-  //           color: "black",
-  //         },
-  //         formatter: function () {
-  //           if (this.value != 0 && this.value != 6) {
-  //             return this.value;
-  //           }
-  //         },
-  //       },
-  //     },
-  //     plotOptions: {
-  //       columnrange: {
-  //         borderRadius: 4,
-  //         shadow: true,
-  //         dataLabels: {
-  //           enabled: true,
-  //           shape: "triangle",
-  //           align: "center",
-  //           borderRadius: 5,
-  //           style: {
-  //             fontSize: "15px",
-  //           },
-  //           backgroundColor: "rgba(255, 255, 255, 0.7)",
-  //           borderWidth: 1,
-  //           borderColor: "#AAA",
-  //           formatter: function () {
-  //             return this.y;
-  //           },
-  //         },
-  //       },
-  //     },
-
-  //     legend: {
-  //       enabled: false,
-  //     },
-  //     credits: {
-  //       enabled: false,
-  //     },
-  //     series: [
-  //       {
-  //         name: "Average",
-  //         pointWidth: 30,
-  //         color: "#A6A5A5",
-  //         type: "columnrange",
-  //         data: avg,
-  //       },
-  //       {
-  //         name: "Categories",
-  //         pointWidth: 30,
-  //         color: {
-  //           linearGradient: {
-  //             x1: 0,
-  //             x2: 0,
-  //             y1: 0,
-  //             y2: 1,
-  //           },
-  //           stops: [
-  //             [0, "#3167ec"],
-  //             [1, "#63bfff"],
-  //             // [0, "#6a78d1"],
-  //             // [1, "#00bda5"],
-  //             // [0, "#003399"],
-  //             // [1, "#05E8BA"],
-  //             // [0, "#045de9"],
-  //             // [1, "#087EE1"],
-  //           ],
-  //         },
-  //         type: "columnrange",
-  //         data: data,
-  //       },
-  //     ],
-  //   });
-
-  //   this.Line_chart = chart;
-  // }
-
-  save_chart(chart) {
-    var render_width = this.EXPORT_WIDTH;
-    var render_height = (render_width * chart.chartHeight) / chart.chartWidth;
-
-    // Get the cart's SVG code
-    var svg = chart.getSVG({
-      exporting: {
-        sourceWidth: chart.chartWidth,
-        sourceHeight: chart.chartHeight,
-      },
+  getChartQuestion() {
+    var reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      // Authorization: "Bearer " + Token,
     });
-
-    // Create a canvas
-    var canvas = document.createElement("canvas");
-    canvas.height = render_height;
-    canvas.width = render_width;
-    document.body.appendChild(canvas);
-
-    // Create an image and draw the SVG onto the canvas
-    var image = new Image();
-    // image.onload = function() {
-    //     canvas.getContext('2d').drawImage(this, 0, 0, render_width, render_height);
-    // };
-    image.src = "data:image/svg+xml;base64," + window.btoa(svg);
+    // this.app.showSpinner();
+    this.http
+      .get("http://localhost:5000/api/getSurveyQuestionAvg?surveyID=10", {
+        headers: reqHeader,
+      })
+      .subscribe((data: any) => {
+        this.tempQuesList = data;
+        // this.app.hideSpinner();
+      });
   }
 
-  genWord() {
+  getChart() {
+    var reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      // Authorization: "Bearer " + Token,
+    });
+    this.app.showSpinner();
+    this.http
+      .get("http://localhost:5000/api/getQuestionsTreeAvg?surveyID=10", {
+        headers: reqHeader,
+      })
+      .subscribe((data: any) => {
+        this.tempList = data;
+
+        this.app.hideSpinner();
+      });
+  }
+
+  genWord(val) {
+    for (var i = val; i < this.tempList.length; i++) {
+      this.category = [];
+      this.categoryName = "";
+      this.avg = [];
+      this.treeData = [];
+      if (this.tempList[i].parent_category_code != 0) {
+        for (var j = 0; j < this.tempList.length; j++) {
+          if (
+            this.tempList[i].parent_category_code ==
+            this.tempList[j].category_code
+          ) {
+            this.categoryName = this.tempList[j].category_Name;
+          }
+          if (this.categoryName == "Team Outcomes") {
+            for (var k = 0; k < this.tempList.length; k++) {
+              if (
+                this.tempList[k].parent_category_code ==
+                this.tempList[j].category_code
+              ) {
+                this.category.push(this.tempList[k].category_Name);
+                this.avg.push([this.tempList[k].avg]);
+                this.treeData.push([
+                  this.tempList[k].min,
+                  this.tempList[k].max,
+                ]);
+              }
+            }
+            j = this.tempList.length + 1;
+          } else if (
+            this.tempList[i].parent_category_code ==
+            this.tempList[j].parent_category_code
+          ) {
+            for (var k = 0; k < this.tempList.length; k++) {
+              if (
+                this.tempList[k].parent_category_code ==
+                this.tempList[j].category_code
+              ) {
+                this.category.push(this.tempList[k].category_Name);
+                this.avg.push([this.tempList[k].avg]);
+                this.treeData.push([
+                  this.tempList[k].min,
+                  this.tempList[k].max,
+                ]);
+              }
+            }
+          }
+        }
+        if (this.chartList.length == 0) {
+          this.genChartImage(
+            this.category,
+            this.avg,
+            this.treeData,
+            this.categoryName,
+            i
+          );
+          i = this.tempList.length + 1;
+        } else {
+          var found = false;
+          for (var j = 0; j < this.chartList.length; j++) {
+            if (this.chartList[j].name == this.categoryName) {
+              // alert("ok");
+              found = true;
+              j = this.chartList.length + 1;
+            }
+          }
+          if (found == false) {
+            this.genChartImage(
+              this.category,
+              this.avg,
+              this.treeData,
+              this.categoryName,
+              i
+            );
+            i = this.tempList.length + 1;
+          }
+        }
+      }
+    }
+  }
+
+  genChartImage(category, avg, treeData, categoryName, val) {
+    var options = {
+      chart: {
+        inverted: true,
+        // options3d: {
+        //   enabled: true,
+        //   alpha: 25,
+        //   beta: 25,
+        //   depth: 50,
+        //   viewdistance: 30,
+        // },
+      },
+      title: {
+        text: "",
+        style: { fontSize: "25px", color: "black" },
+      },
+      xAxis: {
+        categories: category,
+        labels: {
+          style: {
+            fontSize: "15px",
+            color: "black",
+          },
+        },
+      },
+      yAxis: {
+        gridLineColor: "#A6A5A5",
+        categories: ["", 1, 2, 3, 4, 5, ""],
+        min: 1,
+        max: 5,
+        // tickPositioner: function () {
+        //   return [0, 1, 2, 3, 4, 5, 6];
+        // },
+        labels: {
+          style: {
+            fontSize: "15px",
+            color: "black",
+          },
+          formatter: function () {
+            if (this.value != 0 && this.value != 6) {
+              return this.value;
+            }
+          },
+        },
+      },
+      plotOptions: {
+        line: {
+          marker: {
+            symbol:
+              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+          },
+          lineWidth: 0,
+          dataLabels: {
+            enabled: true,
+            style: {
+              fontSize: "15px",
+            },
+          },
+        },
+        columnrange: {
+          borderRadius: 16,
+          shadow: true,
+          // dataLabels: {
+          //   enabled: false,
+          // },
+        },
+      },
+
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: "Categories",
+          pointWidth: 32,
+          color: {
+            linearGradient: {
+              x1: 0,
+              x2: 0,
+              y1: 0,
+              y2: 1,
+            },
+            stops: [
+              [0, "#1707b2"],
+              [1, "#54ffc1"],
+            ],
+          },
+          data: treeData,
+          type: "columnrange",
+        },
+        {
+          name: "Average",
+          pointWidth: 0,
+          data: avg,
+          type: "line",
+        },
+      ],
+    };
+
+    var datas = {
+      // type: "POST",
+      options: JSON.stringify(options),
+      filename: "test.png",
+      type: "image/png",
+      async: true,
+    };
+
+    var exportUrl = "https://export.highcharts.com/";
+    $.post(exportUrl, datas, function (datas) {
+      imageUrl = exportUrl + datas;
+      var urlCreator = window.URL || window.webkitURL;
+
+      (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
+
+      fetch(imageUrl)
+        .then((response) => response.blob())
+        .then((datas) => {
+          // You have access to chart data here
+          // console.log(datas);
+        });
+    });
+
+    setTimeout(() => this.pushImageData(categoryName, imageUrl, val), 900);
+  }
+
+  pushImageData(name, url, val) {
+    this.chartList.push({
+      name: name,
+      imgUrl: url,
+    });
+
+    var increment = val + 1;
+    if (increment < 14) {
+      this.genWord(increment);
+    } else if (increment == 14) {
+      this.getChartQuestions();
+    }
+
+    // this.getChartQuestions();
+
+    // setInterval(() => this.getChartData(), 1000);
+  }
+
+  getChartQuestions() {
+    for (var i = 0; i < this.tempList.length; i++) {
+      this.category = [];
+      this.categoryName = "";
+      this.avg = [];
+      this.treeData = [];
+
+      if (
+        this.tempList[i].treeLevel == 3 ||
+        this.tempList[i].parent_category_code == 305
+      ) {
+        this.categoryName = this.tempList[i].category_Name;
+        // alert(
+        //   this.tempList[i].category_code +
+        //     " - " +
+        //     this.tempList[i].category_Name
+        // );
+
+        for (var j = 0; j < this.tempQuesList.length; j++) {
+          if (
+            this.tempQuesList[j].category_Code == this.tempList[i].category_code
+          ) {
+            this.category.push(
+              this.tempQuesList[j].survey_Question_Sequence_Number.toString() +
+                " " +
+                this.tempQuesList[j].question_Text
+            );
+            this.treeData.push([
+              this.tempQuesList[j].min,
+              this.tempQuesList[j].max,
+            ]);
+            this.avg.push([this.tempQuesList[j].avg]);
+          }
+        }
+        var quesFound = false;
+        for (var j = 0; j < this.chartList.length; j++) {
+          if (this.chartList[j].name == this.categoryName) {
+            quesFound = true;
+            j = this.chartList.length + 1;
+          }
+        }
+        if (quesFound == false) {
+          this.genChartQuesImage(
+            this.category,
+            this.avg,
+            this.treeData,
+            this.categoryName,
+            i
+          );
+
+          i = this.tempList.length + 1;
+        } else {
+          // alert(i);
+          i = i;
+        }
+      }
+    }
+  }
+
+  genChartQuesImage(category, avg, treeData, categoryName, val) {
+    var options = {
+      chart: {
+        inverted: true,
+        // options3d: {
+        //   enabled: true,
+        //   alpha: 25,
+        //   beta: 25,
+        //   depth: 50,
+        //   viewdistance: 30,
+        // },
+      },
+      title: {
+        text: categoryName,
+        style: { fontSize: "25px", color: "black" },
+      },
+      xAxis: {
+        categories: category,
+        labels: {
+          style: {
+            fontSize: "15px",
+            color: "black",
+          },
+        },
+      },
+      yAxis: {
+        gridLineColor: "#A6A5A5",
+        categories: ["", 1, 2, 3, 4, 5, ""],
+        min: 1,
+        max: 5,
+        // tickPositioner: function () {
+        //   return [0, 1, 2, 3, 4, 5, 6];
+        // },
+        labels: {
+          style: {
+            fontSize: "15px",
+            color: "black",
+          },
+          formatter: function () {
+            if (this.value != 0 && this.value != 6) {
+              return this.value;
+            }
+          },
+        },
+      },
+      plotOptions: {
+        line: {
+          marker: {
+            symbol:
+              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+          },
+          lineWidth: 0,
+          dataLabels: {
+            enabled: true,
+            style: {
+              fontSize: "15px",
+            },
+          },
+        },
+        columnrange: {
+          borderRadius: 16,
+          shadow: true,
+          // dataLabels: {
+          //   enabled: false,
+          // },
+        },
+      },
+
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: "Categories",
+          pointWidth: 32,
+          color: {
+            linearGradient: {
+              x1: 0,
+              x2: 0,
+              y1: 0,
+              y2: 1,
+            },
+            stops: [
+              [0, "#1707b2"],
+              [1, "#54ffc1"],
+            ],
+          },
+          data: treeData,
+          type: "columnrange",
+        },
+        {
+          name: "Average",
+          pointWidth: 0,
+          data: avg,
+          type: "line",
+        },
+      ],
+    };
+
+    var datas = {
+      // type: "POST",
+      options: JSON.stringify(options),
+      filename: "test.png",
+      type: "image/png",
+      async: true,
+    };
+
+    var exportUrl = "https://export.highcharts.com/";
+    $.post(exportUrl, datas, function (datas) {
+      imageUrl = exportUrl + datas;
+      var urlCreator = window.URL || window.webkitURL;
+
+      (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
+
+      fetch(imageUrl)
+        .then((response) => response.blob())
+        .then((datas) => {
+          // You have access to chart data here
+          // console.log(datas);
+        });
+    });
+
+    setTimeout(() => this.pushImageQuesData(categoryName, imageUrl, val), 1000);
+  }
+
+  pushImageQuesData(categoryName, imageUrl, val) {
+    this.chartList.push({
+      name: categoryName,
+      imgUrl: imageUrl,
+    });
+    // alert(val);
+    setTimeout(() => this.getChartQuestions(), 500);
+
+    if (this.chartList.length > 25) {
+      this.getChartData(this.chartList);
+    }
+  }
+
+  getChartData(imageList) {
+    // alert(imageUrl);
     var savePath = "../../shared/img";
     var reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
@@ -557,19 +523,12 @@ export class DashboardComponent implements OnInit {
     });
 
     this.http
-      .get(
-        this.serverUrl +
-          "api/createWordDocument?fileName=" +
-          this.path +
-          "&saveAs=" +
-          savePath +
-          ".docx&image=abc",
-        {
-          headers: reqHeader,
-        }
-      )
+      .get(this.serverUrl + "api/createWordDocument?image=" + imageList, {
+        headers: reqHeader,
+      })
       .subscribe((data: any) => {
         alert(data);
+        return;
       });
   }
 }

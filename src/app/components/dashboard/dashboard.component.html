@@ -1,13 +1,16 @@
-<p>dashboard works!</p>
 <br />
 <div class="row">
   <div class="col-md-12">
-    <button mat-raised-button class="btnClass" style="border-radius: 0;" (click)="genWord()">
+    <button mat-raised-button class="btnClass" style="border-radius: 0;" (click)="genWord(0)">
       Generate Word
     </button>
   </div>
 </div>
 <br />
-<div style="height: 400px; width: auto;" [chart]="Line_chart"></div>
+<div class="row">
+  <div class="col-md-6">
+    <img id="imageTag" />
+  </div>
+</div>
 <br />
 <a routerLink="/responseGraph">Response Graph</a>
