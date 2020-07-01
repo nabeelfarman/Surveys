@@ -1,10 +1,7 @@
-<div class="container-fluid page-content--bgf7">
-
+<div class="container-fluid page-content--bgf7" id="cont">
   <span class="title-o">You are here: Home / Charts</span><br />
 
-
   <div class="row">
-
     <div class="col-md-8 text-left">
       <span class="title-5 m-t-30">
         Charts
@@ -18,19 +15,72 @@
   <hr />
 
   <div class="row">
+    <!-- <div class="offset-md-8 col-md-3 mt-2" *ngIf="allow3D">
+      <mat-radio-group [(ngModel)]="rdbChart" (change)="getChartOption()" color="primary">
+        <div class="row">
+          <div class="col-md-6">
+            <mat-radio-button value="Simple">Simple Chart</mat-radio-button>
+          </div>
+          <div class="col-md-6">
+            <mat-radio-button value="3d">3d Chart</mat-radio-button>
+          </div>
+        </div>
+      </mat-radio-group>
+    </div> -->
+    <!-- <div class="col-md-1"> -->
     <div class="offset-md-11 col-md-1">
       <button mat-raised-button class="btnClass" style="border-radius: 0;" (click)="collapseAll()">
         Expand
       </button>
     </div>
   </div>
-
+  <div class="row" *ngIf="allow3D">
+    <div class="offset-md-2 col-md-2 text-rght">
+      <span class="title-o">3D Chart Angle: </span>
+    </div>
+    <div class="col-md-8">
+      <div id="sliders">
+        <div class="row">
+          <div class="col-md-1">
+            <label for="alpha">Alpha</label>
+          </div>
+          <div class="col-md-3 mt-n2">
+            <mat-slider class="example-margin" max="45" min="0" thumbLabel="thumbLabel" [(ngModel)]="alphaAngle"
+              color="primary">
+            </mat-slider>
+            <!-- <input id="alpha" type="range" min="0" max="45" value="15" (change)="onChange()" /> <span id="alpha-value"
+              class="value"></span> -->
+          </div>
+          <div class="col-md-1">
+            <label for="beta">Beta</label>
+          </div>
+          <div class="col-md-3 mt-n2">
+            <mat-slider class="example-margin" max="45" min="-45" thumbLabel="thumbLabel" [(ngModel)]="betaAngle"
+              color="primary">
+            </mat-slider>
+            <!-- <input id="beta" type="range" min="-45" max="45" value="15" (change)="onChange()" /> <span id="beta-value"
+              class="value"></span> -->
+          </div>
+          <div class="col-md-1">
+            <label for="depth">Depth</label>
+          </div>
+          <div class="col-md-3 mt-n2">
+            <mat-slider class="example-margin" max="100" min="20" thumbLabel="thumbLabel" [(ngModel)]="depthAngle"
+              color="primary">
+            </mat-slider>
+            <!-- <input id="depth" type="range" min="20" max="100" value="50" (change)="onChange()" /> <span id="depth-value"
+              class="value"></span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-3 p-2 border-right">
       <p-tree class="fullwidth" [style]="{
           'min-height': '25em',
           'max-height': '25em',
-          'font-size':'16px',
+          'font-size': '16px',
           'font-family': 'Helvetica',
           overflow: 'auto'
         }" [value]="menuTree" [(selection)]="selectedMenu" selectionMode="single"
@@ -38,7 +88,20 @@
       </p-tree>
     </div>
     <div class="offset-md-1 col-md-8 p-2">
-      <div style="height: 400px; width: auto;" [chart]="Line_chart"></div>
+      <div #image>
+        <div style="height: 400px; width: auto;" [chart]="Line_chart"></div>
+      </div>
     </div>
   </div>
+  <!-- <div class="row">
+    <div class="col-md-4">
+      <div id="container"></div>
+    </div>
+    <div class="col-md-8">
+      <div id="download">
+        <img #canvas>
+        <a #downloadLink></a>
+      </div>
+    </div>
+  </div> -->
 </div>
