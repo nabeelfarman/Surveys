@@ -1,9 +1,9 @@
 <div class="container-fluid page-content--bgf7">
-
+  <!-- animated bounce -->
   <span class="title-o">You are here: Home / Generate Survey Report</span><br />
 
 
-  <div class="row">
+  <div class="row animate__animated animate__fadeInUp">
 
     <div class="col-md-8 text-left">
       <span class="title-5 m-t-30">
@@ -12,25 +12,28 @@
     </div>
 
     <div class="col-md-4 text-right">
-      <button type="button" class="btn btn-default border rounded-0">
+      <button type="button" class="btn btn-default border rounded-0" routerLink="/responseGraph">
         <b><span class="fa fa-chart-bar"></span>&nbsp;
           Charts</b>
       </button>
     </div>
 
   </div>
-  <hr /><br />
 
-  <!--Row #1-->
-  <div class="row">
+  <hr />
+  <!-- <br />
+  <h3 class="title-4 m-b-25">Choose Response Data File</h3> -->
+
+  <!--Row #1 start -->
+  <div class="row animate__animated animate__fadeInUp animate__delay-1s">
 
     <div class="col-md-4 text-left">
 
-      <input type="file" class="form-control shadow-none w-100" [(ngModel)]="filePicker"
-        (change)="onFileSelected($event)" accept=".xlsx" />
-      <!-- <div class="custom-file border">
-                <input type="file" class="form-control custom-file-input w-100 border" [(ngModel)]="filePicker" (change)="onFileSelected($event)"  accept=".xlsx"/>
-            </div> -->
+      <!-- <input type="file" class="form-control shadow-none w-100" [(ngModel)]="filePicker" (change)="onFileSelected($event)" accept=".xlsx" /> -->
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFile" [(ngModel)]="filePicker" (change)="onFileSelected($event);fileChange()" accept=".xlsx" />
+            <label class="custom-file-label" for="customFile">Choose Response Data file</label>
+        </div>
     </div>
 
     <div class="col-md-2 text-left">
@@ -39,17 +42,18 @@
 
     </div>
 
-    <div class="col-md-2 text-right">
-      <button type="button" class="btn btn-success" (click)="save()">GENERATE REPORT</button>
+    <div class="col-md-2 text-left">
+      <button type="button" class="btn btn-success rounded-0" (click)="save()">GENERATE REPORT</button>
     </div>
 
   </div>
+  <!--Row #1 end-->
 
   <br /><br /><br />
 
-  <h3 class="title-4 m-b-25">Report List</h3><br />
+  <h3 class="title-4 m-b-25 animate__animated animate__fadeInUp animate__delay-2s">Report List</h3>
 
-  <div class="row">
+  <div class="row animate__animated animate__fadeInUp animate__delay-2s">
 
     <div class="col-md-2">
       <select class="form-control">
@@ -66,136 +70,136 @@
     </div>
 
     <div class="col-md-4">
-      <div class="form-group has-search">
-        <span class="fa fa-search form-control-feedback"></span>
-        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="txtSearchSurvey">
-      </div>
+      
     </div>
 
     <div class="col-md-2">
     </div>
 
-    <div class="col-md-1">
-      <button type="button" class="btn btn-primary">
-        <span class="fa fa-download"></span>&nbsp;
-        DOWNLOAD ALL
-      </button>
+    <div class="col-md-2">
+        <div class="form-group has-search">
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="Search" [(ngModel)]="txtSearchSurvey">
+        </div>
+        <button type="button" class="btn btn-primary d-none">
+            <span class="fa fa-download"></span>&nbsp;
+            DOWNLOAD ALL
+        </button>
     </div>
   </div>
 
-  <!--table-->
-  <div class="table-responsive table-responsive-data2">
-    <table class="table table-data2">
-      <thead>
-        <tr>
-          <!-- <th>
-                        <label class="au-checkbox">
-                            <input type="checkbox">
-                            <span class="au-checkmark"></span>
-                        </label>
-                    </th> -->
-          <th>Organization Name</th>
-          <th>Team Name</th>
-          <th>Survey Date</th>
-          <th>No. of Respondents</th>
-          <th></th>
-        </tr>
-      </thead>
+    <!--table-->
+    <div class="table-responsive table-responsive-data2 animate__animated animate__fadeInUp animate__delay-3s">
+        <br/>
+        <table class="table table-data2">
+        <thead>
+            <tr>
+            <th>Organization Name</th>
+            <th>Team Name</th>
+            <th>Survey Date</th>
+            <th>No. of Respondents</th>
+            <th></th>
+            </tr>
+        </thead>
 
-      <tbody
-        *ngFor="let item of surveyData | search:'client_Name,team_Name,survey_Date,noOfRespondents':txtSearchSurvey; let i=index">
-        <tr class="tr-shadow">
-          <td>{{item.client_Name}}</td>
-          <td class="desc">{{item.team_Name}}</td>
-          <td>{{item.survey_Date | date}}</td>
-          <td>{{item.noOfRespondents}}</td>
-          <td>
-            <div class="table-data-feature">
-              <button class="item" data-toggle="tooltip" data-placement="top" title="Download"
-                data-original-title="Download">
-                <i class="zmdi zmdi-download"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr class="spacer"></tr>
+        <tbody *ngFor="let item of surveyData | search:'client_Name,team_Name,survey_Date,noOfRespondents':txtSearchSurvey; let i=index">
+            <tr class="tr-shadow">
+            <td>{{item.client_Name}}</td>
+            <td class="desc">{{item.team_Name}}</td>
+            <td>{{item.survey_Date | date}}</td>
+            <td>{{item.noOfRespondents}}</td>
+            <td>
+                <div class="table-data-feature">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Download" data-original-title="Download" (click)="genReport(item)">
+                    <i class="zmdi zmdi-download"></i>
+                </button>
+                </div>
+            </td>
+            </tr>
+            <tr class="spacer"></tr>
 
+        </tbody>
+
+        <tbody *ngIf="surveyData.length == 0" >
+          <tr class="tr-shadow">
+          <td class="text-center text-black" colspan="5" >Record not found</td>
+          </tr>
       </tbody>
 
-      <!-- <tbody>
-                <tr class="spacer"></tr>
-                <tr class="tr-shadow">
-                <td>
-                <label class="au-checkbox">
-                <input type="checkbox">
-                <span class="au-checkmark"></span>
-                </label>
-                </td>
-                <td>Lori Lynch</td>
-                <td>
-                <span class="block-email">lyn@example.com</span>
-                </td>
-                <td class="desc">iPhone X 256Gb Black</td>
-                <td>2018-09-25 19:03</td>
-                <td>
-                <span class="status--denied">Denied</span>
-                </td>
-                <td>$1199.00</td>
-                <td>
-                <div class="table-data-feature">
-                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
-                <i class="zmdi zmdi-mail-send"></i>
-                </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
-                <i class="zmdi zmdi-edit"></i>
-                </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
-                <i class="zmdi zmdi-delete"></i>
-                </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
-                <i class="zmdi zmdi-more"></i>
-                </button>
-                </div>
-                </td>
-                </tr>
-                <tr class="spacer"></tr>
-                <tr class="tr-shadow">
-                <td>
-                <label class="au-checkbox">
-                <input type="checkbox">
-                <span class="au-checkmark"></span>
-                </label>
-                </td>
-                <td>Lori Lynch</td>
-                <td>
-                <span class="block-email">doe@example.com</span>
-                </td>
-                <td class="desc">Camera C430W 4k</td>
-                <td>2018-09-24 19:10</td>
-                <td>
-                <span class="status--process">Processed</span>
-                </td>
-                <td>$699.00</td>
-                <td>
-                <div class="table-data-feature">
-                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
-                <i class="zmdi zmdi-mail-send"></i>
-                </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
-                <i class="zmdi zmdi-edit"></i>
-                </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
-                <i class="zmdi zmdi-delete"></i>
-                </button>
-                <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
-                <i class="zmdi zmdi-more"></i>
-                </button>
-                </div>
-                </td>
-                </tr> 
-            </tbody>-->
-    </table>
-  </div>
+        <!-- <tbody>
+                    <tr class="spacer"></tr>
+                    <tr class="tr-shadow">
+                    <td>
+                    <label class="au-checkbox">
+                    <input type="checkbox">
+                    <span class="au-checkmark"></span>
+                    </label>
+                    </td>
+                    <td>Lori Lynch</td>
+                    <td>
+                    <span class="block-email">lyn@example.com</span>
+                    </td>
+                    <td class="desc">iPhone X 256Gb Black</td>
+                    <td>2018-09-25 19:03</td>
+                    <td>
+                    <span class="status--denied">Denied</span>
+                    </td>
+                    <td>$1199.00</td>
+                    <td>
+                    <div class="table-data-feature">
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
+                    <i class="zmdi zmdi-mail-send"></i>
+                    </button>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                    <i class="zmdi zmdi-edit"></i>
+                    </button>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+                    <i class="zmdi zmdi-delete"></i>
+                    </button>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
+                    <i class="zmdi zmdi-more"></i>
+                    </button>
+                    </div>
+                    </td>
+                    </tr>
+                    <tr class="spacer"></tr>
+                    <tr class="tr-shadow">
+                    <td>
+                    <label class="au-checkbox">
+                    <input type="checkbox">
+                    <span class="au-checkmark"></span>
+                    </label>
+                    </td>
+                    <td>Lori Lynch</td>
+                    <td>
+                    <span class="block-email">doe@example.com</span>
+                    </td>
+                    <td class="desc">Camera C430W 4k</td>
+                    <td>2018-09-24 19:10</td>
+                    <td>
+                    <span class="status--process">Processed</span>
+                    </td>
+                    <td>$699.00</td>
+                    <td>
+                    <div class="table-data-feature">
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
+                    <i class="zmdi zmdi-mail-send"></i>
+                    </button>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                    <i class="zmdi zmdi-edit"></i>
+                    </button>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+                    <i class="zmdi zmdi-delete"></i>
+                    </button>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
+                    <i class="zmdi zmdi-more"></i>
+                    </button>
+                    </div>
+                    </td>
+                    </tr> 
+                </tbody>-->
+        </table>
+    </div>
 
 
 </div>

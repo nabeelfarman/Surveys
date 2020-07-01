@@ -74,15 +74,15 @@
 </nav> -->
 
 
-<div class="page-wrapper" id="menuId" style="overflow: visible;">
+<div class="page-wrapper " id="menuId" style="overflow: visible;">
 
   <header class="header-desktop3 d-none d-lg-block">
     <div class="section__content" style="border: 0px solid orange; height: 100%;">
       <div class="header3-wrap">
 
-        <div class="header__logo">
+        <div class="header__logo" style="border: 0px solid orange;">
           <a>
-            <img src="../assets/images/Logo.jpg" width="78%" alt="Survey Deck">
+            <img src="../assets/images/Logo.jpg" width="100%" alt="Survey Deck">
           </a>
         </div>
 
@@ -90,19 +90,19 @@
           <ul class="list-unstyled">
 
             <li>
-              <a routerLink="/responseGraph">
-                <i class="fa fa-tachometer"></i>Dashboard
+              <a routerLink="/importsurveyresult">
+                <i class="fa fa-home"></i>Home
                 <span class="bot-line"></span>
               </a>
             </li>
 
             <li>
-              <a routerLink="/importsurveyresult">
-                <i class="fa fa-shopping-basket"></i>
-                <span class="bot-line"></span>About</a>
+              <a routerLink="/responseGraph">
+                <i class="fa fa-chart-bar"></i>
+                <span class="bot-line"></span>Charts</a>
             </li>
 
-            <li>
+            <!-- <li>
               <a href="#">
                 <i class="fa fa-trophy"></i>
                 <span class="bot-line"></span>Features</a>
@@ -165,7 +165,7 @@
                   <a href="#">Typography</a>
                 </li>
               </ul>
-            </li>
+            </li> -->
           </ul>
         </div>
 
@@ -253,25 +253,25 @@
             <div class="account-item account-item--style2 clearfix js-item-menu" id="userNameMenu">
 
               <div class="image" (click)="showUserNameMenu()">
-                <img src="../assets/theme_component1/files/avatar-01.jpg" alt="John Doe">
+                <img src="../assets/images/emp1.jpeg" alt="John Doe">
               </div>
 
               <div class="content" (click)="showUserNameMenu()">
-                <a class="js-acc-btn">john doe</a>
+                <a class="js-acc-btn">Steve Wolff</a>
               </div>
 
               <div class="account-dropdown js-dropdown">
                 <div class="info clearfix">
                   <div class="image">
                     <a href="#">
-                      <img src="../assets/theme_component1/files/avatar-01.jpg" alt="John Doe">
+                      <img src="../assets/images/emp1.jpeg" alt="Steve Wolff">
                     </a>
                   </div>
                   <div class="content">
                     <h5 class="name">
-                      <a href="#">john doe</a>
+                      <a href="#">Steve Wolff</a>
                     </h5>
-                    <span class="email">johndoe@example.com</span>
+                    <span class="email">surveydeck@example.com</span>
                   </div>
                 </div>
 
@@ -333,30 +333,14 @@
         <ul class="navbar-mobile__list list-unstyled">
 
           <li class="has-sub">
-            <a class="js-arrow" href="#">
-              <i class="fa fa-tachometer"></i>Dashboard</a>
-            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-              <li>
-                <a href="#">Dashboard 1</a>
-              </li>
-              <li>
-                <a href="#">Dashboard 2</a>
-              </li>
-              <li>
-                <a href="#">Dashboard 3</a>
-              </li>
-              <li>
-                <a href="#">Dashboard 4</a>
-              </li>
-            </ul>
+            <a routerLink="/importsurveyresult"><i class="fa fa-home"></i>Home</a>
           </li>
 
           <li>
-            <a href="#">
-              <i class="fa fa-shopping-basket"></i>eCommerce</a>
+            <a href="#"><i class="fa fa-chart-bar"></i>Chart</a>
           </li>
 
-          <li>
+          <!-- <li>
             <a href="#">
               <i class="fa fa-trophy"></i>Features</a>
           </li>
@@ -415,7 +399,7 @@
                 <a href="#">Typography</a>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
       </div>
     </nav>
@@ -505,23 +489,23 @@
       <div class="account-wrap" id="userMobNameMenu" (click)="showMobUserNameMenu()">
         <div class="account-item account-item--style2 clearfix js-item-menu">
           <div class="image">
-            <img src="../assets/theme_component1/files/avatar-01.jpg" alt="John Doe" style="border: 1px solid red;">
+            <img src="../assets/images/emp1.jpeg" alt="John Doe" style="border: 1px solid red;">
           </div>
           <div class="content">
-            <a class="js-acc-btn">john doe</a>
+            <a class="js-acc-btn">Steve Wolff</a>
           </div>
           <div class="account-dropdown js-dropdown">
             <div class="info clearfix">
               <div class="image">
                 <a href="#">
-                  <img src="../assets/theme_component1/files/avatar-01.jpg" alt="John Doe">
+                  <img src="../assets/images/emp1.jpeg" alt="John Doe">
                 </a>
               </div>
               <div class="content">
                 <h5 class="name">
                   <a>john doe</a>
                 </h5>
-                <span class="email">johndoe@example.com</span>
+                <span class="email">surveydeck@example.com</span>
               </div>
             </div>
             <div class="account-dropdown__body">

@@ -18,7 +18,8 @@ import * as XLSX from "xlsx";
   styleUrls: ["./import-survey-result.component.scss"],
 })
 export class ImportSurveyResultComponent implements OnInit {
-  // serverUrl = "http://localhost:12345/api/";
+  //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
+  wordServerUrl = "http://localhost:12345/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
   tempData = [];
@@ -59,6 +60,35 @@ export class ImportSurveyResultComponent implements OnInit {
         this.surveyData = data;
         this.app.hideSpinner();
       });
+  }
+
+  //function for get generate survey report and download report
+  genReport(item) {
+
+    this.app.showSpinner();
+    var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
+
+    this.http.get(this.wordServerUrl + "genReport", { headers: reqHeader }).subscribe((data: any) => {
+    //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
+
+      if(data.length > 0){
+        this.toastr.errorToastr(data[0].msg, "Error", { toastTimeout: 2500, });
+      }else{
+
+        alert('Done');
+        //window.open("C:/SurveyTemplate/surveyDuckReport.doc");
+
+      }
+
+      this.app.hideSpinner();
+
+    });
+  }
+
+  downloadFile(){
+
+    //$('#downloadReport').hide();
+
   }
 
   incomingfile(event) {
@@ -216,6 +246,10 @@ export class ImportSurveyResultComponent implements OnInit {
 
     this.file = undefined;
     this.selectedFile = null;
+
+    var fileName = 'Choose Response Data file';
+    $(".custom-file-input").siblings(".custom-file-label").addClass("selected").html(fileName);
+
   }
 
   filterExcelData() {
@@ -233,4 +267,14 @@ export class ImportSurveyResultComponent implements OnInit {
         this.app.hideSpinner();
       });
   }
+
+
+  fileChange(){
+
+    var fileName = $(".custom-file-input").val().split("\\").pop();
+    $(".custom-file-input").siblings(".custom-file-label").addClass("selected").html(fileName);
+
+  }
+  
+
 }

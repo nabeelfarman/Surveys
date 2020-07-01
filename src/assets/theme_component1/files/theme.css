@@ -197,7 +197,7 @@ strong {
 .title-3 {
     text-transform: capitalize;
     font-weight: 400;
-    font-size: 24px;
+    font-size: 14px;
     color: #333;
 }
 
@@ -2690,6 +2690,8 @@ section {
     align-items: center;
     position: relative;
     z-index: 3;
+
+    width: 344px;
 }
 
 .header__navbar ul {
@@ -2698,7 +2700,7 @@ section {
     display: -moz-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: center;
+    /* -webkit-box-pack: center;
     -webkit-justify-content: center;
     -moz-box-pack: center;
     -ms-flex-pack: center;
@@ -2707,7 +2709,18 @@ section {
     -webkit-align-items: center;
     -moz-box-align: center;
     -ms-flex-align: center;
-    align-items: center;
+    align-items: center; */
+    -webkit-box-pack: left;
+    -webkit-justify-content: left;
+    -moz-box-pack: left;
+    -ms-flex-pack: left;
+    justify-content: left;
+    -webkit-box-align: left;
+    -webkit-align-items: left;
+    -moz-box-align: left;
+    -ms-flex-align: left;
+    align-items: left;
+    padding-left: 350px !important;
 }
 
 .header__navbar ul li {
@@ -14684,4 +14697,23 @@ section {
 
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
+}
+
+
+
+
+
+
+
+
+.btn:hover{
+    animation: pulse; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 0.5s; /* don't forget to set a duration! */
+}
+
+
+.btn-default:hover{
+    
+    color: #24953D !important;
+
 }

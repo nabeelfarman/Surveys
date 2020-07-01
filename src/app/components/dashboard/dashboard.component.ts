@@ -556,14 +556,7 @@ export class DashboardComponent implements OnInit {
       // Authorization: "Bearer " + Token,
     });
 
-    this.http
-      .get(
-        this.serverUrl +
-          "api/createWordDocument?fileName=" +
-          this.path +
-          "&saveAs=" +
-          savePath +
-          ".docx&image=abc",
+    this.http.get(this.serverUrl +"api/createWordDocument?fileName=" +this.path +"&saveAs=" +savePath +".docx&image=abc",
         {
           headers: reqHeader,
         }
