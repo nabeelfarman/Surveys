@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { TreeNode } from "../../nodeTree/TreeNode";
 import { AppComponent } from "src/app/app.component";
 import { ToastrManager } from "ng6-toastr-notifications";
-import html2canvas from "html2canvas";
+//import html2canvas from "html2canvas";
 import * as Highcharts from "highcharts";
 import { Transform } from "stream";
 import { transformAll } from "@angular/compiler/src/render3/r3_ast";
@@ -16,8 +16,8 @@ declare var $: any;
   styleUrls: ["./response-graphical-view.component.scss"],
 })
 export class ResponseGraphicalViewComponent implements OnInit {
-  serverUrl = "http://localhost:5000/";
-  // serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
+  //serverUrl = "http://localhost:5000/";
+  serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
   markerPath = "../../../assets/images/Marker.png";
 
   // @ViewChild("image") image: ElementRef;
