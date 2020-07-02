@@ -50,6 +50,9 @@ export class ImportSurveyResultComponent implements OnInit {
   avg = [];
   treeData = [];
 
+  clientID = "";
+  surveyDt = "";
+  teamID = "";
 
   constructor(
     public toastr: ToastrManager,
@@ -62,10 +65,10 @@ export class ImportSurveyResultComponent implements OnInit {
   ngOnInit(): void {
     this.surveyDate = new Date().toISOString().split("T")[0];
     this.getSurveys();
-    this.getChart();
-    this.getChartQuestion();
-    this.getHighQuesChart();
-    this.getLowQuesChart();
+    // this.getChart();
+    // this.getChartQuestion();
+    // this.getHighQuesChart();
+    // this.getLowQuesChart();
   }
 
   //function for get surveys data
@@ -83,9 +86,14 @@ export class ImportSurveyResultComponent implements OnInit {
 
 
   genReport(chartsList) {
-    
+
     var reqData = {
         images: JSON.stringify(chartsList),
+        Consultant_ID: '1',
+        Survey_ID: '34',
+        Survey_Date: '2020-07-01',
+        Client_ID: '7',
+        Team_ID:  '18'
     };
 
     this.app.showSpinner();
@@ -94,11 +102,9 @@ export class ImportSurveyResultComponent implements OnInit {
     this.http.post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader }).subscribe((data: any) => {
     //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
 
-      alert(data.msg);
-
       this.app.hideSpinner();
       if(data.msg != "Success"){
-        this.toastr.errorToastr(data[0].msg, "Error", { toastTimeout: 2500, });
+        this.toastr.errorToastr(data.msg, "Error", { toastTimeout: 2500, });
       }else{
 
         window.open("C:/SurveyTemplate/surveyDuckReport.doc");
@@ -111,7 +117,16 @@ export class ImportSurveyResultComponent implements OnInit {
   }
 
 
+  getTableData(item){
 
+    this.clientID = item.client_ID;
+    this.teamID = item.team_ID;
+    this.surveyDt = item.survey_Date;
+
+    alert(this.clientID + " - " + this.teamID + " - " + this.surveyDt + " - ")
+
+    this.getChart();
+  }
 
   getChartQuestion() {
     var reqHeader = new HttpHeaders({
@@ -119,8 +134,9 @@ export class ImportSurveyResultComponent implements OnInit {
       // Authorization: "Bearer " + Token,
     });
     // this.app.showSpinner();
-    this.http.get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=34", { headers: reqHeader, }).subscribe((data: any) => {
+    this.http.get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=34&surveyDate="+this.surveyDt+"&clientID="+this.clientID+"&teamID="+this.teamID, { headers: reqHeader, }).subscribe((data: any) => {
         this.tempQuesList = data;
+        this.getHighQuesChart();
         // this.app.hideSpinner();
       });
   }
@@ -132,12 +148,12 @@ export class ImportSurveyResultComponent implements OnInit {
     });
     this.app.showSpinner();
     this.http
-      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getQuestionsTreeAvg?surveyID=34", {
+      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getQuestionsTreeAvg?surveyID=34&surveyDate="+this.surveyDt+"&clientID="+this.clientID+"&teamID="+this.teamID, {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
         this.tempList = data;
-
+this.getChartQuestion();
         this.app.hideSpinner();
       });
   }
@@ -149,12 +165,12 @@ export class ImportSurveyResultComponent implements OnInit {
     });
     // this.app.showSpinner();
     this.http
-      .get("http://localhost:5000/api/getHighQuestionsTreeAvg?surveyID=34", {
+      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getHighQuestionsTreeAvg?surveyID=34&surveyDate="+this.surveyDt+"&clientID="+this.clientID+"&teamID="+this.teamID, {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
         this.topQuesList = data;
-
+this.getLowChart();
         // this.app.hideSpinner();
       });
   }
@@ -166,12 +182,12 @@ export class ImportSurveyResultComponent implements OnInit {
     });
     // this.app.showSpinner();
     this.http
-      .get("http://localhost:5000/api/getLowQuestionsTreeAvg?surveyID=34", {
+      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getLowQuestionsTreeAvg?surveyID=34&surveyDate="+this.surveyDt+"&clientID="+this.clientID+"&teamID="+this.teamID, {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
         this.lowQuesList = data;
-
+        this.genWord(0);
         // this.app.hideSpinner();
       });
   }
@@ -985,7 +1001,7 @@ export class ImportSurveyResultComponent implements OnInit {
       imageUrl = exportUrl + datas;
       var urlCreator = window.URL || window.webkitURL;
 
-      (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
+      // (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
 
       fetch(imageUrl)
         .then((response) => response.blob())
