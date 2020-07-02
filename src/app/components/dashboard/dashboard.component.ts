@@ -10,6 +10,7 @@ import { AppComponent } from "src/app/app.component";
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { delay } from "rxjs/operators";
+import { Observable, of } from "rxjs";
 
 declare var $: any;
 var imageUrl;
@@ -48,6 +49,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getChart();
     this.getChartQuestion();
+    this.getHighQuesChart();
+    this.getLowQuesChart();
   }
 
   logout() {
@@ -61,11 +64,45 @@ export class DashboardComponent implements OnInit {
     });
     // this.app.showSpinner();
     this.http
-      .get("http://localhost:5000/api/getSurveyQuestionAvg?surveyID=10", {
+      .get("http://localhost:5000/api/getSurveyQuestionAvg?surveyID=34", {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
         this.tempQuesList = data;
+        // this.app.hideSpinner();
+      });
+  }
+
+  getHighQuesChart() {
+    var reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      // Authorization: "Bearer " + Token,
+    });
+    // this.app.showSpinner();
+    this.http
+      .get("http://localhost:5000/api/getHighQuestionsTreeAvg?surveyID=34", {
+        headers: reqHeader,
+      })
+      .subscribe((data: any) => {
+        this.tempList = data;
+
+        // this.app.hideSpinner();
+      });
+  }
+
+  getLowQuesChart() {
+    var reqHeader = new HttpHeaders({
+      "Content-Type": "application/json",
+      // Authorization: "Bearer " + Token,
+    });
+    // this.app.showSpinner();
+    this.http
+      .get("http://localhost:5000/api/getLowQuestionsTreeAvg?surveyID=34", {
+        headers: reqHeader,
+      })
+      .subscribe((data: any) => {
+        this.tempList = data;
+
         // this.app.hideSpinner();
       });
   }
@@ -77,7 +114,7 @@ export class DashboardComponent implements OnInit {
     });
     this.app.showSpinner();
     this.http
-      .get("http://localhost:5000/api/getQuestionsTreeAvg?surveyID=10", {
+      .get("http://localhost:5000/api/getQuestionsTreeAvg?surveyID=34", {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
@@ -169,6 +206,8 @@ export class DashboardComponent implements OnInit {
   }
 
   genChartImage(category, avg, treeData, categoryName, val) {
+    // alert(category);
+
     var options = {
       chart: {
         inverted: true,
@@ -285,6 +324,8 @@ export class DashboardComponent implements OnInit {
 
       (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
 
+      // alert("image: " + imageUrl);
+
       fetch(imageUrl)
         .then((response) => response.blob())
         .then((datas) => {
@@ -293,14 +334,18 @@ export class DashboardComponent implements OnInit {
         });
     });
 
-    setTimeout(() => this.pushImageData(categoryName, imageUrl, val), 900);
+    setTimeout(() => this.pushImageData(categoryName, imageUrl, val), 1000);
   }
 
   pushImageData(name, url, val) {
-    this.chartList.push({
-      name: name,
-      imgUrl: url,
-    });
+    // alert(name);
+    // alert(url);
+    if (url != undefined) {
+      this.chartList.push({
+        name: name,
+        imgUrl: url,
+      });
+    }
 
     var increment = val + 1;
     if (increment < 14) {
@@ -315,22 +360,23 @@ export class DashboardComponent implements OnInit {
   }
 
   getChartQuestions() {
+    var category_code;
+    for (var i = 0; i < this.tempList.length; i++) {
+      if (this.tempList[i].treeLevel == 1) {
+        category_code = this.tempList[i].category_code;
+      }
+    }
     for (var i = 0; i < this.tempList.length; i++) {
       this.category = [];
       this.categoryName = "";
       this.avg = [];
       this.treeData = [];
-
+      // alert(category_code);
       if (
         this.tempList[i].treeLevel == 3 ||
-        this.tempList[i].parent_category_code == 305
+        this.tempList[i].parent_category_code == category_code
       ) {
         this.categoryName = this.tempList[i].category_Name;
-        // alert(
-        //   this.tempList[i].category_code +
-        //     " - " +
-        //     this.tempList[i].category_Name
-        // );
 
         for (var j = 0; j < this.tempQuesList.length; j++) {
           if (
@@ -502,18 +548,36 @@ export class DashboardComponent implements OnInit {
   }
 
   pushImageQuesData(categoryName, imageUrl, val) {
-    this.chartList.push({
-      name: categoryName,
-      imgUrl: imageUrl,
-    });
+    var found = false;
+    for (var i = 0; i < this.chartList.length; i++) {
+      // alert(this.chartList[i].imgUrl + " - " + imageUrl);
+      if (this.chartList[i].imgUrl == imageUrl) {
+        // alert(found);
+        // alert(this.chartList[i].name + " - " + categoryName);
+        found = true;
+        i = this.chartList.length + 1;
+      }
+    }
+    if (found == false) {
+      this.chartList.push({
+        name: categoryName,
+        imgUrl: imageUrl,
+      });
+    }
     // alert(val);
     setTimeout(() => this.getChartQuestions(), 500);
 
     if (this.chartList.length > 25) {
-      this.getChartData(this.chartList);
+      for (var i = 0; i < this.chartList.length; i++) {
+        alert(this.chartList[i].name + " - " + this.chartList[i].imgUrl);
+      }
+      // this.getChartData(this.chartList);
+      // this.getHighChart();
     }
   }
+  getHighChart() {}
 
+  getLowChart() {}
   getChartData(imageList) {
     // alert(imageUrl);
     var savePath = "../../shared/img";
