@@ -31,6 +31,8 @@ export class DashboardComponent implements OnInit {
   categoryName = "";
   questionList = [];
   tempList = [];
+  topQuesList = [];
+  lowQuesList = [];
   tempQuesList = [];
   chartList = [];
 
@@ -84,7 +86,7 @@ export class DashboardComponent implements OnInit {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
-        this.tempList = data;
+        this.topQuesList = data;
 
         // this.app.hideSpinner();
       });
@@ -101,7 +103,7 @@ export class DashboardComponent implements OnInit {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
-        this.tempList = data;
+        this.lowQuesList = data;
 
         // this.app.hideSpinner();
       });
@@ -567,17 +569,221 @@ export class DashboardComponent implements OnInit {
     // alert(val);
     setTimeout(() => this.getChartQuestions(), 500);
 
-    if (this.chartList.length > 25) {
-      for (var i = 0; i < this.chartList.length; i++) {
-        alert(this.chartList[i].name + " - " + this.chartList[i].imgUrl);
-      }
+    if (this.chartList.length == 26) {
+      this.getHighChart();
+
       // this.getChartData(this.chartList);
       // this.getHighChart();
     }
   }
-  getHighChart() {}
+  getHighChart() {
+    this.category = [];
+    this.categoryName = "";
+    this.avg = [];
+    this.treeData = [];
 
-  getLowChart() {}
+    for (var i = 0; i < this.topQuesList.length; i++) {
+      this.category.push(
+        this.topQuesList[i].survey_Question_Sequence_Number.toString() +
+          " " +
+          this.topQuesList[i].question_Text
+      );
+      this.treeData.push([this.topQuesList[i].min, this.topQuesList[i].max]);
+      this.avg.push([this.topQuesList[i].avg]);
+    }
+    this.genCharthighLowImage(
+      this.category,
+      this.avg,
+      this.treeData,
+      "Highest"
+    );
+  }
+
+  getLowChart() {
+    this.category = [];
+    this.categoryName = "";
+    this.avg = [];
+    this.treeData = [];
+
+    for (var i = 0; i < this.lowQuesList.length; i++) {
+      this.category.push(
+        this.lowQuesList[i].survey_Question_Sequence_Number.toString() +
+          " " +
+          this.lowQuesList[i].question_Text
+      );
+      this.treeData.push([this.lowQuesList[i].min, this.lowQuesList[i].max]);
+      this.avg.push([this.lowQuesList[i].avg]);
+    }
+    this.genCharthighLowImage(this.category, this.avg, this.treeData, "Lowest");
+  }
+
+  genCharthighLowImage(category, avg, treeData, categoryName) {
+    var options = {
+      chart: {
+        inverted: true,
+        // options3d: {
+        //   enabled: true,
+        //   alpha: 25,
+        //   beta: 25,
+        //   depth: 50,
+        //   viewdistance: 30,
+        // },
+      },
+      title: {
+        text: categoryName,
+        style: { fontSize: "25px", color: "black" },
+      },
+      xAxis: {
+        categories: category,
+        labels: {
+          style: {
+            fontSize: "15px",
+            color: "black",
+          },
+        },
+      },
+      yAxis: {
+        gridLineColor: "#A6A5A5",
+        categories: ["", 1, 2, 3, 4, 5, ""],
+        min: 1,
+        max: 5,
+        // tickPositioner: function () {
+        //   return [0, 1, 2, 3, 4, 5, 6];
+        // },
+        labels: {
+          style: {
+            fontSize: "15px",
+            color: "black",
+          },
+          formatter: function () {
+            if (this.value != 0 && this.value != 6) {
+              return this.value;
+            }
+          },
+        },
+      },
+      plotOptions: {
+        line: {
+          marker: {
+            symbol:
+              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+          },
+          lineWidth: 0,
+          dataLabels: {
+            enabled: true,
+            style: {
+              fontSize: "15px",
+            },
+          },
+        },
+        columnrange: {
+          borderRadius: 16,
+          shadow: true,
+          // dataLabels: {
+          //   enabled: false,
+          // },
+        },
+      },
+
+      legend: {
+        enabled: false,
+      },
+      credits: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: "Categories",
+          pointWidth: 32,
+          color: {
+            linearGradient: {
+              x1: 0,
+              x2: 0,
+              y1: 0,
+              y2: 1,
+            },
+            stops: [
+              [0, "#1707b2"],
+              [1, "#54ffc1"],
+            ],
+          },
+          data: treeData,
+          type: "columnrange",
+        },
+        {
+          name: "Average",
+          pointWidth: 0,
+          data: avg,
+          type: "line",
+        },
+      ],
+    };
+
+    var datas = {
+      // type: "POST",
+      options: JSON.stringify(options),
+      filename: "test.png",
+      type: "image/png",
+      async: true,
+    };
+
+    var exportUrl = "https://export.highcharts.com/";
+    $.post(exportUrl, datas, function (datas) {
+      imageUrl = exportUrl + datas;
+      var urlCreator = window.URL || window.webkitURL;
+
+      (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
+
+      fetch(imageUrl)
+        .then((response) => response.blob())
+        .then((datas) => {
+          // You have access to chart data here
+          // console.log(datas);
+        });
+    });
+
+    setTimeout(() => this.pushHighImageQuesData(categoryName, imageUrl), 1000);
+  }
+
+  pushHighImageQuesData(catName, url) {
+    if (url != undefined) {
+      var chartFound = false;
+      for (var i = 0; i < this.chartList.length; i++) {
+        if (this.chartList[i].imgUrl == url) {
+          chartFound = true;
+          i = this.chartList.length + 1;
+        }
+      }
+      if (catName == "Highest") {
+        if (chartFound == false) {
+          this.chartList.push({
+            name: catName,
+            imgUrl: url,
+          });
+          setTimeout(() => this.getLowChart(), 500);
+        } else {
+          setTimeout(() => this.getHighQuesChart(), 500);
+        }
+      } else if (catName == "Lowest") {
+        if (chartFound == false) {
+          this.chartList.push({
+            name: catName,
+            imgUrl: url,
+          });
+        } else {
+          setTimeout(() => this.getLowChart(), 500);
+        }
+      }
+      if (this.chartList.length > 27) {
+        alert("ok");
+
+        for (var i = 0; i < this.chartList.length; i++) {
+          alert(this.chartList[i].name + " - " + this.chartList[i].imgUrl);
+        }
+      }
+    }
+  }
+
   getChartData(imageList) {
     // alert(imageUrl);
     var savePath = "../../shared/img";
