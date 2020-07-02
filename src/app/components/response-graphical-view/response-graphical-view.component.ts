@@ -16,8 +16,8 @@ declare var $: any;
   styleUrls: ["./response-graphical-view.component.scss"],
 })
 export class ResponseGraphicalViewComponent implements OnInit {
-  //serverUrl = "http://localhost:5000/";
-  serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
+  serverUrl = "http://localhost:5000/";
+  // serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
   markerPath = "../../../assets/images/Marker.png";
 
   // @ViewChild("image") image: ElementRef;
@@ -62,11 +62,12 @@ export class ResponseGraphicalViewComponent implements OnInit {
     });
 
     this.http
-      .get(this.serverUrl + "api/getSurveyQuestionAvg?surveyID=10", {
+      .get(this.serverUrl + "api/getSurveyQuestionAvg?surveyID=34", {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
         this.questionList = data;
+        // alert(this.questionList.length);
       });
   }
 
@@ -77,7 +78,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
     });
     this.app.showSpinner();
     this.http
-      .get(this.serverUrl + "api/getQuestionsTreeAvg?surveyID=10", {
+      .get(this.serverUrl + "api/getQuestionsTreeAvg?surveyID=34", {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
@@ -176,7 +177,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
 
     this.categoryName = obj.label;
     for (var i = 0; i < this.tempList.length; i++) {
-      if (obj.data[0].parentcategory_id == 305 || obj.data[0].tree_level == 3) {
+      if (obj.data[0].parentcategory_id == 747 || obj.data[0].tree_level == 3) {
         this.childFound = true;
         i = this.tempList.length + 1;
       } else if (
@@ -190,6 +191,9 @@ export class ResponseGraphicalViewComponent implements OnInit {
     }
     if (this.childFound == true) {
       for (var i = 0; i < this.questionList.length; i++) {
+        // alert(
+        //   this.questionList[i].category_Code + " - " + obj.data[0].category_id
+        // );
         if (this.questionList[i].category_Code == obj.data[0].category_id) {
           this.categoryName = obj.label;
           this.category.push(
@@ -218,7 +222,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
       if (this.tempList[i].category_Name == this.category[0]) {
         if (
           this.tempList[i].treeLevel == 3 ||
-          this.tempList[i].parent_category_code == 305
+          this.tempList[i].parent_category_code == 747
         ) {
           this.toastr.errorToastr("No Further Expand", "Error", {
             toastTimeout: 2500,
