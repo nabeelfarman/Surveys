@@ -117,7 +117,8 @@ export class ImportSurveyResultComponent implements OnInit {
 
     this.http.post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader }).subscribe((data: any) => {
     //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
-
+      alert(data);
+      this.app.hideSpinner();
       if(data.msg != "Success"){
         this.toastr.errorToastr(data[0].msg, "Error", { toastTimeout: 2500, });
       }else{
@@ -142,7 +143,7 @@ export class ImportSurveyResultComponent implements OnInit {
     });
     // this.app.showSpinner();
     this.http
-      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=10", {
+      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=34", {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
@@ -158,7 +159,7 @@ export class ImportSurveyResultComponent implements OnInit {
     });
     this.app.showSpinner();
     this.http
-      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getQuestionsTreeAvg?surveyID=10", {
+      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getQuestionsTreeAvg?surveyID=34", {
         headers: reqHeader,
       })
       .subscribe((data: any) => {
@@ -167,6 +168,10 @@ export class ImportSurveyResultComponent implements OnInit {
         this.app.hideSpinner();
       });
   }
+
+
+
+
 
 
   downloadFile(){
@@ -574,10 +579,12 @@ export class ImportSurveyResultComponent implements OnInit {
   }
 
   pushImageData(name, url, val) {
-    this.chartList.push({
-      name: name,
-      imgUrl: url,
-    });
+    if (url != undefined) {
+      this.chartList.push({
+        name: name,
+        imgUrl: url,
+      });
+    }
 
     var increment = val + 1;
     if (increment < 14) {
@@ -592,22 +599,23 @@ export class ImportSurveyResultComponent implements OnInit {
   }
 
   getChartQuestions() {
+    var category_code;
+    for (var i = 0; i < this.tempList.length; i++) {
+      if (this.tempList[i].treeLevel == 1) {
+        category_code = this.tempList[i].category_code;
+      }
+    }
     for (var i = 0; i < this.tempList.length; i++) {
       this.category = [];
       this.categoryName = "";
       this.avg = [];
       this.treeData = [];
-
+      // alert(category_code);
       if (
         this.tempList[i].treeLevel == 3 ||
-        this.tempList[i].parent_category_code == 305
+        this.tempList[i].parent_category_code == category_code
       ) {
         this.categoryName = this.tempList[i].category_Name;
-        // alert(
-        //   this.tempList[i].category_code +
-        //     " - " +
-        //     this.tempList[i].category_Name
-        // );
 
         for (var j = 0; j < this.tempQuesList.length; j++) {
           if (
