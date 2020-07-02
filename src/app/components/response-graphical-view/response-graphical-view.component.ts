@@ -16,8 +16,8 @@ declare var $: any;
   styleUrls: ["./response-graphical-view.component.scss"],
 })
 export class ResponseGraphicalViewComponent implements OnInit {
-  serverUrl = "http://localhost:5000/";
-  // serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
+  //serverUrl = "http://localhost:5000/";
+  serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
   markerPath = "../../../assets/images/Marker.png";
 
   // @ViewChild("image") image: ElementRef;

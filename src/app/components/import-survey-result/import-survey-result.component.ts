@@ -77,54 +77,27 @@ export class ImportSurveyResultComponent implements OnInit {
       });
   }
 
-  //function for get generate survey report and download report
-  // genReport(chartsList) {
-
-  //   alert(chartsList);
-  //   alert('start');
-  //   this.app.showSpinner();
-  //   var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
-
-  //   this.http.get(this.wordServerUrl + "genReport?ChartsImages=" + chartsList, { headers: reqHeader }).subscribe((data: any) => {
-  //   //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
-
-  //     if(data.length > 0){
-  //       this.toastr.errorToastr(data[0].msg, "Error", { toastTimeout: 2500, });
-  //     }else{
-
-  //       alert('End...Done');
-  //       //window.open("C:/SurveyTemplate/surveyDuckReport.doc");
-
-  //     }
-
-  //     this.app.hideSpinner();
-
-  //   });
-  // }
-
 
   genReport(chartsList) {
     
-    alert(chartsList);
-    alert('start');
-
     var reqData = {
-      images: JSON.stringify(chartsList),
-  };
+        images: JSON.stringify(chartsList),
+    };
 
     this.app.showSpinner();
     var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
     this.http.post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader }).subscribe((data: any) => {
     //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
-      alert(data);
+
+      alert(data.msg);
+
       this.app.hideSpinner();
       if(data.msg != "Success"){
         this.toastr.errorToastr(data[0].msg, "Error", { toastTimeout: 2500, });
       }else{
 
-        alert('End...Done');
-        //window.open("C:/SurveyTemplate/surveyDuckReport.doc");
+        window.open("C:/SurveyTemplate/surveyDuckReport.doc");
 
       }
 
@@ -142,11 +115,7 @@ export class ImportSurveyResultComponent implements OnInit {
       // Authorization: "Bearer " + Token,
     });
     // this.app.showSpinner();
-    this.http
-      .get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=34", {
-        headers: reqHeader,
-      })
-      .subscribe((data: any) => {
+    this.http.get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=34", { headers: reqHeader, }).subscribe((data: any) => {
         this.tempQuesList = data;
         // this.app.hideSpinner();
       });
@@ -463,7 +432,7 @@ export class ImportSurveyResultComponent implements OnInit {
         // },
       },
       title: {
-        text: "",
+        text: categoryName,
         style: { fontSize: "25px", color: "black" },
       },
       xAxis: {
@@ -580,10 +549,21 @@ export class ImportSurveyResultComponent implements OnInit {
 
   pushImageData(name, url, val) {
     if (url != undefined) {
-      this.chartList.push({
-        name: name,
-        imgUrl: url,
-      });
+      var chartFound =false;
+      for(var i=0;i<this.chartList.length;i++){
+        if (this.chartList[i].imgUrl == imageUrl) {
+          // alert(found);
+          // alert(this.chartList[i].name + " - " + categoryName);
+          chartFound = true;
+          i = this.chartList.length + 1;
+        }
+      }
+      if(chartFound==false){
+        this.chartList.push({
+          name: name,
+          imgUrl: url,
+        });
+      }
     }
 
     var increment = val + 1;
@@ -787,10 +767,22 @@ export class ImportSurveyResultComponent implements OnInit {
   }
 
   pushImageQuesData(categoryName, imageUrl, val) {
-    this.chartList.push({
-      name: categoryName,
-      imgUrl: imageUrl,
-    });
+    var found = false;
+    for (var i = 0; i < this.chartList.length; i++) {
+      // alert(this.chartList[i].imgUrl + " - " + imageUrl);
+      if (this.chartList[i].imgUrl == imageUrl) {
+        // alert(found);
+        // alert(this.chartList[i].name + " - " + categoryName);
+        found = true;
+        i = this.chartList.length + 1;
+      }
+    }
+    if (found == false) {
+      this.chartList.push({
+        name: categoryName,
+        imgUrl: imageUrl,
+      });
+    }
     // alert(val);
     setTimeout(() => this.getChartQuestions(), 500);
 
