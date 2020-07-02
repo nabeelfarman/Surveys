@@ -118,7 +118,7 @@ export class ImportSurveyResultComponent implements OnInit {
     this.http.post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader }).subscribe((data: any) => {
     //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
 
-      if(data.length > 0){
+      if(data.msg != "Success"){
         this.toastr.errorToastr(data[0].msg, "Error", { toastTimeout: 2500, });
       }else{
 
