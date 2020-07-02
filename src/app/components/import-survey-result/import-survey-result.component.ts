@@ -19,8 +19,8 @@ var imageUrl;
   styleUrls: ["./import-survey-result.component.scss"],
 })
 export class ImportSurveyResultComponent implements OnInit {
-  //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
-  wordServerUrl = "http://localhost:12345/api/";
+  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
+  //wordServerUrl = "http://localhost:12345/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
   tempData = [];
@@ -106,9 +106,25 @@ export class ImportSurveyResultComponent implements OnInit {
       if(data.msg != "Success"){
         this.toastr.errorToastr(data.msg, "Error", { toastTimeout: 2500, });
       }else{
+        // // debugger;
+        // // var fileData = this.base64ToBlob(data.fileData, 'docx');
+        // // const a =window.document.createElement('a');
 
-        window.open("C:/SurveyTemplate/surveyDuckReport.doc");
+        // // a.href = window.URL.createObjectURL(fileData);
+        // // a.download;
+        // // a.click();
+        // if(data.fileData != undefined || data.fileData != ""){
+        //   var fileData = this.base64ToBlob(data.fileData);
 
+        //   window.URL.createObjectURL(fileData);
+          
+        // }
+        
+
+
+        //window.open("C:/SurveyTemplate/surveyDuckReport.doc");
+        this.toastr.errorToastr(data.msg, "Success", { toastTimeout: 2500, });
+        this.app.hideSpinner();
       }
 
       this.app.hideSpinner();
@@ -116,12 +132,29 @@ export class ImportSurveyResultComponent implements OnInit {
     });
   }
 
+  base64ToBlob(b64Data, contentType='', sliceSize=512) {
+    b64Data = b64Data.replace(/\s/g, ''); //IE compatibility...
+    let byteCharacters = atob(b64Data);
+    let byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        let slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        let byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        let byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+    return new Blob(byteArrays, {type: contentType});
+}
 
   getTableData(item){
 
     this.clientID = item.client_ID;
     this.teamID = item.team_ID;
-    this.surveyDt = item.survey_Date;
+    //this.surveyDt = item.survey_Date;
+    this.surveyDt = '7/1/2020';
 
     alert(this.clientID + " - " + this.teamID + " - " + this.surveyDt + " - ")
 
@@ -136,6 +169,7 @@ export class ImportSurveyResultComponent implements OnInit {
     // this.app.showSpinner();
     this.http.get("http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=34&surveyDate="+this.surveyDt+"&clientID="+this.clientID+"&teamID="+this.teamID, { headers: reqHeader, }).subscribe((data: any) => {
         this.tempQuesList = data;
+        alert(this.tempQuesList);
         this.getHighQuesChart();
         // this.app.hideSpinner();
       });
@@ -153,7 +187,9 @@ export class ImportSurveyResultComponent implements OnInit {
       })
       .subscribe((data: any) => {
         this.tempList = data;
-this.getChartQuestion();
+        alert(this.tempList);
+
+        this.getChartQuestion();
         this.app.hideSpinner();
       });
   }
@@ -170,7 +206,9 @@ this.getChartQuestion();
       })
       .subscribe((data: any) => {
         this.topQuesList = data;
-this.getLowChart();
+        alert(this.topQuesList);
+
+        this.getLowQuesChart();
         // this.app.hideSpinner();
       });
   }
@@ -187,6 +225,8 @@ this.getLowChart();
       })
       .subscribe((data: any) => {
         this.lowQuesList = data;
+        alert(this.lowQuesList);
+        
         this.genWord(0);
         // this.app.hideSpinner();
       });
