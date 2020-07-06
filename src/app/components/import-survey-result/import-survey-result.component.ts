@@ -20,7 +20,8 @@ var imageUrl;
 })
 export class ImportSurveyResultComponent implements OnInit {
   // wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
-  wordServerUrl = "http://localhost:5099/api/";
+  // wordServerUrl = "http://localhost:5099/api/";
+  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
   tempData = [];
@@ -87,7 +88,7 @@ export class ImportSurveyResultComponent implements OnInit {
   }
 
   genReport(chartsList) {
-    alert("ok");
+    // alert("ok");
     var reqData = {
       images: JSON.stringify(chartsList),
       Consultant_ID: "1",
