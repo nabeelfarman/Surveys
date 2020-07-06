@@ -61,9 +61,13 @@ export class ResponseGraphicalViewComponent implements OnInit {
     });
 
     this.http
-      .get(this.serverUrl + "api/getSurveyQuestionAvg?surveyID=34", {
-        headers: reqHeader,
-      })
+      .get(
+        this.serverUrl +
+          "api/getSurveyQuestionAvg?surveyID=34&surveyDate=7/1/2020&clientID=7&teamID=18",
+        {
+          headers: reqHeader,
+        }
+      )
       .subscribe((data: any) => {
         this.questionList = data;
       });
@@ -76,9 +80,13 @@ export class ResponseGraphicalViewComponent implements OnInit {
     });
     this.app.showSpinner();
     this.http
-      .get(this.serverUrl + "api/getQuestionsTreeAvg?surveyID=34", {
-        headers: reqHeader,
-      })
+      .get(
+        this.serverUrl +
+          "api/getQuestionsTreeAvg?surveyID=34&surveyDate=7/1/2020&clientID=7&teamID=18",
+        {
+          headers: reqHeader,
+        }
+      )
       .subscribe((data: any) => {
         this.tempList = data;
 
