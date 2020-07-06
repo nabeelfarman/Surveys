@@ -53,6 +53,8 @@ export class ImportSurveyResultComponent implements OnInit {
   clientID = "";
   surveyDt = "";
   teamID = "";
+  teamName = "";
+  noOfRespondent = "";
 
   constructor(
     public toastr: ToastrManager,
@@ -90,9 +92,11 @@ export class ImportSurveyResultComponent implements OnInit {
       images: JSON.stringify(chartsList),
       Consultant_ID: "1",
       Survey_ID: "34",
-      Survey_Date: "2020-07-01",
-      Client_ID: "7",
-      Team_ID: "18",
+      Survey_Date: this.surveyDt,
+      Client_ID: this.clientID,
+      Team_ID: this.teamID,
+      name: this.teamName,
+      NoOfRespondents: this.noOfRespondent,
     };
 
     this.app.showSpinner();
@@ -105,7 +109,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
         this.app.hideSpinner();
         if (data.msg != "Success") {
-          this.toastr.successToastr(data.msg, "Error", { toastTimeout: 2500 });
+          this.toastr.errorToastr(data.msg, "Error", { toastTimeout: 2500 });
         } else {
           // // debugger;
           // // var fileData = this.base64ToBlob(data.fileData, 'docx');
@@ -122,7 +126,9 @@ export class ImportSurveyResultComponent implements OnInit {
           // }
 
           //window.open("C:/SurveyTemplate/surveyDuckReport.doc");
-          this.toastr.errorToastr(data.msg, "Success", { toastTimeout: 2500 });
+          this.toastr.successToastr(data.msg, "Success", {
+            toastTimeout: 2500,
+          });
           this.app.hideSpinner();
         }
 
@@ -152,6 +158,8 @@ export class ImportSurveyResultComponent implements OnInit {
     this.teamID = item.team_ID;
     //this.surveyDt = item.survey_Date;
     this.surveyDt = "7/1/2020";
+    this.teamName = item.team_Name;
+    this.noOfRespondent = item.noOfRespondents;
 
     // alert(this.clientID + " - " + this.teamID + " - " + this.surveyDt + " - ");
 
@@ -457,6 +465,11 @@ export class ImportSurveyResultComponent implements OnInit {
   }
 
   genWord(val) {
+    if (this.chartList.length == 28) {
+      // alert(this.chartList.length);
+      this.chartList = [];
+      // alert(this.chartList.length);
+    }
     this.app.showSpinner();
     for (var i = val; i < this.tempList.length; i++) {
       this.category = [];
@@ -671,8 +684,6 @@ export class ImportSurveyResultComponent implements OnInit {
       var chartFound = false;
       for (var i = 0; i < this.chartList.length; i++) {
         if (this.chartList[i].imgUrl == imageUrl) {
-          // alert(found);
-          // alert(this.chartList[i].name + " - " + categoryName);
           chartFound = true;
           i = this.chartList.length + 1;
         }
@@ -683,18 +694,15 @@ export class ImportSurveyResultComponent implements OnInit {
           imgUrl: url,
         });
       }
+      var increment = val + 1;
+      if (increment < 14) {
+        this.genWord(increment);
+      } else if (increment == 14) {
+        this.getChartQuestions();
+      }
+    } else {
+      this.genWord(val);
     }
-
-    var increment = val + 1;
-    if (increment < 14) {
-      this.genWord(increment);
-    } else if (increment == 14) {
-      this.getChartQuestions();
-    }
-
-    // this.getChartQuestions();
-
-    // setInterval(() => this.getChartData(), 1000);
   }
 
   getChartQuestions() {
@@ -709,7 +717,6 @@ export class ImportSurveyResultComponent implements OnInit {
       this.categoryName = "";
       this.avg = [];
       this.treeData = [];
-      // alert(category_code);
       if (
         this.tempList[i].treeLevel == 3 ||
         this.tempList[i].parent_category_code == category_code
@@ -747,10 +754,10 @@ export class ImportSurveyResultComponent implements OnInit {
             this.categoryName,
             i
           );
+          console.log(this.categoryName);
 
           i = this.tempList.length + 1;
         } else {
-          // alert(i);
           i = i;
         }
       }
@@ -888,10 +895,7 @@ export class ImportSurveyResultComponent implements OnInit {
   pushImageQuesData(categoryName, imageUrl, val) {
     var found = false;
     for (var i = 0; i < this.chartList.length; i++) {
-      // alert(this.chartList[i].imgUrl + " - " + imageUrl);
       if (this.chartList[i].imgUrl == imageUrl) {
-        // alert(found);
-        // alert(this.chartList[i].name + " - " + categoryName);
         found = true;
         i = this.chartList.length + 1;
       }
@@ -902,10 +906,10 @@ export class ImportSurveyResultComponent implements OnInit {
         imgUrl: imageUrl,
       });
     }
-    // alert(val);
     setTimeout(() => this.getChartQuestions(), 500);
 
     if (this.chartList.length == 26) {
+      console.log("chartlist length 26");
       this.getHighChart();
     }
   }
@@ -1094,6 +1098,7 @@ export class ImportSurveyResultComponent implements OnInit {
             name: catName,
             imgUrl: url,
           });
+          console.log("highest chart");
           setTimeout(() => this.getLowChart(), 500);
         } else {
           setTimeout(() => this.getHighQuesChart(), 500);
@@ -1104,11 +1109,14 @@ export class ImportSurveyResultComponent implements OnInit {
             name: catName,
             imgUrl: url,
           });
+          console.log("lowest chart");
         } else {
           setTimeout(() => this.getLowChart(), 500);
         }
       }
       if (this.chartList.length > 27) {
+        console.log("chart list length 28");
+
         this.genReport(this.chartList);
         // alert("ok");
 
