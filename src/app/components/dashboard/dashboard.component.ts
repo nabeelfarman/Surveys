@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { delay } from "rxjs/operators";
 import { Observable, of } from "rxjs";
+import * as Highcharts from "highcharts";
 
 declare var $: any;
 var imageUrl;
@@ -21,7 +22,9 @@ var imageUrl;
   styleUrls: ["./dashboard.component.scss"],
 })
 export class DashboardComponent implements OnInit {
-  serverUrl = "http://localhost:5010/";
+  // serverUrl = "http://localhost:5010/";
+  wordServerUrl = "http://localhost:5099/api/";
+  serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/";
   path = "../../../assets/documents/Author.docx";
 
   EXPORT_WIDTH = 1000;
@@ -50,9 +53,9 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChart();
-    this.getChartQuestion();
-    this.getHighQuesChart();
-    this.getLowQuesChart();
+    // this.getChartQuestion();
+    // this.getHighQuesChart();
+    // this.getLowQuesChart();
   }
 
   logout() {
@@ -66,9 +69,10 @@ export class DashboardComponent implements OnInit {
     });
     // this.app.showSpinner();
     this.http
-      .get("http://localhost:5000/api/getSurveyQuestionAvg?surveyID=34", {
-        headers: reqHeader,
-      })
+      .get(
+        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=34&surveyDate=7-1-2020&clientID=7&teamID=18",
+        { headers: reqHeader }
+      )
       .subscribe((data: any) => {
         this.tempQuesList = data;
         // this.app.hideSpinner();
@@ -82,9 +86,12 @@ export class DashboardComponent implements OnInit {
     });
     // this.app.showSpinner();
     this.http
-      .get("http://localhost:5000/api/getHighQuestionsTreeAvg?surveyID=34", {
-        headers: reqHeader,
-      })
+      .get(
+        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049//api/getHighQuestionsTreeAvg?surveyID=34&surveyDate=7-1-2020&clientID=7&teamID=18",
+        {
+          headers: reqHeader,
+        }
+      )
       .subscribe((data: any) => {
         this.topQuesList = data;
 
@@ -99,9 +106,12 @@ export class DashboardComponent implements OnInit {
     });
     // this.app.showSpinner();
     this.http
-      .get("http://localhost:5000/api/getLowQuestionsTreeAvg?surveyID=34", {
-        headers: reqHeader,
-      })
+      .get(
+        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getLowQuestionsTreeAvg?surveyID=34&surveyDate=7-1-2020&clientID=7&teamID=18",
+        {
+          headers: reqHeader,
+        }
+      )
       .subscribe((data: any) => {
         this.lowQuesList = data;
 
@@ -116,9 +126,12 @@ export class DashboardComponent implements OnInit {
     });
     this.app.showSpinner();
     this.http
-      .get("http://localhost:5000/api/getQuestionsTreeAvg?surveyID=34", {
-        headers: reqHeader,
-      })
+      .get(
+        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getQuestionsTreeAvg?surveyID=34&surveyDate=7-1-2020&clientID=7&teamID=18",
+        {
+          headers: reqHeader,
+        }
+      )
       .subscribe((data: any) => {
         this.tempList = data;
 
@@ -208,8 +221,6 @@ export class DashboardComponent implements OnInit {
   }
 
   genChartImage(category, avg, treeData, categoryName, val) {
-    // alert(category);
-
     var options = {
       chart: {
         inverted: true,
@@ -311,32 +322,115 @@ export class DashboardComponent implements OnInit {
       ],
     };
 
-    var datas = {
-      // type: "POST",
-      options: JSON.stringify(options),
-      filename: "test.png",
-      type: "image/png",
-      async: true,
+    var container = document.getElementById("#container");
+
+    var charts = Highcharts.chart("container", options);
+    var svg = charts.getSVG();
+    console.log(svg);
+    // var chartList = [];
+    // for (var i = 0; i < 28; i++) {
+    //   chartList.push({
+    //     name: "Test",
+    //     imgUrl: svg,
+    //   });
+    // }
+    var imageURL = "";
+    var dataString = "type=image/jpeg&filename=results&width=500&svg=" + svg;
+    $.ajax({
+      type: "POST",
+      data: dataString,
+      url: "../../../../src/assets/images/temp/",
+      async: false,
+      success: function (data) {
+        imageURL = data;
+        console.log(imageURL);
+      },
+    });
+    return;
+    // if (chartList.length == 28) {
+    //   this.genReport(chartList);
+    // }
+  }
+
+  genReport(chartsList) {
+    // alert("ok");
+    var reqData = {
+      images: JSON.stringify(chartsList),
+      Consultant_ID: "1",
+      Survey_ID: "34",
+      Survey_Date: "7-5-2020",
+      Client_ID: "7",
+      Team_ID: "18",
+      name: "T1",
+      NoOfRespondents: "6",
     };
 
-    var exportUrl = "https://export.highcharts.com/";
-    $.post(exportUrl, datas, function (datas) {
-      imageUrl = exportUrl + datas;
-      var urlCreator = window.URL || window.webkitURL;
+    this.app.showSpinner();
+    var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-      (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
+    this.http
+      .post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader })
+      .subscribe((data: any) => {
+        //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
 
-      // alert("image: " + imageUrl);
+        this.app.hideSpinner();
+        if (data.msg != "Success") {
+          this.toastr.errorToastr(data.msg, "Error", { toastTimeout: 2500 });
+        } else {
+          this.toastr.successToastr(data.msg, "Success", {
+            toastTimeout: 2500,
+          });
+          this.app.hideSpinner();
+        }
 
-      fetch(imageUrl)
-        .then((response) => response.blob())
-        .then((datas) => {
-          // You have access to chart data here
-          // console.log(datas);
-        });
-    });
+        this.app.hideSpinner();
+      });
+  }
 
-    setTimeout(() => this.pushImageData(categoryName, imageUrl, val), 1000);
+  convertChartImage() {
+    // var elm = document.getElementById("#element");
+    var svgSize;
+    var canvas = <HTMLCanvasElement>document.createElement("element");
+    canvas.width = svgSize.width("400");
+    canvas.height = svgSize.height("400");
+    var ctx = canvas.getContext("2d");
+
+    var img = document.createElement("img");
+    // img.setAttribute(
+    //   "src",
+    //   "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)))
+    // );
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+      window.open(canvas.toDataURL("image/png"));
+    };
+
+    // domtoimage
+    //   .toPng(newCandidatesTable)
+    //   .then(function (dataUrl) {
+    //     var img = new Image();
+    //     img.src = dataUrl;
+    //     (<HTMLImageElement>document.querySelector("#preview")).src = dataUrl;
+
+    //     document.body.appendChild(img);
+    //   })
+    // .catch(function (error) {
+    //   console.error("oops, something went wrong!", error);
+    // });
+    // var lebar ="400";
+    // var tinggi ="400";
+    // html2canvas(elm, {
+    //   logging: true,
+    //   allowTaint: false,
+    //   useCORS: true,
+    // }).then(function (canvas) {
+    //   var img = canvas.toDataURL("image/png");
+    //   (<HTMLImageElement>document.querySelector("#preview")).src = img;
+    // });
+    // var myCanvas = <HTMLCanvasElement>document.getElementById("#preview");
+    // var ctx = document.getElementById("2d");
+    // const dataURI = myCanvas.toDataURL("image/jpeg");
+    // console.log(dataURI);
   }
 
   pushImageData(name, url, val) {

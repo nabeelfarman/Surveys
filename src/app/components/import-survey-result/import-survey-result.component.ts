@@ -19,9 +19,9 @@ var imageUrl;
   styleUrls: ["./import-survey-result.component.scss"],
 })
 export class ImportSurveyResultComponent implements OnInit {
-  // wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
-  // wordServerUrl = "http://localhost:5099/api/";
   wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
+  // wordServerUrl = "http://localhost:5099/api/";
+  // wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
   tempData = [];
