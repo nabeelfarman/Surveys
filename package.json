@@ -28,7 +28,7 @@
     "bootstrap": "^4.4.1",
     "font-awesome": "^4.7.0",
     "highcharts": "^6.2.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ng6-toastr-notifications": "^1.0.4",
     "ngx-bootstrap": "^5.5.0",
     "ngx-cookie-service": "^3.0.4",
