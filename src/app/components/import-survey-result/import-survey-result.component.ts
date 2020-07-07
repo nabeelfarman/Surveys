@@ -11,6 +11,8 @@ import { CookieService } from "ngx-cookie-service";
 
 declare var $: any;
 import * as XLSX from "xlsx";
+import { state } from '@angular/animations';
+import { stat, Stats } from 'fs';
 var imageUrl;
 
 @Component({
@@ -20,8 +22,8 @@ var imageUrl;
 })
 export class ImportSurveyResultComponent implements OnInit {
   // wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
-  // wordServerUrl = "http://localhost:5099/api/";
-  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
+  wordServerUrl = "http://localhost:12345/api/";
+  //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
   tempData = [];
@@ -67,7 +69,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
   ngOnInit(): void {
     this.surveyDate = new Date().toISOString().split("T")[0];
-    // this.getSurveys();
+    this.getSurveys();
     // this.getChart();
     // this.getChartQuestion();
     // this.getHighQuesChart();
@@ -87,8 +89,43 @@ export class ImportSurveyResultComponent implements OnInit {
       });
   }
 
+  downloadReport(type, item){
+
+    this.app.showSpinner();
+    var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
+
+    this.http.get(this.wordServerUrl + "downloadfile?fileName=T1_712020.pdf", { headers: reqHeader }).subscribe((data: any) => {
+        //this.surveyData = data;
+        this.app.hideSpinner();
+      });
+
+    //var tmpDate = this.formatDate(item.survey_Date)
+    var tmpDate = this.formatDate("7/1/2020");
+    var fileName = item.team_Name + "_" + tmpDate + "." + type;
+    
+    alert(fileName);
+
+    //require
+
+    // $("div").load("C:/SurveyTemplete/test.html", function(response, status, xhr) {
+
+    //   if (status == "error") {
+    //     var msg = "Sorry but there was an error: ";
+    //     $(this).html(msg + xhr.status + " " + xhr.statusText);
+    //   }
+
+    // });
+
+  }
+
+  
+
   genReport(chartsList) {
-    // alert("ok");
+    alert("ok");
+
+    //return false;
+
+
     var reqData = {
       images: JSON.stringify(chartsList),
       Consultant_ID: "1",
@@ -1127,4 +1164,18 @@ export class ImportSurveyResultComponent implements OnInit {
       }
     }
   }
+
+
+  formatDate(reqDate){
+    var x=new Date(reqDate);
+    var dd = x.getDate();
+    var mm = x.getMonth()+1;
+    var yy = x.getFullYear();
+    //return dd +"/" + mm+"/" + yy;
+    //return mm +"/" + dd +"/" + yy;
+
+    return mm + "" + dd + "" + yy;
+ }
+
+
 }

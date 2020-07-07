@@ -110,11 +110,19 @@
             <td>{{item.noOfRespondents}}</td>
             <td>
                 <div class="table-data-feature">
-                <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Download" data-original-title="Download" (click)="genReport(item)"> -->
-                <button class="item" data-toggle="tooltip" data-placement="top" title="Download" data-original-title="Download" (click)="getTableData(item)">
-                    <i class="zmdi zmdi-download"></i>
-                </button>
+                
+                  <button class="item" data-toggle="tooltip" data-placement="top" title="Download" data-original-title="Download" (click)="getTableData(item)">
+                      <i class="zmdi zmdi-settings"></i>
+                  </button>
+
+                  <button class="item" data-toggle="tooltip" data-placement="top" title="Download" data-original-title="Download" (click)="downloadReport('pdf', item)">
+                    <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Download" data-original-title="Download" (click)="getTableData(item)"> -->
+                      <i class="zmdi zmdi-download"></i>
+                  </button>
+
+                  <a href="http://localhost:12345/api/downloadfile?fileName=T1_712020.pdf" target="_blank" > click & download</a>
                 </div>
+                
             </td>
             </tr>
             <tr class="spacer"></tr>
