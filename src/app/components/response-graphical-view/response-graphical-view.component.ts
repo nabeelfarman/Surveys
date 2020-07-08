@@ -18,7 +18,7 @@ declare var $: any;
 export class ResponseGraphicalViewComponent implements OnInit {
   //serverUrl = "http://localhost:5000/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/";
-  markerPath = "../../../assets/images/Marker.png";
+  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
 
   // @ViewChild("image") image: ElementRef;
   // @ViewChild("canvas") canvas: ElementRef;
@@ -33,7 +33,9 @@ export class ResponseGraphicalViewComponent implements OnInit {
   betaAngle = "";
   depthAngle = "";
 
+  cmbSurvey = "";
   categoryName = "";
+  surveyList = [];
   questionList = [];
   tempList = [];
   menuTree: TreeNode[];
@@ -50,11 +52,46 @@ export class ResponseGraphicalViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getChartData();
-    this.getQuestionData();
+    this.getSurveysAll();
   }
 
-  getQuestionData() {
+  getSurveysAll() {
+    this.app.showSpinner();
+    var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
+
+    this.http
+      .get(this.wordServerUrl + "getSurveyDetailAll", { headers: reqHeader })
+      .subscribe((data: any) => {
+        this.surveyList = data;
+        this.app.hideSpinner();
+      });
+  }
+  getSurveyChart() {
+    var surveyDate;
+    var clientID;
+
+    for (var i = 0; i < this.surveyList.length; i++) {
+      if (this.surveyList[i].team_ID == this.cmbSurvey) {
+        surveyDate = this.formatDate(this.surveyList[i].survey_Date);
+        clientID = this.surveyList[i].client_ID;
+        i = this.surveyList.length + 1;
+      }
+    }
+
+    this.getChartData(surveyDate, clientID, this.cmbSurvey);
+    this.getQuestionData(surveyDate, clientID, this.cmbSurvey);
+  }
+
+  formatDate(reqDate) {
+    var x = new Date(reqDate);
+    var dd = x.getDate();
+    var mm = x.getMonth() + 1;
+    var yy = x.getFullYear();
+
+    return mm + "/" + dd + "/" + yy;
+  }
+
+  getQuestionData(surveyDate, clientID, teamID) {
     var reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       // Authorization: "Bearer " + Token,
@@ -63,7 +100,12 @@ export class ResponseGraphicalViewComponent implements OnInit {
     this.http
       .get(
         this.serverUrl +
-          "api/getSurveyQuestionAvg?surveyID=38&surveyDate=7/8/2020&clientID=7&teamID=18",
+          "api/getSurveyQuestionAvg?surveyID=38&surveyDate=" +
+          surveyDate +
+          "&clientID=" +
+          clientID +
+          "&teamID=" +
+          teamID,
         {
           headers: reqHeader,
         }
@@ -73,7 +115,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
       });
   }
 
-  getChartData() {
+  getChartData(surveyDate, clientID, teamID) {
     var reqHeader = new HttpHeaders({
       "Content-Type": "application/json",
       // Authorization: "Bearer " + Token,
@@ -82,7 +124,12 @@ export class ResponseGraphicalViewComponent implements OnInit {
     this.http
       .get(
         this.serverUrl +
-          "api/getQuestionsTreeAvg?surveyID=38&surveyDate=7/8/2020&clientID=7&teamID=18",
+          "api/getQuestionsTreeAvg?surveyID=38&surveyDate=" +
+          surveyDate +
+          "&clientID=" +
+          clientID +
+          "&teamID=" +
+          teamID,
         {
           headers: reqHeader,
         }
