@@ -250,9 +250,30 @@ export class ResponseGraphicalViewComponent implements OnInit {
               this.tempList[j].parent_category_code ==
               this.tempList[i].category_code
             ) {
-              this.category.push(this.tempList[j].category_Name);
-              this.avg.push([this.tempList[j].avg]);
-              this.treeData.push([this.tempList[j].min, this.tempList[j].max]);
+              if (this.category.length == 0) {
+                this.category.push(this.tempList[j].category_Name);
+                this.avg.push([this.tempList[j].avg]);
+                this.treeData.push([
+                  this.tempList[j].min,
+                  this.tempList[j].max,
+                ]);
+              } else {
+                var categoryFound = false;
+                for (var l = 0; l < this.category.length; l++) {
+                  if (this.category[l] == this.tempList[j].category_Name) {
+                    categoryFound = true;
+                    l = this.category.length + 1;
+                  }
+                }
+                if (categoryFound == false) {
+                  this.category.push(this.tempList[j].category_Name);
+                  this.avg.push([this.tempList[j].avg]);
+                  this.treeData.push([
+                    this.tempList[j].min,
+                    this.tempList[j].max,
+                  ]);
+                }
+              }
             }
           }
         }

@@ -265,7 +265,7 @@ export class DashboardComponent implements OnInit {
         },
       },
       yAxis: {
-        gridLineColor: "#A6A5A5",
+        gridLineColor: "#c0c0c0",
         categories: ["", 1, 2, 3, 4, 5, ""],
         min: 1,
         max: 5,
@@ -287,8 +287,11 @@ export class DashboardComponent implements OnInit {
       plotOptions: {
         line: {
           marker: {
-            symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+            symbol: "diamond",
+            fillColor: "black",
+            // "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+            // "url(../../../../../assets/images/Marker2.png)",
+            radius: 10,
           },
           lineWidth: 0,
           dataLabels: {
@@ -299,7 +302,7 @@ export class DashboardComponent implements OnInit {
           },
         },
         columnrange: {
-          borderRadius: 16,
+          // borderRadius: 16,
           shadow: true,
           // dataLabels: {
           //   enabled: false,
@@ -315,18 +318,23 @@ export class DashboardComponent implements OnInit {
       },
       series: [
         {
+          // stroke: "#b1b1b1",
+          // strokeWidth: 2,
+          borderColor: "#b1b1b1",
           name: "Categories",
-          pointWidth: 32,
+          pointWidth: 30,
           color: {
             linearGradient: {
               x1: 0,
-              x2: 0,
+              x2: 1,
               y1: 0,
-              y2: 1,
+              y2: 0,
             },
             stops: [
-              [0, "#1707b2"],
-              [1, "#54ffc1"],
+              [0, "#727272"],
+              // [0, "#1707b2"],
+              // [1, "#54ffc1"],
+              [1, "#f2f2f2"],
             ],
           },
           data: treeData,
@@ -349,7 +357,8 @@ export class DashboardComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
+    var render_height =
+      ((render_width * charts.chartHeight) / charts.chartWidth) * 2;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -364,7 +373,7 @@ export class DashboardComponent implements OnInit {
     var image;
     image = btoa(unescape(encodeURIComponent(svg)));
 
-    console.log(svg);
+    console.log(image);
     var chartList = [];
     for (var i = 0; i < 1; i++) {
       chartList.push({
@@ -372,6 +381,7 @@ export class DashboardComponent implements OnInit {
         imgUrl: image,
       });
     }
+    return;
     // var imageURL = "";
     // var dataString = "type=image/jpeg&filename=results&width=500&svg=" + svg;
     // $.ajax({
