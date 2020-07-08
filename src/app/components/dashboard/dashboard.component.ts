@@ -23,8 +23,8 @@ var imageUrl;
 })
 export class DashboardComponent implements OnInit {
   // serverUrl = "http://localhost:5010/";
-  //wordServerUrl = "http://localhost:12345/api/";
-  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
+  wordServerUrl = "http://localhost:12345/api/";
+  //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/";
   path = "../../../assets/documents/Author.docx";
 
@@ -890,7 +890,6 @@ export class DashboardComponent implements OnInit {
         }
       }
       if (this.chartList.length > 27) {
-        alert("ok");
 
         for (var i = 0; i < this.chartList.length; i++) {
           alert(this.chartList[i].name + " - " + this.chartList[i].imgUrl);

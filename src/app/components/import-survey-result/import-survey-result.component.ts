@@ -22,8 +22,8 @@ var imageUrl;
   styleUrls: ["./import-survey-result.component.scss"],
 })
 export class ImportSurveyResultComponent implements OnInit {
-  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
-  // wordServerUrl = "http://localhost:12345/api/";
+  //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
+  wordServerUrl = "http://localhost:12345/api/";
   //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
@@ -108,7 +108,7 @@ export class ImportSurveyResultComponent implements OnInit {
     var tmpDate = this.formatDate("7/1/2020");
     var fileName = item.team_Name + "_" + tmpDate + "." + type;
 
-    alert(fileName);
+    //alert(fileName);
 
     //require
 
@@ -123,7 +123,7 @@ export class ImportSurveyResultComponent implements OnInit {
   }
 
   genReport(chartsList) {
-    alert("ok");
+    alert("ok_1");
 
     //return false;
 
