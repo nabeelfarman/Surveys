@@ -23,7 +23,8 @@ var imageUrl;
 })
 export class DashboardComponent implements OnInit {
   // serverUrl = "http://localhost:5010/";
-  wordServerUrl = "http://localhost:5099/api/";
+  //wordServerUrl = "http://localhost:12345/api/";
+  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/";
   path = "../../../assets/documents/Author.docx";
 
@@ -324,32 +325,52 @@ export class DashboardComponent implements OnInit {
 
     var container = document.getElementById("#container");
 
+    // var charts = Highcharts.chart("container", options);
+    // var svg = charts.getSVG();
+    // var data = window.btoa(svg);
+
     var charts = Highcharts.chart("container", options);
-    var svg = charts.getSVG();
-    console.log(svg);
-    // var chartList = [];
-    // for (var i = 0; i < 28; i++) {
-    //   chartList.push({
-    //     name: "Test",
-    //     imgUrl: svg,
-    //   });
-    // }
-    var imageURL = "";
-    var dataString = "type=image/jpeg&filename=results&width=500&svg=" + svg;
-    $.ajax({
-      type: "POST",
-      data: dataString,
-      url: "../../../../src/assets/images/temp/",
-      async: false,
-      success: function (data) {
-        imageURL = data;
-        console.log(imageURL);
+    var render_width = this.EXPORT_WIDTH;
+    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
+    var svg = charts.getSVG({
+      exporting: {
+        sourceWidth: charts.chartWidth,
+        sourceHeight: charts.chartHeight,
       },
     });
-    return;
-    // if (chartList.length == 28) {
-    //   this.genReport(chartList);
-    // }
+
+    var canvas = document.createElement("canvas");
+    canvas.height = render_height;
+    canvas.width = render_height;
+
+    var image;
+    image = btoa(unescape(encodeURIComponent(svg)));
+
+
+    console.log(svg);
+    var chartList = [];
+    for (var i = 0; i < 1; i++) {
+      chartList.push({
+        name: "Energy",
+        imgUrl: image,
+      });
+    }
+    // var imageURL = "";
+    // var dataString = "type=image/jpeg&filename=results&width=500&svg=" + svg;
+    // $.ajax({
+    //   type: "POST",
+    //   data: dataString,
+    //   url: "../../../../src/assets/images/temp/",
+    //   async: false,
+    //   success: function (data) {
+    //     imageURL = data;
+    //     console.log(imageURL);
+    //   },
+    // });
+    // return;
+    if (chartList.length == 1) {
+      this.genReport(chartList);
+    }
   }
 
   genReport(chartsList) {
