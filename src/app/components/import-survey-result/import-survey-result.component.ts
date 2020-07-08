@@ -22,8 +22,8 @@ var imageUrl;
   styleUrls: ["./import-survey-result.component.scss"],
 })
 export class ImportSurveyResultComponent implements OnInit {
-  //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
-  wordServerUrl = "http://localhost:12345/api/";
+  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
+  //wordServerUrl = "http://localhost:12345/api/";
   //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
@@ -36,6 +36,7 @@ export class ImportSurveyResultComponent implements OnInit {
   txtSearchSurvey = "";
   surveyDate = "";
   filePicker = "";
+  ddlSurvey = "latest";
   arrayBuffer: any;
   dataFile: File;
 
@@ -71,11 +72,22 @@ export class ImportSurveyResultComponent implements OnInit {
 
   ngOnInit(): void {
     this.surveyDate = new Date().toISOString().split("T")[0];
-    this.getSurveys();
+    //this.getSurveys();
     // this.getChart();
     // this.getChartQuestion();
     // this.getHighQuesChart();
     // this.getLowQuesChart();
+  }
+
+  changeSurveyDDL(){
+
+    this.surveyData = [];
+    if(this.ddlSurvey == 'latest'){
+      this.getSurveys();
+    }else {
+      this.getSurveysAll();
+    }
+
   }
 
   //function for get surveys data
@@ -83,54 +95,39 @@ export class ImportSurveyResultComponent implements OnInit {
     this.app.showSpinner();
     var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-    this.http
-      .get(this.serverUrl + "getSurveys", { headers: reqHeader })
-      .subscribe((data: any) => {
+    this.http.get(this.wordServerUrl + "getSurveyDetail", { headers: reqHeader }).subscribe((data: any) => {
+        this.surveyData = data;
+        this.app.hideSpinner();
+      });
+  }
+
+  getSurveysAll() {
+    this.app.showSpinner();
+    var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
+
+    this.http.get(this.wordServerUrl + "getSurveyDetailAll", { headers: reqHeader }).subscribe((data: any) => {
         this.surveyData = data;
         this.app.hideSpinner();
       });
   }
 
   downloadReport(type, item) {
-    this.app.showSpinner();
-    var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-    this.http
-      .get(this.wordServerUrl + "downloadfile?fileName=T1_712020.pdf", {
-        headers: reqHeader,
-      })
-      .subscribe((data: any) => {
-        //this.surveyData = data;
-        this.app.hideSpinner();
-      });
-
-    //var tmpDate = this.formatDate(item.survey_Date)
-    var tmpDate = this.formatDate("7/1/2020");
+    var tmpDate = this.formatDate(item.survey_Date, 'withOutSlash');
     var fileName = item.team_Name + "_" + tmpDate + "." + type;
 
-    //alert(fileName);
+    // alert(fileName);
+    // return false;
+    window.open(this.wordServerUrl + 'downloadfile?fileName=' + fileName ,  '_blank');
 
-    //require
-
-    // $("div").load("C:/SurveyTemplete/test.html", function(response, status, xhr) {
-
-    //   if (status == "error") {
-    //     var msg = "Sorry but there was an error: ";
-    //     $(this).html(msg + xhr.status + " " + xhr.statusText);
-    //   }
-
-    // });
   }
 
   genReport(chartsList) {
-    alert("ok_1");
-
-    //return false;
 
     var reqData = {
       images: JSON.stringify(chartsList),
       Consultant_ID: "1",
-      Survey_ID: "34",
+      Survey_ID: "38",
       Survey_Date: this.surveyDt,
       Client_ID: this.clientID,
       Team_ID: this.teamID,
@@ -141,12 +138,9 @@ export class ImportSurveyResultComponent implements OnInit {
     this.app.showSpinner();
     var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-    this.http
-      .post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader })
-      .subscribe((data: any) => {
+    this.http.post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader }).subscribe((data: any) => {
         //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
 
-        this.app.hideSpinner();
         if (data.msg != "Success") {
           this.toastr.errorToastr(data.msg, "Error", { toastTimeout: 2500 });
         } else {
@@ -196,12 +190,10 @@ export class ImportSurveyResultComponent implements OnInit {
     this.clientID = item.client_ID;
     this.teamID = item.team_ID;
     //this.surveyDt = item.survey_Date;
-    this.surveyDt = "7/8/2020";
+    this.surveyDt = this.formatDate(item.survey_Date, 'withSlash');
     this.teamName = item.team_Name;
     this.noOfRespondent = item.noOfRespondents;
-
-    // alert(this.clientID + " - " + this.teamID + " - " + this.surveyDt + " - ");
-
+    
     this.getChart();
   }
 
@@ -225,7 +217,6 @@ export class ImportSurveyResultComponent implements OnInit {
         this.tempQuesList = data;
         // alert(this.tempQuesList);
         this.getHighQuesChart();
-        // this.app.hideSpinner();
       });
   }
 
@@ -252,7 +243,6 @@ export class ImportSurveyResultComponent implements OnInit {
         // alert(this.tempList);
 
         this.getChartQuestion();
-        this.app.hideSpinner();
       });
   }
 
@@ -426,9 +416,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
       this.getSurveys();
       // return false;
-      this.http
-        .post(this.serverUrl + "uploadFile", saveData, { headers: reqHeader })
-        .subscribe((data: any) => {
+      this.http.post(this.serverUrl + "uploadFile", saveData, { headers: reqHeader }).subscribe((data: any) => {
           if (data.msgT == "Team Success" && data.msgA == "Answer Success") {
             this.app.hideSpinner();
             this.toastr.successToastr("Record Save Successfully!", "Success!", {
@@ -644,6 +632,9 @@ export class ImportSurveyResultComponent implements OnInit {
         // categories: ["", 1, 2, 3, 4, 5, ""],
         // min: 1,
         // max: 5,
+        title: {
+          text: ""
+        },
         tickPositioner: function () {
           return [0, 1, 2, 3, 4, 5, 6];
         },
@@ -733,7 +724,7 @@ export class ImportSurveyResultComponent implements OnInit {
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
     var render_height =
-      (render_width * charts.chartHeight) / charts.chartWidth + 150;
+      (render_width * charts.chartHeight) / charts.chartWidth;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -848,6 +839,9 @@ export class ImportSurveyResultComponent implements OnInit {
         // categories: ["", 1, 2, 3, 4, 5, ""],
         // min: 1,
         // max: 5,
+        title: {
+          text: ""
+        },
         tickPositioner: function () {
           return [0, 1, 2, 3, 4, 5, 6];
         },
@@ -937,7 +931,7 @@ export class ImportSurveyResultComponent implements OnInit {
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
     var render_height =
-      (render_width * charts.chartHeight) / charts.chartWidth + 150;
+      (render_width * charts.chartHeight) / charts.chartWidth;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -964,28 +958,6 @@ export class ImportSurveyResultComponent implements OnInit {
       this.getHighChart();
     }
   }
-
-  // pushImageQuesData(categoryName, imageUrl, val) {
-  //   var found = false;
-  //   for (var i = 0; i < this.chartList.length; i++) {
-  //     if (this.chartList[i].imgUrl == imageUrl) {
-  //       found = true;
-  //       i = this.chartList.length + 1;
-  //     }
-  //   }
-  //   if (found == false) {
-  //     this.chartList.push({
-  //       name: categoryName,
-  //       imgUrl: imageUrl,
-  //     });
-  //   }
-  //   setTimeout(() => this.getChartQuestions(), 500);
-
-  //   if (this.chartList.length == 26) {
-  //     console.log("chartlist length 26");
-  //     this.getHighChart();
-  //   }
-  // }
 
   getHighChart() {
     this.category = [];
@@ -1058,6 +1030,9 @@ export class ImportSurveyResultComponent implements OnInit {
         // categories: ["", 1, 2, 3, 4, 5, ""],
         // min: 1,
         // max: 5,
+        title: {
+          text: ""
+        },
         tickPositioner: function () {
           return [0, 1, 2, 3, 4, 5, 6];
         },
@@ -1147,7 +1122,7 @@ export class ImportSurveyResultComponent implements OnInit {
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
     var render_height =
-      (render_width * charts.chartHeight) / charts.chartWidth + 150;
+      (render_width * charts.chartHeight) / charts.chartWidth;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -1178,60 +1153,24 @@ export class ImportSurveyResultComponent implements OnInit {
       console.log("lowest chart");
       this.genReport(this.chartList);
     }
-  }
+  } 
 
-  // pushHighImageQuesData(catName, url) {
-  //   if (url != undefined) {
-  //     var chartFound = false;
-  //     for (var i = 0; i < this.chartList.length; i++) {
-  //       if (this.chartList[i].imgUrl == url) {
-  //         chartFound = true;
-  //         i = this.chartList.length + 1;
-  //       }
-  //     }
-  //     if (catName == "Highest") {
-  //       if (chartFound == false) {
-  //         this.chartList.push({
-  //           name: catName,
-  //           imgUrl: url,
-  //         });
-  //         console.log("highest chart");
-  //         setTimeout(() => this.getLowChart(), 500);
-  //       } else {
-  //         setTimeout(() => this.getHighQuesChart(), 500);
-  //       }
-  //     } else if (catName == "Lowest") {
-  //       if (chartFound == false) {
-  //         this.chartList.push({
-  //           name: catName,
-  //           imgUrl: url,
-  //         });
-  //         console.log("lowest chart");
-  //       } else {
-  //         setTimeout(() => this.getLowChart(), 500);
-  //       }
-  //     }
-  //     if (this.chartList.length > 27) {
-  //       console.log("chart list length 28");
+  formatDate(reqDate, type) {
 
-  //       this.genReport(this.chartList);
-  //       // alert("ok");
-
-  //       // for (var i = 0; i < this.chartList.length; i++) {
-  //       //   alert(this.chartList[i].name + " - " + this.chartList[i].imgUrl);
-  //       // }
-  //     }
-  //   }
-  // }
-
-  formatDate(reqDate) {
+    var rtnDate;
     var x = new Date(reqDate);
     var dd = x.getDate();
     var mm = x.getMonth() + 1;
     var yy = x.getFullYear();
-    //return dd +"/" + mm+"/" + yy;
-    //return mm +"/" + dd +"/" + yy;
 
-    return mm + "" + dd + "" + yy;
+    if(type == 'withSlash'){
+      rtnDate = mm +"/" + dd +"/" + yy;
+    }
+    else {
+      rtnDate = mm + "" + dd + "" + yy;
+    }
+
+    return rtnDate;
+
   }
 }

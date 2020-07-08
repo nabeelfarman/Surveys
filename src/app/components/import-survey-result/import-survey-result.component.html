@@ -44,14 +44,14 @@
     </div>
 
     <div class="col-md-2 text-left">
-      <button type="button" class="btn btn-success rounded-0" (click)="save()">GENERATE REPORT</button>
+      <button type="button" class="btn btn-success rounded-0" (click)="save()">UPLOAD DATA</button>
     </div>
 
   </div>
   <!--Row #1 end-->
 
   <div class="row">
-    <div class="col-md-6 invisible">
+    <div class="col-md-6 d-none">
       <div id="container"></div>
     </div>
   </div>
@@ -62,8 +62,9 @@
   <div class="row animate__animated animate__fadeInUp animate__delay-2s">
 
     <div class="col-md-2">
-      <select class="form-control">
-        <option>All Properties</option>
+      <select class="form-control" [(ngModel)]="ddlSurvey" (ngModelChange)="changeSurveyDDL()">
+        <option value="latest">Latest Survey</option>
+        <option value="all">All Surveys</option>
       </select>
     </div>
 
@@ -118,19 +119,21 @@
           <td>
             <div class="table-data-feature">
 
-              <button class="item" data-toggle="tooltip" data-placement="top" title="Download"
+              <button class="item" data-toggle="tooltip" data-placement="top" title="Generate Report"
                 data-original-title="Download" (click)="getTableData(item)">
                 <i class="zmdi zmdi-settings"></i>
               </button>
 
-              <button class="item" data-toggle="tooltip" data-placement="top" title="Download"
-                data-original-title="Download" (click)="downloadReport('pdf', item)">
-                <!-- <button class="item" data-toggle="tooltip" data-placement="top" title="Download" data-original-title="Download" (click)="getTableData(item)"> -->
+              <button class="item" data-toggle="tooltip" data-placement="top" title="Download As PDF"
+                data-original-title="Download As PDF" (click)="downloadReport('pdf', item)">
                 <i class="zmdi zmdi-download"></i>
               </button>
 
-              <a href="http://localhost:12345/api/downloadfile?fileName=T1_712020.pdf" target="_blank"> click &
-                download</a>
+              <button class="item" data-toggle="tooltip" data-placement="top" title="Download As DOCX"
+                data-original-title="Download As DOCX" (click)="downloadReport('docx', item)">
+                <i class="zmdi zmdi-download"></i>
+              </button>
+
             </div>
 
           </td>
