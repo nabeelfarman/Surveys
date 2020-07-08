@@ -627,8 +627,8 @@ export class ImportSurveyResultComponent implements OnInit {
         // },
       },
       title: {
-        text: categoryName,
-        style: { fontSize: "25px", color: "black" },
+        text: "",
+        // style: { fontSize: "25px", color: "black" },
       },
       xAxis: {
         categories: category,
@@ -663,10 +663,10 @@ export class ImportSurveyResultComponent implements OnInit {
         line: {
           marker: {
             symbol:
-              //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
               //"url(../../../../../assets/images/Marker2.png)",
-              "diamond",
-            fillColor: "white",
+            //   "diamond",
+            // fillColor: "white",
           },
           lineWidth: 0,
           dataLabels: {
@@ -826,8 +826,8 @@ export class ImportSurveyResultComponent implements OnInit {
         // },
       },
       title: {
-        text: categoryName,
-        style: { fontSize: "25px", color: "black" },
+        text: "",
+        // style: { fontSize: "25px", color: "black" },
       },
       xAxis: {
         categories: category,
@@ -862,10 +862,10 @@ export class ImportSurveyResultComponent implements OnInit {
         line: {
           marker: {
             symbol:
-              //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
               //"url(../../../../../assets/images/Marker2.png)",
-              "diamond",
-            fillColor: "white",
+            //   "diamond",
+            // fillColor: "white",
           },
           lineWidth: 0,
           dataLabels: {
@@ -1031,8 +1031,8 @@ export class ImportSurveyResultComponent implements OnInit {
         // },
       },
       title: {
-        text: categoryName,
-        style: { fontSize: "25px", color: "black" },
+        text: "",
+        // style: { fontSize: "25px", color: "black" },
       },
       xAxis: {
         categories: category,
@@ -1067,10 +1067,10 @@ export class ImportSurveyResultComponent implements OnInit {
         line: {
           marker: {
             symbol:
-              //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
               //"url(../../../../../assets/images/Marker2.png)",
-              "diamond",
-            fillColor: "white",
+            //   "diamond",
+            // fillColor: "white",
           },
           lineWidth: 0,
           dataLabels: {
