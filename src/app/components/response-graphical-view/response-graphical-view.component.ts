@@ -63,7 +63,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
     this.http
       .get(
         this.serverUrl +
-          "api/getSurveyQuestionAvg?surveyID=34&surveyDate=7/1/2020&clientID=7&teamID=18",
+          "api/getSurveyQuestionAvg?surveyID=38&surveyDate=7/8/2020&clientID=7&teamID=18",
         {
           headers: reqHeader,
         }
@@ -82,7 +82,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
     this.http
       .get(
         this.serverUrl +
-          "api/getQuestionsTreeAvg?surveyID=34&surveyDate=7/1/2020&clientID=7&teamID=18",
+          "api/getQuestionsTreeAvg?surveyID=38&surveyDate=7/8/2020&clientID=7&teamID=18",
         {
           headers: reqHeader,
         }
@@ -181,10 +181,18 @@ export class ResponseGraphicalViewComponent implements OnInit {
     this.category = [];
     this.avg = [];
     this.treeData = [];
-
+    var category_code;
+    for (var i = 0; i < this.tempList.length; i++) {
+      if (this.tempList[i].treeLevel == 1) {
+        category_code = this.tempList[i].category_code;
+      }
+    }
     this.categoryName = obj.label;
     for (var i = 0; i < this.tempList.length; i++) {
-      if (obj.data[0].parentcategory_id == 747 || obj.data[0].tree_level == 3) {
+      if (
+        obj.data[0].parentcategory_id == category_code ||
+        obj.data[0].tree_level == 3
+      ) {
         this.childFound = true;
         i = this.tempList.length + 1;
       } else if (
@@ -316,7 +324,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
         },
       },
       yAxis: {
-        gridLineColor: "#A6A5A5",
+        gridLineColor: "#c0c0c0",
         tickPositioner: function () {
           return [0, 1, 2, 3, 4, 5, 6];
         },
@@ -335,10 +343,11 @@ export class ResponseGraphicalViewComponent implements OnInit {
       plotOptions: {
         line: {
           marker: {
-            // symbol: "diamond",
-            // fillColor: "black",
-            symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+            symbol: "diamond",
+            fillColor: "black",
+            radius: 10,
+            // symbol:
+            //   "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
           },
           lineWidth: 0,
           dataLabels: {
@@ -349,7 +358,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
           },
         },
         columnrange: {
-          borderRadius: 16,
+          // borderRadius: 16,
           shadow: true,
           dataLabels: {
             enabled: false,
@@ -382,25 +391,19 @@ export class ResponseGraphicalViewComponent implements OnInit {
       series: [
         {
           name: "Categories",
-          pointWidth: 32,
+          pointWidth: 30,
           color: {
             linearGradient: {
               x1: 0,
-              x2: 0,
+              x2: 1,
               y1: 0,
-              y2: 1,
+              y2: 0,
             },
             stops: [
-              [0, "#1707b2"],
-              [1, "#54ffc1"],
-              // [0, "#3167ec"],
-              // [1, "#63bfff"],
-              // [0, "#6a78d1"],
-              // [1, "#00bda5"],
-              // [0, "#003399"],
-              // [1, "#05E8BA"],
-              // [0, "#045de9"],
-              // [1, "#087EE1"],
+              [0, "#727272"],
+              // [0, "#1707b2"],
+              // [1, "#54ffc1"],
+              [1, "#f2f2f2"],
             ],
           },
           type: "columnrange",
@@ -480,10 +483,11 @@ export class ResponseGraphicalViewComponent implements OnInit {
       plotOptions: {
         line: {
           marker: {
-            // symbol: "diamond",
-            // fillColor: "black",
-            symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+            symbol: "diamond",
+            fillColor: "black",
+            radius: 10,
+            // symbol:
+            //   "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
           },
           lineWidth: 0,
           dataLabels: {
@@ -494,7 +498,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
           },
         },
         columnrange: {
-          borderRadius: 16,
+          // borderRadius: 16,
           shadow: true,
           dataLabels: {
             enabled: false,
@@ -531,21 +535,15 @@ export class ResponseGraphicalViewComponent implements OnInit {
           color: {
             linearGradient: {
               x1: 0,
-              x2: 0,
+              x2: 1,
               y1: 0,
-              y2: 1,
+              y2: 0,
             },
             stops: [
-              [0, "#1707b2"],
-              [1, "#54ffc1"],
-              // [0, "#3167ec"],
-              // [1, "#63bfff"],
-              // [0, "#6a78d1"],
-              // [1, "#00bda5"],
-              // [0, "#003399"],
-              // [1, "#05E8BA"],
-              // [0, "#045de9"],
-              // [1, "#087EE1"],
+              [0, "#727272"],
+              // [0, "#1707b2"],
+              // [1, "#54ffc1"],
+              [1, "#f2f2f2"],
             ],
           },
           type: "columnrange",

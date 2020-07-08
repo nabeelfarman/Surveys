@@ -196,7 +196,7 @@ export class ImportSurveyResultComponent implements OnInit {
     this.clientID = item.client_ID;
     this.teamID = item.team_ID;
     //this.surveyDt = item.survey_Date;
-    this.surveyDt = "7/1/2020";
+    this.surveyDt = "7/8/2020";
     this.teamName = item.team_Name;
     this.noOfRespondent = item.noOfRespondents;
 
@@ -213,7 +213,7 @@ export class ImportSurveyResultComponent implements OnInit {
     // this.app.showSpinner();
     this.http
       .get(
-        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=34&surveyDate=" +
+        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getSurveyQuestionAvg?surveyID=38&surveyDate=" +
           this.surveyDt +
           "&clientID=" +
           this.clientID +
@@ -237,7 +237,7 @@ export class ImportSurveyResultComponent implements OnInit {
     this.app.showSpinner();
     this.http
       .get(
-        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getQuestionsTreeAvg?surveyID=34&surveyDate=" +
+        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getQuestionsTreeAvg?surveyID=38&surveyDate=" +
           this.surveyDt +
           "&clientID=" +
           this.clientID +
@@ -264,7 +264,7 @@ export class ImportSurveyResultComponent implements OnInit {
     // this.app.showSpinner();
     this.http
       .get(
-        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getHighQuestionsTreeAvg?surveyID=34&surveyDate=" +
+        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getHighQuestionsTreeAvg?surveyID=38&surveyDate=" +
           this.surveyDt +
           "&clientID=" +
           this.clientID +
@@ -291,7 +291,7 @@ export class ImportSurveyResultComponent implements OnInit {
     // this.app.showSpinner();
     this.http
       .get(
-        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getLowQuestionsTreeAvg?surveyID=34&surveyDate=" +
+        "http://ambit-erp.southeastasia.cloudapp.azure.com:9049/api/getLowQuestionsTreeAvg?surveyID=38&surveyDate=" +
           this.surveyDt +
           "&clientID=" +
           this.clientID +
@@ -628,7 +628,7 @@ export class ImportSurveyResultComponent implements OnInit {
       },
       title: {
         text: "",
-        // style: { fontSize: "25px", color: "black" },
+        style: { fontSize: "25px", color: "black" },
       },
       xAxis: {
         categories: category,
@@ -640,13 +640,13 @@ export class ImportSurveyResultComponent implements OnInit {
         },
       },
       yAxis: {
-        gridLineColor: "#A6A5A5",
-        categories: ["", 1, 2, 3, 4, 5, ""],
-        min: 1,
-        max: 5,
-        // tickPositioner: function () {
-        //   return [0, 1, 2, 3, 4, 5, 6];
-        // },
+        gridLineColor: "#c0c0c0",
+        // categories: ["", 1, 2, 3, 4, 5, ""],
+        // min: 1,
+        // max: 5,
+        tickPositioner: function () {
+          return [0, 1, 2, 3, 4, 5, 6];
+        },
         labels: {
           style: {
             fontSize: "15px",
@@ -662,11 +662,11 @@ export class ImportSurveyResultComponent implements OnInit {
       plotOptions: {
         line: {
           marker: {
-            symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
-              //"url(../../../../../assets/images/Marker2.png)",
-            //   "diamond",
-            // fillColor: "white",
+            symbol: "diamond",
+            fillColor: "black",
+            // "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+            // "url(../../../../../assets/images/Marker2.png)",
+            radius: 10,
           },
           lineWidth: 0,
           dataLabels: {
@@ -677,7 +677,7 @@ export class ImportSurveyResultComponent implements OnInit {
           },
         },
         columnrange: {
-          borderRadius: 16,
+          // borderRadius: 16,
           shadow: true,
           // dataLabels: {
           //   enabled: false,
@@ -693,18 +693,23 @@ export class ImportSurveyResultComponent implements OnInit {
       },
       series: [
         {
+          // stroke: "#b1b1b1",
+          // strokeWidth: 2,
+          borderColor: "#b1b1b1",
           name: "Categories",
-          pointWidth: 32,
+          pointWidth: 30,
           color: {
             linearGradient: {
               x1: 0,
-              x2: 0,
+              x2: 1,
               y1: 0,
-              y2: 1,
+              y2: 0,
             },
             stops: [
-              [0, "#1707b2"],
-              [1, "#54ffc1"],
+              [0, "#727272"],
+              // [0, "#1707b2"],
+              // [1, "#54ffc1"],
+              [1, "#f2f2f2"],
             ],
           },
           data: treeData,
@@ -827,7 +832,7 @@ export class ImportSurveyResultComponent implements OnInit {
       },
       title: {
         text: "",
-        // style: { fontSize: "25px", color: "black" },
+        style: { fontSize: "25px", color: "black" },
       },
       xAxis: {
         categories: category,
@@ -839,13 +844,13 @@ export class ImportSurveyResultComponent implements OnInit {
         },
       },
       yAxis: {
-        gridLineColor: "#A6A5A5",
-        categories: ["", 1, 2, 3, 4, 5, ""],
-        min: 1,
-        max: 5,
-        // tickPositioner: function () {
-        //   return [0, 1, 2, 3, 4, 5, 6];
-        // },
+        gridLineColor: "#c0c0c0",
+        // categories: ["", 1, 2, 3, 4, 5, ""],
+        // min: 1,
+        // max: 5,
+        tickPositioner: function () {
+          return [0, 1, 2, 3, 4, 5, 6];
+        },
         labels: {
           style: {
             fontSize: "15px",
@@ -861,11 +866,11 @@ export class ImportSurveyResultComponent implements OnInit {
       plotOptions: {
         line: {
           marker: {
-            symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
-              //"url(../../../../../assets/images/Marker2.png)",
-            //   "diamond",
-            // fillColor: "white",
+            symbol: "diamond",
+            fillColor: "black",
+            // "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+            // "url(../../../../../assets/images/Marker2.png)",
+            radius: 10,
           },
           lineWidth: 0,
           dataLabels: {
@@ -876,7 +881,7 @@ export class ImportSurveyResultComponent implements OnInit {
           },
         },
         columnrange: {
-          borderRadius: 16,
+          // borderRadius: 16,
           shadow: true,
           // dataLabels: {
           //   enabled: false,
@@ -892,18 +897,23 @@ export class ImportSurveyResultComponent implements OnInit {
       },
       series: [
         {
+          // stroke: "#b1b1b1",
+          // strokeWidth: 2,
+          borderColor: "#b1b1b1",
           name: "Categories",
-          pointWidth: 32,
+          pointWidth: 30,
           color: {
             linearGradient: {
               x1: 0,
-              x2: 0,
+              x2: 1,
               y1: 0,
-              y2: 1,
+              y2: 0,
             },
             stops: [
-              [0, "#1707b2"],
-              [1, "#54ffc1"],
+              [0, "#727272"],
+              // [0, "#1707b2"],
+              // [1, "#54ffc1"],
+              [1, "#f2f2f2"],
             ],
           },
           data: treeData,
@@ -1032,7 +1042,7 @@ export class ImportSurveyResultComponent implements OnInit {
       },
       title: {
         text: "",
-        // style: { fontSize: "25px", color: "black" },
+        style: { fontSize: "25px", color: "black" },
       },
       xAxis: {
         categories: category,
@@ -1044,13 +1054,13 @@ export class ImportSurveyResultComponent implements OnInit {
         },
       },
       yAxis: {
-        gridLineColor: "#A6A5A5",
-        categories: ["", 1, 2, 3, 4, 5, ""],
-        min: 1,
-        max: 5,
-        // tickPositioner: function () {
-        //   return [0, 1, 2, 3, 4, 5, 6];
-        // },
+        gridLineColor: "#c0c0c0",
+        // categories: ["", 1, 2, 3, 4, 5, ""],
+        // min: 1,
+        // max: 5,
+        tickPositioner: function () {
+          return [0, 1, 2, 3, 4, 5, 6];
+        },
         labels: {
           style: {
             fontSize: "15px",
@@ -1066,11 +1076,11 @@ export class ImportSurveyResultComponent implements OnInit {
       plotOptions: {
         line: {
           marker: {
-            symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
-              //"url(../../../../../assets/images/Marker2.png)",
-            //   "diamond",
-            // fillColor: "white",
+            symbol: "diamond",
+            fillColor: "black",
+            // "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+            // "url(../../../../../assets/images/Marker2.png)",
+            radius: 10,
           },
           lineWidth: 0,
           dataLabels: {
@@ -1081,7 +1091,7 @@ export class ImportSurveyResultComponent implements OnInit {
           },
         },
         columnrange: {
-          borderRadius: 16,
+          // borderRadius: 16,
           shadow: true,
           // dataLabels: {
           //   enabled: false,
@@ -1097,18 +1107,23 @@ export class ImportSurveyResultComponent implements OnInit {
       },
       series: [
         {
+          // stroke: "#b1b1b1",
+          // strokeWidth: 2,
+          borderColor: "#b1b1b1",
           name: "Categories",
-          pointWidth: 32,
+          pointWidth: 30,
           color: {
             linearGradient: {
               x1: 0,
-              x2: 0,
+              x2: 1,
               y1: 0,
-              y2: 1,
+              y2: 0,
             },
             stops: [
-              [0, "#1707b2"],
-              [1, "#54ffc1"],
+              [0, "#727272"],
+              // [0, "#1707b2"],
+              // [1, "#54ffc1"],
+              [1, "#f2f2f2"],
             ],
           },
           data: treeData,

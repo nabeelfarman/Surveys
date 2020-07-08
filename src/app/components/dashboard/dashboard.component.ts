@@ -266,12 +266,12 @@ export class DashboardComponent implements OnInit {
       },
       yAxis: {
         gridLineColor: "#c0c0c0",
-        categories: ["", 1, 2, 3, 4, 5, ""],
-        min: 1,
-        max: 5,
-        // tickPositioner: function () {
-        //   return [0, 1, 2, 3, 4, 5, 6];
-        // },
+        // categories: [0, 1, 2, 3, 4, 5, 6],
+        // min: 1,
+        // max: 5,
+        tickPositioner: function () {
+          return [0, 1, 2, 3, 4, 5, 6];
+        },
         labels: {
           style: {
             fontSize: "15px",
