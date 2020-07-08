@@ -178,12 +178,30 @@ export class DashboardComponent implements OnInit {
                 this.tempList[k].parent_category_code ==
                 this.tempList[j].category_code
               ) {
-                this.category.push(this.tempList[k].category_Name);
-                this.avg.push([this.tempList[k].avg]);
-                this.treeData.push([
-                  this.tempList[k].min,
-                  this.tempList[k].max,
-                ]);
+                if (this.category.length == 0) {
+                  this.category.push(this.tempList[k].category_Name);
+                  this.avg.push([this.tempList[k].avg]);
+                  this.treeData.push([
+                    this.tempList[k].min,
+                    this.tempList[k].max,
+                  ]);
+                } else {
+                  var categoryFound = false;
+                  for (var l = 0; l < this.category.length; l++) {
+                    if (this.category[l] == this.tempList[k].category_Name) {
+                      categoryFound = true;
+                      l = this.category.length + 1;
+                    }
+                  }
+                  if (categoryFound == false) {
+                    this.category.push(this.tempList[k].category_Name);
+                    this.avg.push([this.tempList[k].avg]);
+                    this.treeData.push([
+                      this.tempList[k].min,
+                      this.tempList[k].max,
+                    ]);
+                  }
+                }
               }
             }
           }
@@ -345,7 +363,6 @@ export class DashboardComponent implements OnInit {
 
     var image;
     image = btoa(unescape(encodeURIComponent(svg)));
-
 
     console.log(svg);
     var chartList = [];
@@ -890,7 +907,6 @@ export class DashboardComponent implements OnInit {
         }
       }
       if (this.chartList.length > 27) {
-
         for (var i = 0; i < this.chartList.length; i++) {
           alert(this.chartList[i].name + " - " + this.chartList[i].imgUrl);
         }

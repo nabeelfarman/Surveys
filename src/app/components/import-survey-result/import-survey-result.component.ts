@@ -547,12 +547,36 @@ export class ImportSurveyResultComponent implements OnInit {
                 this.tempList[k].parent_category_code ==
                 this.tempList[j].category_code
               ) {
-                this.category.push(this.tempList[k].category_Name);
-                this.avg.push([this.tempList[k].avg]);
-                this.treeData.push([
-                  this.tempList[k].min,
-                  this.tempList[k].max,
-                ]);
+                // this.category.push(this.tempList[k].category_Name);
+                // this.avg.push([this.tempList[k].avg]);
+                // this.treeData.push([
+                //   this.tempList[k].min,
+                //   this.tempList[k].max,
+                // ]);
+                if (this.category.length == 0) {
+                  this.category.push(this.tempList[k].category_Name);
+                  this.avg.push([this.tempList[k].avg]);
+                  this.treeData.push([
+                    this.tempList[k].min,
+                    this.tempList[k].max,
+                  ]);
+                } else {
+                  var categoryFound = false;
+                  for (var l = 0; l < this.category.length; l++) {
+                    if (this.category[l] == this.tempList[k].category_Name) {
+                      categoryFound = true;
+                      l = this.category.length + 1;
+                    }
+                  }
+                  if (categoryFound == false) {
+                    this.category.push(this.tempList[k].category_Name);
+                    this.avg.push([this.tempList[k].avg]);
+                    this.treeData.push([
+                      this.tempList[k].min,
+                      this.tempList[k].max,
+                    ]);
+                  }
+                }
               }
             }
           }
@@ -642,7 +666,7 @@ export class ImportSurveyResultComponent implements OnInit {
               //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
               //"url(../../../../../assets/images/Marker2.png)",
               "diamond",
-              fillColor: "white"
+            fillColor: "white",
           },
           lineWidth: 0,
           dataLabels: {
@@ -703,7 +727,8 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height = ((render_width * charts.chartHeight) / charts.chartWidth) + 150;
+    var render_height =
+      (render_width * charts.chartHeight) / charts.chartWidth + 150;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -729,8 +754,6 @@ export class ImportSurveyResultComponent implements OnInit {
       this.getChartQuestions();
     }
   }
-
-  
 
   getChartQuestions() {
     var category_code;
@@ -842,7 +865,7 @@ export class ImportSurveyResultComponent implements OnInit {
               //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
               //"url(../../../../../assets/images/Marker2.png)",
               "diamond",
-              fillColor: "white"
+            fillColor: "white",
           },
           lineWidth: 0,
           dataLabels: {
@@ -903,7 +926,8 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height = ((render_width * charts.chartHeight) / charts.chartWidth) + 150;
+    var render_height =
+      (render_width * charts.chartHeight) / charts.chartWidth + 150;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -1046,7 +1070,7 @@ export class ImportSurveyResultComponent implements OnInit {
               //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
               //"url(../../../../../assets/images/Marker2.png)",
               "diamond",
-              fillColor: "white"
+            fillColor: "white",
           },
           lineWidth: 0,
           dataLabels: {
@@ -1107,7 +1131,8 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height = ((render_width * charts.chartHeight) / charts.chartWidth) + 150;
+    var render_height =
+      (render_width * charts.chartHeight) / charts.chartWidth + 150;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
