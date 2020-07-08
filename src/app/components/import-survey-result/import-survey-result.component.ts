@@ -639,7 +639,10 @@ export class ImportSurveyResultComponent implements OnInit {
         line: {
           marker: {
             symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              //"url(../../../../../assets/images/Marker2.png)",
+              "diamond",
+              fillColor: "white"
           },
           lineWidth: 0,
           dataLabels: {
@@ -700,7 +703,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
+    var render_height = ((render_width * charts.chartHeight) / charts.chartWidth) + 150;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -727,31 +730,7 @@ export class ImportSurveyResultComponent implements OnInit {
     }
   }
 
-  // pushImageData(name, url, val) {
-  //   if (url != undefined) {
-  //     var chartFound = false;
-  //     for (var i = 0; i < this.chartList.length; i++) {
-  //       if (this.chartList[i].imgUrl == imageUrl) {
-  //         chartFound = true;
-  //         i = this.chartList.length + 1;
-  //       }
-  //     }
-  //     if (chartFound == false) {
-  //       this.chartList.push({
-  //         name: name,
-  //         imgUrl: url,
-  //       });
-  //     }
-  //     var increment = val + 1;
-  //     if (increment < 14) {
-  //       this.genWord(increment);
-  //     } else if (increment == 14) {
-  //       this.getChartQuestions();
-  //     }
-  //   } else {
-  //     this.genWord(val);
-  //   }
-  // }
+  
 
   getChartQuestions() {
     var category_code;
@@ -860,7 +839,10 @@ export class ImportSurveyResultComponent implements OnInit {
         line: {
           marker: {
             symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              //"url(../../../../../assets/images/Marker2.png)",
+              "diamond",
+              fillColor: "white"
           },
           lineWidth: 0,
           dataLabels: {
@@ -921,7 +903,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
+    var render_height = ((render_width * charts.chartHeight) / charts.chartWidth) + 150;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -1061,7 +1043,10 @@ export class ImportSurveyResultComponent implements OnInit {
         line: {
           marker: {
             symbol:
-              "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              //"url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              //"url(../../../../../assets/images/Marker2.png)",
+              "diamond",
+              fillColor: "white"
           },
           lineWidth: 0,
           dataLabels: {
@@ -1122,7 +1107,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
+    var render_height = ((render_width * charts.chartHeight) / charts.chartWidth) + 150;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
