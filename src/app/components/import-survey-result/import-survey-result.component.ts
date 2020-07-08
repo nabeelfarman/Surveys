@@ -11,8 +11,9 @@ import { CookieService } from "ngx-cookie-service";
 
 declare var $: any;
 import * as XLSX from "xlsx";
-import { state } from '@angular/animations';
-import { stat, Stats } from 'fs';
+import { state } from "@angular/animations";
+import { stat, Stats } from "fs";
+import * as Highcharts from "highcharts";
 var imageUrl;
 
 @Component({
@@ -21,11 +22,12 @@ var imageUrl;
   styleUrls: ["./import-survey-result.component.scss"],
 })
 export class ImportSurveyResultComponent implements OnInit {
-  // wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
-  wordServerUrl = "http://localhost:12345/api/";
+  wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
+  // wordServerUrl = "http://localhost:12345/api/";
   //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
+  EXPORT_WIDTH = 1000;
   tempData = [];
   summaryData = [];
   detailData = [];
@@ -89,12 +91,15 @@ export class ImportSurveyResultComponent implements OnInit {
       });
   }
 
-  downloadReport(type, item){
-
+  downloadReport(type, item) {
     this.app.showSpinner();
     var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-    this.http.get(this.wordServerUrl + "downloadfile?fileName=T1_712020.pdf", { headers: reqHeader }).subscribe((data: any) => {
+    this.http
+      .get(this.wordServerUrl + "downloadfile?fileName=T1_712020.pdf", {
+        headers: reqHeader,
+      })
+      .subscribe((data: any) => {
         //this.surveyData = data;
         this.app.hideSpinner();
       });
@@ -102,7 +107,7 @@ export class ImportSurveyResultComponent implements OnInit {
     //var tmpDate = this.formatDate(item.survey_Date)
     var tmpDate = this.formatDate("7/1/2020");
     var fileName = item.team_Name + "_" + tmpDate + "." + type;
-    
+
     alert(fileName);
 
     //require
@@ -115,16 +120,12 @@ export class ImportSurveyResultComponent implements OnInit {
     //   }
 
     // });
-
   }
-
-  
 
   genReport(chartsList) {
     alert("ok");
 
     //return false;
-
 
     var reqData = {
       images: JSON.stringify(chartsList),
@@ -424,7 +425,7 @@ export class ImportSurveyResultComponent implements OnInit {
       var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
       this.getSurveys();
-      return false;
+      // return false;
       this.http
         .post(this.serverUrl + "uploadFile", saveData, { headers: reqHeader })
         .subscribe((data: any) => {
@@ -691,57 +692,66 @@ export class ImportSurveyResultComponent implements OnInit {
       ],
     };
 
-    var datas = {
-      // type: "POST",
-      options: JSON.stringify(options),
-      filename: "test.png",
-      type: "image/png",
-      async: true,
-    };
+    var container = document.getElementById("#container");
 
-    var exportUrl = "https://export.highcharts.com/";
-    $.post(exportUrl, datas, function (datas) {
-      imageUrl = exportUrl + datas;
-      var urlCreator = window.URL || window.webkitURL;
+    // var charts = Highcharts.chart("container", options);
+    // var svg = charts.getSVG();
+    // var data = window.btoa(svg);
 
-      // (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
-
-      fetch(imageUrl)
-        .then((response) => response.blob())
-        .then((datas) => {
-          // You have access to chart data here
-          // console.log(datas);
-        });
+    var charts = Highcharts.chart("container", options);
+    var render_width = this.EXPORT_WIDTH;
+    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
+    var svg = charts.getSVG({
+      exporting: {
+        sourceWidth: charts.chartWidth,
+        sourceHeight: charts.chartHeight,
+      },
     });
 
-    setTimeout(() => this.pushImageData(categoryName, imageUrl, val), 900);
-  }
+    var canvas = document.createElement("canvas");
+    canvas.height = render_height;
+    canvas.width = render_height;
 
-  pushImageData(name, url, val) {
-    if (url != undefined) {
-      var chartFound = false;
-      for (var i = 0; i < this.chartList.length; i++) {
-        if (this.chartList[i].imgUrl == imageUrl) {
-          chartFound = true;
-          i = this.chartList.length + 1;
-        }
-      }
-      if (chartFound == false) {
-        this.chartList.push({
-          name: name,
-          imgUrl: url,
-        });
-      }
-      var increment = val + 1;
-      if (increment < 14) {
-        this.genWord(increment);
-      } else if (increment == 14) {
-        this.getChartQuestions();
-      }
-    } else {
-      this.genWord(val);
+    var image;
+    image = btoa(unescape(encodeURIComponent(svg)));
+
+    this.chartList.push({
+      name: name,
+      imgUrl: image,
+    });
+    var increment = val + 1;
+    if (increment < 14) {
+      this.genWord(increment);
+    } else if (increment == 14) {
+      this.getChartQuestions();
     }
   }
+
+  // pushImageData(name, url, val) {
+  //   if (url != undefined) {
+  //     var chartFound = false;
+  //     for (var i = 0; i < this.chartList.length; i++) {
+  //       if (this.chartList[i].imgUrl == imageUrl) {
+  //         chartFound = true;
+  //         i = this.chartList.length + 1;
+  //       }
+  //     }
+  //     if (chartFound == false) {
+  //       this.chartList.push({
+  //         name: name,
+  //         imgUrl: url,
+  //       });
+  //     }
+  //     var increment = val + 1;
+  //     if (increment < 14) {
+  //       this.genWord(increment);
+  //     } else if (increment == 14) {
+  //       this.getChartQuestions();
+  //     }
+  //   } else {
+  //     this.genWord(val);
+  //   }
+  // }
 
   getChartQuestions() {
     var category_code;
@@ -789,8 +799,7 @@ export class ImportSurveyResultComponent implements OnInit {
             this.category,
             this.avg,
             this.treeData,
-            this.categoryName,
-            i
+            this.categoryName
           );
           console.log(this.categoryName);
 
@@ -802,7 +811,7 @@ export class ImportSurveyResultComponent implements OnInit {
     }
   }
 
-  genChartQuesImage(category, avg, treeData, categoryName, val) {
+  genChartQuesImage(category, avg, treeData, categoryName) {
     var options = {
       chart: {
         inverted: true,
@@ -904,53 +913,63 @@ export class ImportSurveyResultComponent implements OnInit {
       ],
     };
 
-    var datas = {
-      // type: "POST",
-      options: JSON.stringify(options),
-      filename: "test.png",
-      type: "image/png",
-      async: true,
-    };
+    var container = document.getElementById("#container");
 
-    var exportUrl = "https://export.highcharts.com/";
-    $.post(exportUrl, datas, function (datas) {
-      imageUrl = exportUrl + datas;
-      var urlCreator = window.URL || window.webkitURL;
+    // var charts = Highcharts.chart("container", options);
+    // var svg = charts.getSVG();
+    // var data = window.btoa(svg);
 
-      // (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
-
-      fetch(imageUrl)
-        .then((response) => response.blob())
-        .then((datas) => {
-          // You have access to chart data here
-          // console.log(datas);
-        });
+    var charts = Highcharts.chart("container", options);
+    var render_width = this.EXPORT_WIDTH;
+    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
+    var svg = charts.getSVG({
+      exporting: {
+        sourceWidth: charts.chartWidth,
+        sourceHeight: charts.chartHeight,
+      },
     });
 
-    setTimeout(() => this.pushImageQuesData(categoryName, imageUrl, val), 1000);
-  }
+    var canvas = document.createElement("canvas");
+    canvas.height = render_height;
+    canvas.width = render_height;
 
-  pushImageQuesData(categoryName, imageUrl, val) {
-    var found = false;
-    for (var i = 0; i < this.chartList.length; i++) {
-      if (this.chartList[i].imgUrl == imageUrl) {
-        found = true;
-        i = this.chartList.length + 1;
-      }
-    }
-    if (found == false) {
-      this.chartList.push({
-        name: categoryName,
-        imgUrl: imageUrl,
-      });
-    }
-    setTimeout(() => this.getChartQuestions(), 500);
+    var image;
+    image = btoa(unescape(encodeURIComponent(svg)));
 
-    if (this.chartList.length == 26) {
+    this.chartList.push({
+      name: name,
+      imgUrl: image,
+    });
+
+    if (this.chartList.length < 26) {
+      this.getChartQuestions();
+    } else if (this.chartList.length == 26) {
       console.log("chartlist length 26");
       this.getHighChart();
     }
   }
+
+  // pushImageQuesData(categoryName, imageUrl, val) {
+  //   var found = false;
+  //   for (var i = 0; i < this.chartList.length; i++) {
+  //     if (this.chartList[i].imgUrl == imageUrl) {
+  //       found = true;
+  //       i = this.chartList.length + 1;
+  //     }
+  //   }
+  //   if (found == false) {
+  //     this.chartList.push({
+  //       name: categoryName,
+  //       imgUrl: imageUrl,
+  //     });
+  //   }
+  //   setTimeout(() => this.getChartQuestions(), 500);
+
+  //   if (this.chartList.length == 26) {
+  //     console.log("chartlist length 26");
+  //     this.getHighChart();
+  //   }
+  // }
 
   getHighChart() {
     this.category = [];
@@ -1095,87 +1114,103 @@ export class ImportSurveyResultComponent implements OnInit {
       ],
     };
 
-    var datas = {
-      // type: "POST",
-      options: JSON.stringify(options),
-      filename: "test.png",
-      type: "image/png",
-      async: true,
-    };
+    var container = document.getElementById("#container");
 
-    var exportUrl = "https://export.highcharts.com/";
-    $.post(exportUrl, datas, function (datas) {
-      imageUrl = exportUrl + datas;
-      var urlCreator = window.URL || window.webkitURL;
+    // var charts = Highcharts.chart("container", options);
+    // var svg = charts.getSVG();
+    // var data = window.btoa(svg);
 
-      // (<HTMLImageElement>document.querySelector("#imageTag")).src = imageUrl;
-
-      fetch(imageUrl)
-        .then((response) => response.blob())
-        .then((datas) => {
-          // You have access to chart data here
-          // console.log(datas);
-        });
+    var charts = Highcharts.chart("container", options);
+    var render_width = this.EXPORT_WIDTH;
+    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
+    var svg = charts.getSVG({
+      exporting: {
+        sourceWidth: charts.chartWidth,
+        sourceHeight: charts.chartHeight,
+      },
     });
 
-    setTimeout(() => this.pushHighImageQuesData(categoryName, imageUrl), 1000);
-  }
+    var canvas = document.createElement("canvas");
+    canvas.height = render_height;
+    canvas.width = render_height;
 
-  pushHighImageQuesData(catName, url) {
-    if (url != undefined) {
-      var chartFound = false;
-      for (var i = 0; i < this.chartList.length; i++) {
-        if (this.chartList[i].imgUrl == url) {
-          chartFound = true;
-          i = this.chartList.length + 1;
-        }
-      }
-      if (catName == "Highest") {
-        if (chartFound == false) {
-          this.chartList.push({
-            name: catName,
-            imgUrl: url,
-          });
-          console.log("highest chart");
-          setTimeout(() => this.getLowChart(), 500);
-        } else {
-          setTimeout(() => this.getHighQuesChart(), 500);
-        }
-      } else if (catName == "Lowest") {
-        if (chartFound == false) {
-          this.chartList.push({
-            name: catName,
-            imgUrl: url,
-          });
-          console.log("lowest chart");
-        } else {
-          setTimeout(() => this.getLowChart(), 500);
-        }
-      }
-      if (this.chartList.length > 27) {
-        console.log("chart list length 28");
+    var image;
+    image = btoa(unescape(encodeURIComponent(svg)));
 
-        this.genReport(this.chartList);
-        // alert("ok");
+    if (categoryName == "Highest") {
+      this.chartList.push({
+        name: name,
+        imgUrl: image,
+      });
 
-        // for (var i = 0; i < this.chartList.length; i++) {
-        //   alert(this.chartList[i].name + " - " + this.chartList[i].imgUrl);
-        // }
-      }
+      console.log("highest chart");
+      this.getLowChart();
+    } else if (categoryName == "Lowest") {
+      this.chartList.push({
+        name: name,
+        imgUrl: image,
+      });
+      console.log("lowest chart");
+    }
+    if (this.chartList.length > 27) {
+      console.log("chart list length 28");
+
+      this.genReport(this.chartList);
     }
   }
 
+  // pushHighImageQuesData(catName, url) {
+  //   if (url != undefined) {
+  //     var chartFound = false;
+  //     for (var i = 0; i < this.chartList.length; i++) {
+  //       if (this.chartList[i].imgUrl == url) {
+  //         chartFound = true;
+  //         i = this.chartList.length + 1;
+  //       }
+  //     }
+  //     if (catName == "Highest") {
+  //       if (chartFound == false) {
+  //         this.chartList.push({
+  //           name: catName,
+  //           imgUrl: url,
+  //         });
+  //         console.log("highest chart");
+  //         setTimeout(() => this.getLowChart(), 500);
+  //       } else {
+  //         setTimeout(() => this.getHighQuesChart(), 500);
+  //       }
+  //     } else if (catName == "Lowest") {
+  //       if (chartFound == false) {
+  //         this.chartList.push({
+  //           name: catName,
+  //           imgUrl: url,
+  //         });
+  //         console.log("lowest chart");
+  //       } else {
+  //         setTimeout(() => this.getLowChart(), 500);
+  //       }
+  //     }
+  //     if (this.chartList.length > 27) {
+  //       console.log("chart list length 28");
 
-  formatDate(reqDate){
-    var x=new Date(reqDate);
+  //       this.genReport(this.chartList);
+  //       // alert("ok");
+
+  //       // for (var i = 0; i < this.chartList.length; i++) {
+  //       //   alert(this.chartList[i].name + " - " + this.chartList[i].imgUrl);
+  //       // }
+  //     }
+  //   }
+  // }
+
+  formatDate(reqDate) {
+    var x = new Date(reqDate);
     var dd = x.getDate();
-    var mm = x.getMonth()+1;
+    var mm = x.getMonth() + 1;
     var yy = x.getFullYear();
     //return dd +"/" + mm+"/" + yy;
     //return mm +"/" + dd +"/" + yy;
 
     return mm + "" + dd + "" + yy;
- }
-
-
+  }
 }
