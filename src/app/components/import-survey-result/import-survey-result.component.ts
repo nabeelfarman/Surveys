@@ -716,7 +716,7 @@ export class ImportSurveyResultComponent implements OnInit {
     image = btoa(unescape(encodeURIComponent(svg)));
 
     this.chartList.push({
-      name: name,
+      name: categoryName,
       imgUrl: image,
     });
     var increment = val + 1;
@@ -937,7 +937,7 @@ export class ImportSurveyResultComponent implements OnInit {
     image = btoa(unescape(encodeURIComponent(svg)));
 
     this.chartList.push({
-      name: name,
+      name: categoryName,
       imgUrl: image,
     });
 
@@ -1139,7 +1139,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
     if (categoryName == "Highest") {
       this.chartList.push({
-        name: name,
+        name: categoryName,
         imgUrl: image,
       });
 
@@ -1147,14 +1147,10 @@ export class ImportSurveyResultComponent implements OnInit {
       this.getLowChart();
     } else if (categoryName == "Lowest") {
       this.chartList.push({
-        name: name,
+        name: categoryName,
         imgUrl: image,
       });
       console.log("lowest chart");
-    }
-    if (this.chartList.length > 27) {
-      console.log("chart list length 28");
-
       this.genReport(this.chartList);
     }
   }
