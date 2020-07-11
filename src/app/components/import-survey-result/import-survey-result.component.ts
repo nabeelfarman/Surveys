@@ -414,7 +414,6 @@ export class ImportSurveyResultComponent implements OnInit {
 
       var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-      this.getSurveys();
       // return false;
       this.http.post(this.serverUrl + "uploadFile", saveData, { headers: reqHeader }).subscribe((data: any) => {
           if (data.msgT == "Team Success" && data.msgA == "Answer Success") {
@@ -422,8 +421,6 @@ export class ImportSurveyResultComponent implements OnInit {
             this.toastr.successToastr("Record Save Successfully!", "Success!", {
               toastTimeout: 2500,
             });
-            //this.toastr.errorToastr(data.msgT, "Error!", { toastTimeout: 5000 });
-            //this.toastr.errorToastr(data.msgA, "Error!", { toastTimeout: 5000 });
             this.getSurveys();
             this.clear();
             return false;
