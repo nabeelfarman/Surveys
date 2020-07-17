@@ -51,8 +51,8 @@
   <!--Row #1 end-->
 
   <div class="row">
-    <div class="col-md-6 d-none">
-      <div id="container"></div>
+    <div class="col-md-8 d-none">
+      <div id="container" style="width:auto;"></div>
     </div>
   </div>
   <br /><br /><br />
@@ -119,19 +119,28 @@
           <td>
             <div class="table-data-feature">
 
-              <button class="item" data-toggle="tooltip" data-placement="top" title="Generate Report"
-                data-original-title="Download" (click)="getTableData(item)">
+              <button *ngIf="item.rptGen==1" class="item" data-toggle="tooltip" data-placement="top"
+                title="Generate Report" data-original-title="Download" style="background-color:lightgreen !important"
+                (click)="genRpt()">
+                <i class="zmdi zmdi-settings"></i>
+              </button>
+
+              <button *ngIf="item.rptGen==0" class="item" data-toggle="tooltip" data-placement="top"
+                title="Generate Report" data-original-title="Download" style="background-color:lightsalmon !important"
+                (click)="getTableData(item)">
                 <i class="zmdi zmdi-settings"></i>
               </button>
 
               <button class="item" data-toggle="tooltip" data-placement="top" title="Download As PDF"
                 data-original-title="Download As PDF" (click)="downloadReport('pdf', item)">
-                <i class="zmdi zmdi-download"></i>
+                <!-- <i class="zmdi zmdi-download"></i> -->
+                <span class="fa fa-file-pdf-o"></span>
               </button>
 
               <button class="item" data-toggle="tooltip" data-placement="top" title="Download As DOCX"
                 data-original-title="Download As DOCX" (click)="downloadReport('docx', item)">
-                <i class="zmdi zmdi-download"></i>
+                <!-- <i class="zmdi zmdi-download"></i> -->
+                <span class="fa fa-file-word-o" color="primary"></span>
               </button>
 
             </div>

@@ -373,7 +373,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
       yAxis: {
         gridLineColor: "#c0c0c0",
         tickPositioner: function () {
-          return [0, 1, 2, 3, 4, 5, 6];
+          return [0, 1, 2, 3, 4, 5];
         },
         labels: {
           style: {
@@ -381,7 +381,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
             color: "black",
           },
           formatter: function () {
-            if (this.value != 0 && this.value != 6) {
+            if (this.value != 0) {
               return this.value;
             }
           },
@@ -513,7 +513,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
       yAxis: {
         gridLineColor: "#A6A5A5",
         tickPositioner: function () {
-          return [0, 1, 2, 3, 4, 5, 6];
+          return [0, 1, 2, 3, 4, 5];
         },
         labels: {
           style: {
@@ -521,7 +521,7 @@ export class ResponseGraphicalViewComponent implements OnInit {
             color: "black",
           },
           formatter: function () {
-            if (this.value != 0 && this.value != 6) {
+            if (this.value != 0) {
               return this.value;
             }
           },

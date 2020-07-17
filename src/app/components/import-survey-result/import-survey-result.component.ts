@@ -14,6 +14,7 @@ import * as XLSX from "xlsx";
 import { state } from "@angular/animations";
 import { stat, Stats } from "fs";
 import * as Highcharts from "highcharts";
+
 var imageUrl;
 
 @Component({
@@ -27,7 +28,7 @@ export class ImportSurveyResultComponent implements OnInit {
   //wordServerUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9051/api/";
   serverUrl = "http://ambit-erp.southeastasia.cloudapp.azure.com:9050/api/";
 
-  EXPORT_WIDTH = 1000;
+  EXPORT_WIDTH = 2000;
   tempData = [];
   summaryData = [];
   detailData = [];
@@ -79,24 +80,33 @@ export class ImportSurveyResultComponent implements OnInit {
     // this.getLowQuesChart();
   }
 
-  changeSurveyDDL(){
-
+  changeSurveyDDL() {
     this.surveyData = [];
-    if(this.ddlSurvey == 'latest'){
-      this.getSurveys();
-    }else {
+    if (this.ddlSurvey == "latest") {
+      this.getSurveys("SurveyDDL");
+    } else {
       this.getSurveysAll();
     }
-
   }
 
   //function for get surveys data
-  getSurveys() {
+  getSurveys(obj) {
     this.app.showSpinner();
     var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-    this.http.get(this.wordServerUrl + "getSurveyDetail", { headers: reqHeader }).subscribe((data: any) => {
+    this.http
+      .get(this.wordServerUrl + "getSurveyDetail", { headers: reqHeader })
+      .subscribe((data: any) => {
         this.surveyData = data;
+        if (obj == "Upload") {
+          this.toastr.successToastr(
+            "Record Uploaded Successfully!",
+            "Success!",
+            {
+              toastTimeout: 2500,
+            }
+          );
+        }
         this.app.hideSpinner();
       });
   }
@@ -105,25 +115,34 @@ export class ImportSurveyResultComponent implements OnInit {
     this.app.showSpinner();
     var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-    this.http.get(this.wordServerUrl + "getSurveyDetailAll", { headers: reqHeader }).subscribe((data: any) => {
+    this.http
+      .get(this.wordServerUrl + "getSurveyDetailAll", { headers: reqHeader })
+      .subscribe((data: any) => {
         this.surveyData = data;
         this.app.hideSpinner();
       });
   }
 
-  downloadReport(type, item) {
+  genRpt() {
+    this.toastr.errorToastr("Report Already Generated", "Error", {
+      toastTimeout: 2500,
+    });
+    return;
+  }
 
-    var tmpDate = this.formatDate(item.survey_Date, 'withOutSlash');
+  downloadReport(type, item) {
+    var tmpDate = this.formatDate(item.survey_Date, "withOutSlash");
     var fileName = item.team_Name + "_" + tmpDate + "." + type;
 
     // alert(fileName);
     // return false;
-    window.open(this.wordServerUrl + 'downloadfile?fileName=' + fileName ,  '_blank');
-
+    window.open(
+      this.wordServerUrl + "downloadfile?fileName=" + fileName,
+      "_blank"
+    );
   }
 
   genReport(chartsList) {
-
     var reqData = {
       images: JSON.stringify(chartsList),
       Consultant_ID: "1",
@@ -138,34 +157,65 @@ export class ImportSurveyResultComponent implements OnInit {
     this.app.showSpinner();
     var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
-    this.http.post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader }).subscribe((data: any) => {
+    this.http
+      .post(this.wordServerUrl + "genReport", reqData, { headers: reqHeader })
+      .subscribe((data: any) => {
         //this.http.get(this.wordServerUrl + "getSurveys", { headers: reqHeader }).subscribe((data: any) => {
 
         if (data.msg != "Success") {
           this.toastr.errorToastr(data.msg, "Error", { toastTimeout: 2500 });
         } else {
-          // // debugger;
-          // // var fileData = this.base64ToBlob(data.fileData, 'docx');
-          // // const a =window.document.createElement('a');
+          this.toastr.successToastr(
+            "Report Generated Successfully",
+            "Success",
+            {
+              toastTimeout: 2500,
+            }
+          );
+          const index = this.surveyData.findIndex(
+            (x) => x.team_ID === this.teamID
+          );
 
-          // // a.href = window.URL.createObjectURL(fileData);
-          // // a.download;
-          // // a.click();
-          // if(data.fileData != undefined || data.fileData != ""){
-          //   var fileData = this.base64ToBlob(data.fileData);
-
-          //   window.URL.createObjectURL(fileData);
-
-          // }
-
-          //window.open("C:/SurveyTemplate/surveyDuckReport.doc");
-          this.toastr.successToastr(data.msg, "Success", {
-            toastTimeout: 2500,
-          });
-          this.app.hideSpinner();
+          this.surveyData[index].rptGen = true;
+          // this.updateTeams(
+          //   this.clientID,
+          //   this.teamID,
+          //   this.teamName,
+          //   this.surveyDt
+          // );
         }
-
         this.app.hideSpinner();
+      });
+  }
+
+  updateTeams(clientID, teamID, teamName, surveyDt) {
+    const index = this.surveyData.findIndex((x) => x.team_ID === teamID);
+    var reqData = {
+      rptGen: 1,
+      Survey_Date: surveyDt,
+      Client_ID: clientID,
+      Team_ID: teamID,
+      Team_Name: teamName,
+    };
+
+    var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
+
+    this.http
+      .post(this.wordServerUrl + "updateTeams", reqData, { headers: reqHeader })
+      .subscribe((data: any) => {
+        if (data.msg != "Record Updated Successfully!") {
+          this.toastr.errorToastr(data.msg, "Error", { toastTimeout: 2500 });
+          this.app.hideSpinner();
+        } else {
+          this.getSurveysAll();
+          this.toastr.successToastr(
+            "Report Generated Successfully",
+            "Success",
+            {
+              toastTimeout: 2500,
+            }
+          );
+        }
       });
   }
 
@@ -190,10 +240,10 @@ export class ImportSurveyResultComponent implements OnInit {
     this.clientID = item.client_ID;
     this.teamID = item.team_ID;
     //this.surveyDt = item.survey_Date;
-    this.surveyDt = this.formatDate(item.survey_Date, 'withSlash');
+    this.surveyDt = this.formatDate(item.survey_Date, "withSlash");
     this.teamName = item.team_Name;
     this.noOfRespondent = item.noOfRespondents;
-    
+
     this.getChart();
   }
 
@@ -396,6 +446,7 @@ export class ImportSurveyResultComponent implements OnInit {
         return false;
       }
 
+      this.app.showSpinner();
       // this.app.showSpinner();
       //* ********************************************save data
       var saveData = {
@@ -415,13 +466,19 @@ export class ImportSurveyResultComponent implements OnInit {
       var reqHeader = new HttpHeaders({ "Content-Type": "application/json" });
 
       // return false;
-      this.http.post(this.serverUrl + "uploadFile", saveData, { headers: reqHeader }).subscribe((data: any) => {
+      this.http
+        .post(this.serverUrl + "uploadFile", saveData, { headers: reqHeader })
+        .subscribe((data: any) => {
           if (data.msgT == "Team Success" && data.msgA == "Answer Success") {
-            this.app.hideSpinner();
-            this.toastr.successToastr("Record Save Successfully!", "Success!", {
-              toastTimeout: 2500,
-            });
-            this.getSurveys();
+            // this.app.hideSpinner();
+            // this.toastr.successToastr(
+            //   "Record Uploaded Successfully!",
+            //   "Success!",
+            //   {
+            //     toastTimeout: 2500,
+            //   }
+            // );
+            this.getSurveys("Upload");
             this.clear();
             return false;
           } else {
@@ -600,117 +657,231 @@ export class ImportSurveyResultComponent implements OnInit {
   }
 
   genChartImage(category, avg, treeData, categoryName, val) {
-    var options = {
-      chart: {
-        inverted: true,
-        // options3d: {
-        //   enabled: true,
-        //   alpha: 25,
-        //   beta: 25,
-        //   depth: 50,
-        //   viewdistance: 30,
-        // },
-      },
-      title: {
-        text: "",
-        style: { fontSize: "25px", color: "black" },
-      },
-      xAxis: {
-        categories: category,
-        labels: {
-          style: {
-            fontSize: "15px",
-            color: "black",
-          },
-        },
-      },
-      yAxis: {
-        gridLineColor: "#c0c0c0",
-        // categories: ["", 1, 2, 3, 4, 5, ""],
-        // min: 1,
-        // max: 5,
-        title: {
-          text: ""
-        },
-        tickPositioner: function () {
-          return [0, 1, 2, 3, 4, 5, 6];
-        },
-        labels: {
-          style: {
-            fontSize: "15px",
-            color: "black",
-          },
-          formatter: function () {
-            if (this.value != 0 && this.value != 6) {
-              return this.value;
-            }
-          },
-        },
-      },
-      plotOptions: {
-        line: {
-          marker: {
-            symbol: "diamond",
-            fillColor: "black",
-            // "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
-            // "url(../../../../../assets/images/Marker2.png)",
-            radius: 10,
-          },
-          lineWidth: 0,
-          dataLabels: {
-            enabled: true,
-            style: {
-              fontSize: "15px",
-            },
-          },
-        },
-        columnrange: {
-          // borderRadius: 16,
-          shadow: true,
-          // dataLabels: {
-          //   enabled: false,
+    if (categoryName == "Team Outcomes") {
+      var options = {
+        chart: {
+          inverted: true,
+          // options3d: {
+          //   enabled: true,
+          //   alpha: 25,
+          //   beta: 25,
+          //   depth: 50,
+          //   viewdistance: 30,
           // },
         },
-      },
-
-      legend: {
-        enabled: false,
-      },
-      credits: {
-        enabled: false,
-      },
-      series: [
-        {
-          // stroke: "#b1b1b1",
-          // strokeWidth: 2,
-          borderColor: "#b1b1b1",
-          name: "Categories",
-          pointWidth: 30,
-          color: {
-            linearGradient: {
-              x1: 0,
-              x2: 1,
-              y1: 0,
-              y2: 0,
+        title: {
+          text: "",
+          style: { fontSize: "25px", color: "black" },
+        },
+        xAxis: {
+          categories: category,
+          labels: {
+            style: {
+              fontSize: "15px",
+              color: "black",
             },
-            stops: [
-              [0, "#727272"],
-              // [0, "#1707b2"],
-              // [1, "#54ffc1"],
-              [1, "#f2f2f2"],
-            ],
           },
-          data: treeData,
-          type: "columnrange",
         },
-        {
-          name: "Average",
-          pointWidth: 0,
-          data: avg,
-          type: "line",
+        yAxis: {
+          gridLineColor: "#c0c0c0",
+          // categories: ["", 1, 2, 3, 4, 5, ""],
+          // min: 1,
+          // max: 5,
+          title: {
+            text: "",
+          },
+          tickPositioner: function () {
+            return [0, 1, 2, 3, 4, 5];
+          },
+          labels: {
+            style: {
+              fontSize: "15px",
+              color: "black",
+            },
+            formatter: function () {
+              if (this.value != 0) {
+                return this.value;
+              }
+            },
+          },
         },
-      ],
-    };
+        plotOptions: {
+          line: {
+            marker: {
+              symbol: "diamond",
+              fillColor: "black",
+              // "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              // "url(../../../../../assets/images/Marker2.png)",
+              radius: 10,
+            },
+            lineWidth: 0,
+            dataLabels: {
+              enabled: true,
+              style: {
+                fontSize: "15px",
+              },
+            },
+          },
+          columnrange: {
+            // borderRadius: 16,
+            shadow: true,
+            // dataLabels: {
+            //   enabled: false,
+            // },
+          },
+        },
+
+        legend: {
+          enabled: false,
+        },
+        credits: {
+          enabled: false,
+        },
+        series: [
+          {
+            // stroke: "#b1b1b1",
+            // strokeWidth: 2,
+            borderColor: "#b1b1b1",
+            name: "Categories",
+            pointWidth: 30,
+            color: {
+              linearGradient: {
+                x1: 0,
+                x2: 1,
+                y1: 0,
+                y2: 0,
+              },
+              stops: [
+                [0, "#727272"],
+                // [0, "#1707b2"],
+                // [1, "#54ffc1"],
+                [1, "#f2f2f2"],
+              ],
+            },
+            data: treeData,
+            type: "columnrange",
+          },
+          {
+            name: "Average",
+            pointWidth: 0,
+            data: avg,
+            type: "line",
+          },
+        ],
+      };
+    } else {
+      var options = {
+        chart: {
+          inverted: true,
+          // options3d: {
+          //   enabled: true,
+          //   alpha: 25,
+          //   beta: 25,
+          //   depth: 50,
+          //   viewdistance: 30,
+          // },
+        },
+        title: {
+          text: "",
+          style: { fontSize: "25px", color: "black" },
+        },
+        xAxis: {
+          categories: category,
+          labels: {
+            style: {
+              fontSize: "15px",
+              color: "black",
+            },
+          },
+        },
+        yAxis: {
+          gridLineColor: "#c0c0c0",
+          // categories: ["", 1, 2, 3, 4, 5, ""],
+          // min: 1,
+          // max: 5,
+          title: {
+            text: "",
+          },
+          tickPositioner: function () {
+            return [0, 1, 2, 3, 4, 5, 6];
+          },
+          labels: {
+            style: {
+              fontSize: "15px",
+              color: "black",
+            },
+            formatter: function () {
+              if (this.value != 0 && this.value != 6) {
+                return this.value;
+              }
+            },
+          },
+        },
+        plotOptions: {
+          line: {
+            marker: {
+              symbol: "diamond",
+              fillColor: "black",
+              // "url(http://ambit-erp.southeastasia.cloudapp.azure.com:9000/assets/images/Marker2.png)",
+              // "url(../../../../../assets/images/Marker2.png)",
+              radius: 10,
+            },
+            lineWidth: 0,
+            dataLabels: {
+              enabled: true,
+              style: {
+                fontSize: "15px",
+              },
+            },
+          },
+          columnrange: {
+            // borderRadius: 16,
+            shadow: true,
+            // dataLabels: {
+            //   enabled: false,
+            // },
+          },
+        },
+
+        legend: {
+          enabled: false,
+        },
+        credits: {
+          enabled: false,
+        },
+        series: [
+          {
+            // stroke: "#b1b1b1",
+            // strokeWidth: 2,
+            borderColor: "#b1b1b1",
+            name: "Categories",
+            pointWidth: 30,
+            color: {
+              linearGradient: {
+                x1: 0,
+                x2: 1,
+                y1: 0,
+                y2: 0,
+              },
+              stops: [
+                [0, "#727272"],
+                // [0, "#1707b2"],
+                // [1, "#54ffc1"],
+                [1, "#f2f2f2"],
+              ],
+            },
+            data: treeData,
+            type: "columnrange",
+          },
+          {
+            name: "Average",
+            pointWidth: 0,
+            data: avg,
+            type: "line",
+          },
+        ],
+      };
+    }
 
     var container = document.getElementById("#container");
 
@@ -720,8 +891,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height =
-      (render_width * charts.chartHeight) / charts.chartWidth;
+    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -837,10 +1007,10 @@ export class ImportSurveyResultComponent implements OnInit {
         // min: 1,
         // max: 5,
         title: {
-          text: ""
+          text: "",
         },
         tickPositioner: function () {
-          return [0, 1, 2, 3, 4, 5, 6];
+          return [0, 1, 2, 3, 4, 5];
         },
         labels: {
           style: {
@@ -848,7 +1018,7 @@ export class ImportSurveyResultComponent implements OnInit {
             color: "black",
           },
           formatter: function () {
-            if (this.value != 0 && this.value != 6) {
+            if (this.value != 0) {
               return this.value;
             }
           },
@@ -927,8 +1097,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height =
-      (render_width * charts.chartHeight) / charts.chartWidth;
+    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -1028,7 +1197,7 @@ export class ImportSurveyResultComponent implements OnInit {
         // min: 1,
         // max: 5,
         title: {
-          text: ""
+          text: "",
         },
         tickPositioner: function () {
           return [0, 1, 2, 3, 4, 5, 6];
@@ -1039,7 +1208,7 @@ export class ImportSurveyResultComponent implements OnInit {
             color: "black",
           },
           formatter: function () {
-            if (this.value != 0 && this.value != 6) {
+            if (this.value != 0 && this.value != 0) {
               return this.value;
             }
           },
@@ -1118,8 +1287,7 @@ export class ImportSurveyResultComponent implements OnInit {
 
     var charts = Highcharts.chart("container", options);
     var render_width = this.EXPORT_WIDTH;
-    var render_height =
-      (render_width * charts.chartHeight) / charts.chartWidth;
+    var render_height = (render_width * charts.chartHeight) / charts.chartWidth;
     var svg = charts.getSVG({
       exporting: {
         sourceWidth: charts.chartWidth,
@@ -1150,24 +1318,21 @@ export class ImportSurveyResultComponent implements OnInit {
       console.log("lowest chart");
       this.genReport(this.chartList);
     }
-  } 
+  }
 
   formatDate(reqDate, type) {
-
     var rtnDate;
     var x = new Date(reqDate);
     var dd = x.getDate();
     var mm = x.getMonth() + 1;
     var yy = x.getFullYear();
 
-    if(type == 'withSlash'){
-      rtnDate = mm +"/" + dd +"/" + yy;
-    }
-    else {
+    if (type == "withSlash") {
+      rtnDate = mm + "/" + dd + "/" + yy;
+    } else {
       rtnDate = mm + "" + dd + "" + yy;
     }
 
     return rtnDate;
-
   }
 }

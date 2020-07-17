@@ -16,7 +16,19 @@
 
   <div class="row">
     <div class="offset-md-3 col-md-6">
-      <mat-form-field class="w-100">
+      <select class="form-control" plaveholder="Select Survey" [(ngModel)]="cmbSurvey"
+        (ngModelChange)="getSurveyChart()">
+        <option *ngFor=" let item of surveyList" [value]="item.team_ID">
+          <table class="table">
+            <tr class='d-flex'>
+              <td class="col-4">{{ item.team_Name }}</td>
+              <td class="col-4">{{ item.survey_Date | date }}</td>
+              <td class="col-4">{{ item.noOfRespondents }}</td>
+            </tr>
+          </table>
+        </option>
+      </select>
+      <!-- <mat-form-field class="w-100">
         <mat-label>Select Survey</mat-label>
         <mat-select [(ngModel)]="cmbSurvey" (ngModelChange)="getSurveyChart()">
           <mat-option *ngFor=" let item of surveyList" [value]="item.team_ID">
@@ -29,14 +41,14 @@
             </table>
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
-    <div class="col-md-2 mt-3">
+    <div class="col-md-2 mt-1">
       <mat-slide-toggle [(ngModel)]="allow3D" class="example-margin" color="primary">
         3D View
       </mat-slide-toggle>
     </div>
-    <div class="col-md-1 mt-2">
+    <div class="col-md-1">
       <!-- <div class="offset-md-11 col-md-1"> -->
       <button mat-raised-button class="btnClass" style="border-radius: 0;" (click)="collapseAll()">
         Expand
