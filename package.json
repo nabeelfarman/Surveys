@@ -27,7 +27,7 @@
     "animate.css": "^3.7.2",
     "bootstrap": "^4.4.1",
     "font-awesome": "^4.7.0",
-    "highcharts": "^6.2.0",
+    "highcharts": "^7.2.2",
     "jquery": "^3.4.1",
     "ng6-toastr-notifications": "^1.0.4",
     "ngx-bootstrap": "^5.5.0",
